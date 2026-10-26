@@ -17,7 +17,10 @@ from __future__ import annotations
 import hashlib
 import hmac
 import secrets
+import threading
 import uuid
+from collections.abc import Iterator
+from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import timedelta
 
@@ -26,12 +29,45 @@ from argon2.exceptions import InvalidHashError, VerificationError
 
 from app.clock import Clock, is_valid_timezone, to_iso
 from app.domain.models import PASSWORD_PROVIDER, AuthIdentity, User
-from app.errors import Conflict, Forbidden, InvalidCredentials, Unauthenticated, ValidationFailed
+from app.errors import (
+    Conflict,
+    Forbidden,
+    InvalidCredentials,
+    ServerBusy,
+    Unauthenticated,
+    ValidationFailed,
+)
 from app.repositories.base import DuplicateError, Repository
 
 _hasher = PasswordHasher()
 # Verified against when the email is unknown, so login timing does not reveal accounts.
 _DUMMY_HASH = _hasher.hash("dummy-password-for-timing")
+
+
+class HashGate:
+    """Caps concurrent argon2 hash/verify calls in this process.
+
+    Each call allocates ~64 MiB (argon2-cffi default memory_cost), so a burst of
+    password requests could otherwise exhaust memory. A request that cannot get a
+    slot within `wait_seconds` fails with 503 instead of queueing, so waiting
+    requests do not tie up the worker threads that every other endpoint needs.
+    """
+
+    def __init__(self, max_concurrent: int, wait_seconds: float = 3.0):
+        self._slots = threading.BoundedSemaphore(max_concurrent)
+        self.wait_seconds = wait_seconds
+
+    @contextmanager
+    def slot(self) -> Iterator[None]:
+        if not self._slots.acquire(timeout=self.wait_seconds):
+            raise ServerBusy()
+        try:
+            yield
+        finally:
+            self._slots.release()
+
+
+_DEFAULT_GATE = HashGate(4)
 
 
 @dataclass(frozen=True)
@@ -47,21 +83,34 @@ class Profile:
     email: str | None  # None for a user without the password login method
 
 
-def _verify(password_hash: str | None, password: str) -> bool:
-    """Always runs one argon2 verification, even without a hash, to keep timing equal."""
-    try:
-        ok = _hasher.verify(password_hash or _DUMMY_HASH, password)
-    except (VerificationError, InvalidHashError):
-        return False
-    return ok and password_hash is not None
-
-
 class AuthService:
-    def __init__(self, repo: Repository, clock: Clock, secret_key: str, token_ttl_seconds: int):
+    def __init__(
+        self,
+        repo: Repository,
+        clock: Clock,
+        secret_key: str,
+        token_ttl_seconds: int,
+        hash_gate: HashGate = _DEFAULT_GATE,
+    ):
         self.repo = repo
         self.clock = clock
         self._secret = secret_key.encode()
         self.ttl = timedelta(seconds=token_ttl_seconds)
+        self._gate = hash_gate
+
+    # ---- password hashing (memory-heavy: always through the gate) -------------
+    def _hash(self, password: str) -> str:
+        with self._gate.slot():
+            return _hasher.hash(password)
+
+    def _verify(self, password_hash: str | None, password: str) -> bool:
+        """Always runs one argon2 verification, even without a hash, to keep timing equal."""
+        with self._gate.slot():
+            try:
+                ok = _hasher.verify(password_hash or _DUMMY_HASH, password)
+            except (VerificationError, InvalidHashError):
+                return False
+        return ok and password_hash is not None
 
     # ---- sessions (login-method independent) -------------------------------
     def _token_hash(self, token: str) -> str:
@@ -118,7 +167,7 @@ class AuthService:
 
     # ---- password login method ----------------------------------------------
     def signup_with_password(self, email: str, password: str, timezone: str) -> IssuedToken:
-        password_hash = _hasher.hash(password)
+        password_hash = self._hash(password)
         try:
             with self.repo.transaction():
                 user = self._new_user(timezone)
@@ -134,7 +183,7 @@ class AuthService:
         """Add email + password to a user who has no login method yet."""
         if self.repo.get_user_identity(user.id, PASSWORD_PROVIDER) is not None:
             raise Conflict("An email login is already linked to this account.")
-        identity = AuthIdentity(PASSWORD_PROVIDER, email, user.id, _hasher.hash(password))
+        identity = AuthIdentity(PASSWORD_PROVIDER, email, user.id, self._hash(password))
         try:
             with self.repo.transaction():
                 self.repo.insert_identity(identity, to_iso(self.clock()))
@@ -143,7 +192,10 @@ class AuthService:
 
     def login_with_password(self, email: str, password: str) -> IssuedToken:
         identity = self.repo.get_identity(PASSWORD_PROVIDER, email)
-        if not _verify(identity.secret_hash if identity else None, password) or identity is None:
+        if (
+            not self._verify(identity.secret_hash if identity else None, password)
+            or identity is None
+        ):
             raise InvalidCredentials()
         user = self.repo.get_user(identity.user_id)
         if user is None:
@@ -159,7 +211,7 @@ class AuthService:
         credential, so holding the token is the only check possible.
         """
         identity = self.repo.get_user_identity(user.id, PASSWORD_PROVIDER)
-        if identity is not None and not _verify(identity.secret_hash, password or ""):
+        if identity is not None and not self._verify(identity.secret_hash, password or ""):
             raise Forbidden("Password confirmation failed.")
         with self.repo.transaction():
             self.repo.delete_sessions_for_user(user.id)

@@ -7,6 +7,7 @@ class AppError(Exception):
     status_code = 500
     code = "internal_error"
     default_message = "Internal server error."
+    retry_after: int | None = None  # seconds; sent as the Retry-After header when set
 
     def __init__(self, message: str | None = None, details: list[dict] | None = None):
         super().__init__(message or self.default_message)
@@ -52,3 +53,20 @@ class Conflict(AppError):
     status_code = 409
     code = "conflict"
     default_message = "Conflict."
+
+
+class RateLimited(AppError):
+    status_code = 429
+    code = "rate_limited"
+    default_message = "Too many requests. Try again later."
+
+    def __init__(self, retry_after: int):
+        super().__init__()
+        self.retry_after = max(1, retry_after)
+
+
+class ServerBusy(AppError):
+    status_code = 503
+    code = "server_busy"
+    default_message = "Server is busy. Try again shortly."
+    retry_after = 1

@@ -2,7 +2,7 @@
 // 실행: node web/tests/e2e.mjs   (저장소 루트에서, backend/.venv 준비 후)
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { createRequire } from "node:module";
@@ -54,6 +54,29 @@ try {
   page.on("pageerror", (e) => consoleErrors.push(String(e)));
   page.on("dialog", (d) => d.accept());
   const toast = () => page.locator("#toast").textContent();
+
+  step("CSP: connect-src가 config.js의 API 주소와 같고, 인라인 스크립트는 막힌다");
+  const html = readFileSync(join(root, "web/index.html"), "utf8");
+  const csp = html.match(/http-equiv="Content-Security-Policy" content="([^"]+)"/)?.[1];
+  assert.ok(csp, "index.html에 CSP meta 태그");
+  const apiBase = readFileSync(join(root, "web/config.js"), "utf8").match(/apiBase:\s*"([^"]+)"/)[1];
+  const connectSrc = csp.split(";").map((d) => d.trim()).find((d) => d.startsWith("connect-src "));
+  assert.deepEqual(connectSrc.split(/\s+/).slice(1), [new URL(apiBase).origin], "connect-src == config.js apiBase");
+  // 별도 페이지에서 확인한다(의도한 CSP 위반 메시지가 본 흐름의 콘솔 검사에 섞이지 않게).
+  const probe = await browser.newPage();
+  const violations = [];
+  probe.on("console", (m) => { if (/Content Security Policy/.test(m.text())) violations.push(m.text()); });
+  await probe.goto(WEB);
+  const injected = await probe.evaluate(() => {
+    const s = document.createElement("script");
+    s.textContent = "window.__cspProbe = 1";
+    document.head.append(s);
+    return window.__cspProbe;
+  });
+  assert.equal(injected, undefined, "인라인 스크립트가 실행되면 안 됨");
+  await probe.waitForTimeout(100);
+  assert.ok(violations.length > 0, "CSP 위반이 보고됨");
+  await probe.close();
 
   await page.goto(WEB);
   step("첫 화면: 동의 전에는 시작할 수 없다");

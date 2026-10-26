@@ -21,7 +21,8 @@ def get_repo(request: Request) -> Iterator[Repository]:
 
 def get_auth_service(request: Request, repo: Repository = Depends(get_repo)) -> AuthService:
     s = request.app.state.settings
-    return AuthService(repo, request.app.state.clock, s.secret_key, s.token_ttl_seconds)
+    state = request.app.state
+    return AuthService(repo, state.clock, s.secret_key, s.token_ttl_seconds, state.hash_gate)
 
 
 def get_meal_service(request: Request, repo: Repository = Depends(get_repo)) -> MealService:

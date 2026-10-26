@@ -32,8 +32,17 @@ node web/tests/e2e.mjs   # 저장소 루트에서. 백엔드 .venv와 Playwright
 | 한 주 | 기록한 날 수와 날짜별 건수, 식사량 분포. 날짜를 누르면 그날 기록으로 이동 |
 | 설정 | 이메일 계정 연결, 시간대 맞추기, 로그아웃, 탈퇴 |
 
+## Content-Security-Policy
+
+`index.html`에 CSP meta 태그가 있다: `default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src <API 주소>; object-src 'none'; base-uri 'none'; form-action 'none'`. 인라인 스크립트·스타일은 쓰지 않으므로(`style` 속성, `<style>`, `<script>` 본문 없음) `'unsafe-inline'`이 필요 없다. 새 코드도 이 규칙을 지킨다.
+
+- **`config.js`의 `apiBase`를 바꾸면 `index.html` CSP의 `connect-src`도 같은 출처로 바꿔야 한다.** 안 바꾸면 모든 API 호출이 브라우저에서 막힌다. 종단 테스트가 둘이 같은지 확인한다.
+- **운영에서는 같은 정책을 웹 서버 응답 헤더(`Content-Security-Policy`)로 보낸다.** meta 태그로는 `frame-ancestors`(다른 사이트가 iframe으로 넣는 것 막기), `report-uri`/`report-to`, `sandbox`를 쓸 수 없고, meta 태그 앞에 나온 내용에는 적용되지 않는다. 헤더에는 `frame-ancestors 'none'`을 더한다. 둘 다 있으면 둘 다 적용되므로(더 엄격한 쪽) 값을 같게 유지한다.
+- 운영에서 API는 HTTPS 주소여야 한다(백엔드가 운영 모드에서 HTTPS가 아닌 요청을 거부한다).
+- 인증 요청이 너무 많으면 백엔드가 429를 돌려주고, 화면은 "잠시 후 다시 시도해 주세요" 안내를 보여 준다.
+
 ## 알려진 한계
 
-- 토큰을 `localStorage`에 둔다. 스크립트 주입(XSS)이 생기면 토큰이 탈취되므로 사용자 입력은 `textContent`로만 넣는다. 운영 배포 때 Content-Security-Policy 헤더를 함께 설정해야 한다.
+- 토큰을 `localStorage`에 둔다. 스크립트 주입(XSS)이 생기면 토큰이 탈취되므로 사용자 입력은 `textContent`로만 넣고, 아래 CSP로 한 번 더 막는다.
 - 인터넷이 끊기면 기록할 수 없다(오프라인 기록은 앱 단계에서 판단, PRD Q3).
 - 동의 문구는 법률 검토 전 초안이다.

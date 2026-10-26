@@ -3,6 +3,7 @@ from __future__ import annotations
 from fastapi import APIRouter, Depends, Request, Response, status
 
 from app.api.deps import bearer_token, current_user, get_auth_service
+from app.api.ratelimit import enforce, limit_by_ip
 from app.api.schemas import (
     AnonymousStartRequest,
     DeleteAccountRequest,
@@ -23,13 +24,23 @@ def _token_out(t: IssuedToken, email: str | None) -> TokenOut:
     return TokenOut(access_token=t.token, expires_at=t.expires_at, user=UserOut.of(t.user, email))
 
 
-@router.post("/auth/signup", status_code=status.HTTP_201_CREATED, response_model=TokenOut)
+@router.post(
+    "/auth/signup",
+    status_code=status.HTTP_201_CREATED,
+    response_model=TokenOut,
+    dependencies=[Depends(limit_by_ip("signup_ip"))],
+)
 def signup(body: SignupRequest, request: Request, auth: AuthService = Depends(get_auth_service)):
     tz = body.timezone or request.app.state.settings.default_timezone
     return _token_out(auth.signup_with_password(body.email, body.password, tz), body.email)
 
 
-@router.post("/auth/anonymous", status_code=status.HTTP_201_CREATED, response_model=TokenOut)
+@router.post(
+    "/auth/anonymous",
+    status_code=status.HTTP_201_CREATED,
+    response_model=TokenOut,
+    dependencies=[Depends(limit_by_ip("anonymous_ip"))],
+)
 def start_anonymous(
     body: AnonymousStartRequest, request: Request, auth: AuthService = Depends(get_auth_service)
 ):
@@ -37,7 +48,7 @@ def start_anonymous(
     return _token_out(auth.start_anonymous(tz), None)
 
 
-@router.post("/auth/link", response_model=UserOut)
+@router.post("/auth/link", response_model=UserOut, dependencies=[Depends(limit_by_ip("link_ip"))])
 def link_password(
     body: LinkPasswordRequest,
     user: User = Depends(current_user),
@@ -48,8 +59,12 @@ def link_password(
     return UserOut.of(p.user, p.email)
 
 
-@router.post("/auth/login", response_model=TokenOut)
-def login(body: LoginRequest, auth: AuthService = Depends(get_auth_service)):
+@router.post(
+    "/auth/login", response_model=TokenOut, dependencies=[Depends(limit_by_ip("login_ip"))]
+)
+def login(body: LoginRequest, request: Request, auth: AuthService = Depends(get_auth_service)):
+    # Per account as well as per IP: guessing one password from many addresses.
+    enforce(request, "login_email", body.email)
     return _token_out(auth.login_with_password(body.email, body.password), body.email)
 
 

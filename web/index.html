@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- connect-src는 config.js의 apiBase와 같아야 한다. 운영에서는 같은 정책을 응답 헤더로도 보낸다(README). -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src http://localhost:8000; object-src 'none'; base-uri 'none'; form-action 'none'">
   <title>가벼운 식단 기록</title>
   <meta name="description" content="칼로리 계산 없이 먹은 것 한 줄로 끝내는 식단 기록">
   <link rel="stylesheet" href="styles.css">

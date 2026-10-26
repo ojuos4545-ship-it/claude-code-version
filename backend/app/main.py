@@ -2,33 +2,31 @@
 
 Error body format (every non-2xx response):
     {"error": {"code": str, "message": str, "details": [{"field", "reason", "message"}]}}
+
+Middleware, outermost first: CatchAllErrorsMiddleware (unhandled exception -> 500,
+never re-raised to the server) -> ProxyHttpsMiddleware (trusted proxy headers,
+HTTPS + HSTS) -> CORS -> routes.
 """
 
 from __future__ import annotations
 
-import logging
-
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.api import routes_auth, routes_meals
+from app.api.middleware import CatchAllErrorsMiddleware, ProxyHttpsMiddleware
+from app.api.middleware import error_response as _error
+from app.api.ratelimit import AuthRateLimits
 from app.clock import Clock, system_clock
 from app.config import Settings, load_settings
 from app.db.migrate import migrate_up
 from app.errors import AppError
 from app.repositories.sqlite import SqliteDatabase
-
-logger = logging.getLogger("easy_meal_log")
+from app.services.auth import HashGate
 
 _HTTP_CODES = {401: "unauthenticated", 404: "not_found", 405: "method_not_allowed"}
-
-
-def _error(status: int, code: str, message: str, details: list | None = None, headers=None):
-    body = {"error": {"code": code, "message": message, "details": details or []}}
-    return JSONResponse(status_code=status, content=body, headers=headers)
 
 
 def _field_name(loc: tuple) -> str:
@@ -39,9 +37,20 @@ def _field_name(loc: tuple) -> str:
 
 def create_app(settings: Settings | None = None, clock: Clock = system_clock) -> FastAPI:
     settings = settings or load_settings()
-    app = FastAPI(title="Easy Meal Log API", version="0.1.0")
+    # API docs only in development/test: in production they map the attack surface.
+    docs = settings.is_dev
+    app = FastAPI(
+        title="Easy Meal Log API",
+        version="0.1.0",
+        docs_url="/docs" if docs else None,
+        redoc_url="/redoc" if docs else None,
+        openapi_url="/openapi.json" if docs else None,
+    )
     app.state.settings = settings
     app.state.clock = clock
+    # Process-wide: shared by all requests (and threads) of this process only.
+    app.state.auth_limits = AuthRateLimits() if settings.rate_limit_enabled else None
+    app.state.hash_gate = HashGate(settings.max_concurrent_hashes)
     app.state.db = SqliteDatabase(settings.database_path)
 
     conn = app.state.db.connect()
@@ -52,7 +61,9 @@ def create_app(settings: Settings | None = None, clock: Clock = system_clock) ->
 
     @app.exception_handler(AppError)
     async def _app_error(_: Request, exc: AppError):
-        headers = {"WWW-Authenticate": "Bearer"} if exc.status_code == 401 else None
+        headers = {"WWW-Authenticate": "Bearer"} if exc.status_code == 401 else {}
+        if exc.retry_after is not None:
+            headers["Retry-After"] = str(exc.retry_after)
         return _error(exc.status_code, exc.code, exc.message, exc.details, headers)
 
     @app.exception_handler(RequestValidationError)
@@ -72,11 +83,9 @@ def create_app(settings: Settings | None = None, clock: Clock = system_clock) ->
         code = _HTTP_CODES.get(exc.status_code, "http_error")
         return _error(exc.status_code, code, str(exc.detail) if exc.status_code < 500 else "Error")
 
-    @app.exception_handler(Exception)
-    async def _unhandled(request: Request, exc: Exception):
-        # Log type and path only: no request body (meal text, passwords) in logs.
-        logger.error("unhandled %s on %s %s", type(exc).__name__, request.method, request.url.path)
-        return _error(500, "internal_error", "Internal server error.")
+    # No exception_handler(Exception): Starlette's ServerErrorMiddleware would run it
+    # and then re-raise to uvicorn, which logs the full traceback and message.
+    # CatchAllErrorsMiddleware (added last = outermost) handles it instead.
 
     # Auth is a bearer token in the Authorization header (no cookies), so credentials
     # mode stays off. Mobile apps do not use CORS at all.
@@ -90,6 +99,14 @@ def create_app(settings: Settings | None = None, clock: Clock = system_clock) ->
             expose_headers=["Idempotent-Replayed"],
             max_age=600,
         )
+
+    app.add_middleware(
+        ProxyHttpsMiddleware,
+        trusted_proxies=settings.trusted_proxies,
+        require_https=settings.require_https,
+        hsts_max_age=settings.hsts_max_age,
+    )
+    app.add_middleware(CatchAllErrorsMiddleware)
 
     app.include_router(routes_auth.router)
     app.include_router(routes_meals.router)

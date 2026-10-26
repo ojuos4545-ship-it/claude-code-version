@@ -64,6 +64,7 @@ function errorMessage(err) {
   if (!(err instanceof ApiError)) return "연결이 불안정해요. 잠시 후 다시 시도해 주세요.";
   const field = err.details[0]?.field;
   const reason = err.details[0]?.reason;
+  if (err.status === 429) return "시도가 많았어요. 잠시 후 다시 시도해 주세요.";
   if (err.code === "invalid_credentials") return "이메일 또는 비밀번호가 맞지 않아요.";
   if (err.status === 403) return "비밀번호가 맞지 않아요.";
   if (err.status === 409) return "이미 사용 중인 이메일이에요.";
