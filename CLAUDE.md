@@ -4,7 +4,29 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 저장소 개요
 
-애플리케이션 코드가 아니라 Claude Code 설정(현재는 커스텀 서브에이전트)을 보관하는 저장소다. 빌드, 린트, 테스트 명령은 없다.
+두 가지를 담는다.
+
+- Claude Code 커스텀 서브에이전트(`.claude/agents/`)
+- 다이어트용 간편 식단 기록 앱 "Easy Meal Log": 기준 문서 `docs/prd/easy-meal-log.md`, MVP 백엔드 `backend/`
+
+## 백엔드 명령 (`backend/`에서 실행)
+
+```bash
+python3 -m venv .venv && .venv/bin/pip install -r requirements-dev.txt
+APP_ENV=development .venv/bin/uvicorn app.main:create_app --factory --reload
+.venv/bin/python -m pytest                                  # 전체 (pyproject addopts에 -q가 있어 -q를 또 주면 요약 줄이 사라짐)
+.venv/bin/python -m pytest tests/test_fr2_create.py::<테스트명>  # 테스트 하나
+.venv/bin/ruff check . && .venv/bin/ruff format --check .
+```
+
+## 백엔드 구조
+
+- Python + FastAPI + SQLite. 계층은 `app/api`(라우팅·검증·인증 의존성) → `app/services`(비즈니스 로직) → `app/repositories`(`base.py` Protocol, `sqlite.py` 구현). 구현체를 아는 곳은 `app/api/deps.py`뿐이다.
+- 사용자(`users`)와 로그인 수단(`auth_identities`)이 분리돼 있다. 토큰은 `Authorization: Bearer` 불투명 토큰이고 DB에는 HMAC만 저장한다. 쿠키는 쓰지 않는다.
+- "오늘"과 날짜 판정은 사용자별 IANA 시간대 기준이다. 기록 생성 중복 방지는 `Idempotency-Key` 헤더로 한다.
+- 스키마는 `app/db/migrations/`의 up/down SQL로 관리하고 앱 시작 시 자동 적용된다.
+- 테스트 파일은 PRD 기능 번호별(`tests/test_fr1_*.py` ~ `test_fr8_*.py`)이다. 요구사항을 바꾸면 PRD와 해당 테스트를 함께 고친다.
+- 제품 원칙상 칼로리·중량 같은 수치, 점수·평가 필드를 API에 추가하지 않는다(PRD 2절).
 
 ## 구조
 

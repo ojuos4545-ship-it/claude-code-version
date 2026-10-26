@@ -39,3 +39,11 @@ def test_empty_week(client, alice):
 def test_invalid_start(client, alice):
     assert client.get("/v1/summaries/weekly?start=bad", headers=alice).status_code == 422
     assert client.get("/v1/summaries/weekly", headers=alice).status_code == 422
+
+
+def test_start_out_of_range_is_422_not_500(client, alice):
+    for start in ("9999-12-30", "9999-12-26", "1999-12-31"):
+        r = client.get(f"/v1/summaries/weekly?start={start}", headers=alice)
+        assert r.status_code == 422, start
+        assert r.json()["error"]["details"][0]["field"] == "start"
+    assert client.get("/v1/summaries/weekly?start=9999-12-25", headers=alice).status_code == 200

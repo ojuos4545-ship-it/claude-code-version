@@ -147,6 +147,10 @@ class MealService:
 
     # ---- FR-8 ------------------------------------------------------------
     def weekly_summary(self, user: User, start: date) -> WeeklySummary:
+        if start < MIN_MEAL_DATE or start > date.max - timedelta(days=SUMMARY_DAYS - 1):
+            raise ValidationFailed.field(
+                "start", "out_of_range", f"start must be between {MIN_MEAL_DATE} and a valid week"
+            )
         end = start + timedelta(days=SUMMARY_DAYS - 1)
         per_day: dict[date, int] = {start + timedelta(days=i): 0 for i in range(SUMMARY_DAYS)}
         portions: dict[str, int] = {p.value: 0 for p in Portion} | {"none": 0}
