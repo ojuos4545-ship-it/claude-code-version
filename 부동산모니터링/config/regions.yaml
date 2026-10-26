@@ -1,0 +1,12 @@
+# 지역 추가는 이 파일에 항목을 더하는 것으로 끝낸다. 코드 수정 없음.
+regions:
+  - {code: "41597", name: "화성시 동탄구", sido: "경기", tier: core}
+  - {code: "41595", name: "화성시 병점구", sido: "경기", tier: core}
+  - {code: "41370", name: "오산시", sido: "경기", tier: core}
+  - {code: "41461", name: "용인시 처인구", sido: "경기", tier: core}
+  - {code: "41463", name: "용인시 기흥구", sido: "경기", tier: core}
+  - {code: "41465", name: "용인시 수지구", sido: "경기", tier: core}
+# 확장 후보(활성화하려면 위 regions로 옮긴다): 41591 화성시 만세구, 41593 화성시 효행구
+# 신설 구 코드는 가정이며 2단계 실조회에서 확정한다.
+legacy:
+  - {code: "41590", name: "화성시(개편 전)", valid_until: "2026-01-31", successors: ["41597", "41595", "41591", "41593"]}

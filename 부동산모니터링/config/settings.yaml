@@ -1,0 +1,11 @@
+# 초안 기준값. 4단계에서 과거 데이터에 적용해 확정한다.
+collect:
+  years: 5
+  recheck_months: 3
+  daily_call_limit: 10000
+analysis:
+  compare_months: 3
+  trend_threshold_pct: 2.0
+  min_sample: 10          # 비교 구간별 최소 거래 건수, 미만이면 판단 보류
+  target_area_m2: 84      # 근접 구간 범위는 4단계에서 확정
+  provisional_weeks: 4
