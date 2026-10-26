@@ -60,3 +60,52 @@ def test_no_cors_when_no_origins_configured(tmp_path, clock):
     with TestClient(create_app(settings, clock=clock)) as c:
         r = c.get("/healthz", headers={"Origin": "http://localhost:3000"})
     assert "access-control-allow-origin" not in r.headers
+
+
+def test_unhandled_500_is_readable_by_allowed_origin(tmp_path, clock):
+    settings = load_settings(
+        {
+            "APP_ENV": "test",
+            "APP_DATABASE_PATH": str(tmp_path / "c500.db"),
+            "APP_CORS_ORIGINS": "https://app.example.com",
+        }
+    )
+    app = create_app(settings, clock=clock)
+
+    @app.get("/crash")
+    def crash():
+        raise RuntimeError("boom")
+
+    with TestClient(app, raise_server_exceptions=False) as c:
+        r = c.get("/crash", headers={"Origin": "https://app.example.com"})
+    assert r.status_code == 500
+    assert r.json()["error"]["code"] == "internal_error"
+    assert r.headers["access-control-allow-origin"] == "https://app.example.com"
+
+
+def test_preflight_passes_when_https_is_required_so_the_403_is_readable(tmp_path, clock):
+    # A non-2xx preflight fails in the browser whatever its headers, so the preflight
+    # is answered by CORS and the real request gets a 403 the page can read.
+    settings = load_settings(
+        {
+            "APP_ENV": "test",
+            "APP_DATABASE_PATH": str(tmp_path / "pre.db"),
+            "APP_CORS_ORIGINS": "https://app.example.com",
+            "APP_REQUIRE_HTTPS": "true",
+        }
+    )
+    with TestClient(create_app(settings, clock=clock)) as c:
+        pre = c.options(
+            "/v1/meals",
+            headers={
+                "Origin": "https://app.example.com",
+                "Access-Control-Request-Method": "POST",
+                "Access-Control-Request-Headers": "authorization, content-type",
+            },
+        )
+        assert pre.status_code == 200
+        assert pre.headers["access-control-allow-origin"] == "https://app.example.com"
+        r = c.post("/v1/meals", json={}, headers={"Origin": "https://app.example.com"})
+    assert r.status_code == 403
+    assert r.json()["error"]["code"] == "https_required"
+    assert r.headers["access-control-allow-origin"] == "https://app.example.com"

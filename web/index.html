@@ -52,6 +52,16 @@
     </details>
   </main>
 
+  <!-- 토큰은 있는데 서버에 닿지 못했을 때(네트워크 오류, 5xx, 429). 토큰을 지우지 않고 다시 시도만 한다. -->
+  <main id="reconnect" class="screen" hidden>
+    <div class="card">
+      <h1>연결을 확인하지 못했어요</h1>
+      <p>이 브라우저의 기록은 그대로 있어요. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.</p>
+      <p id="reconnect-detail" class="hint"></p>
+      <button type="button" id="retry-connect" class="primary">다시 시도</button>
+    </div>
+  </main>
+
   <!-- 로그인 후 -->
   <div id="app" class="screen" hidden>
     <header class="topbar">

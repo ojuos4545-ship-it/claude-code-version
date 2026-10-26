@@ -3,9 +3,16 @@
 Error body format (every non-2xx response):
     {"error": {"code": str, "message": str, "details": [{"field", "reason", "message"}]}}
 
-Middleware, outermost first: CatchAllErrorsMiddleware (unhandled exception -> 500,
-never re-raised to the server) -> ProxyHttpsMiddleware (trusted proxy headers,
-HTTPS + HSTS) -> CORS -> routes.
+Middleware, outermost first:
+    CatchAllErrorsMiddleware (last resort, for a failure inside the CORS layer itself)
+    -> CORS (so every response below, including errors, carries CORS headers)
+    -> CatchAllErrorsMiddleware (unhandled exception -> 500, never re-raised)
+    -> ProxyHttpsMiddleware (trusted proxy headers, HTTPS 403 + HSTS)
+    -> routes.
+CORS sits outside the HTTPS check and the 500 handler so a browser can read those
+error bodies; otherwise it reports a bare network error. A CORS preflight is answered
+by the CORS layer before the HTTPS check: a non-2xx preflight fails in the browser no
+matter what headers it has, and the real request is still refused with a readable 403.
 """
 
 from __future__ import annotations
@@ -85,7 +92,16 @@ def create_app(settings: Settings | None = None, clock: Clock = system_clock) ->
 
     # No exception_handler(Exception): Starlette's ServerErrorMiddleware would run it
     # and then re-raise to uvicorn, which logs the full traceback and message.
-    # CatchAllErrorsMiddleware (added last = outermost) handles it instead.
+    # CatchAllErrorsMiddleware handles it instead (see the middleware order above).
+
+    # Added innermost first: each add_middleware wraps everything added before it.
+    app.add_middleware(
+        ProxyHttpsMiddleware,
+        trusted_proxies=settings.trusted_proxies,
+        require_https=settings.require_https,
+        hsts_max_age=settings.hsts_max_age,
+    )
+    app.add_middleware(CatchAllErrorsMiddleware)
 
     # Auth is a bearer token in the Authorization header (no cookies), so credentials
     # mode stays off. Mobile apps do not use CORS at all.
@@ -96,17 +112,11 @@ def create_app(settings: Settings | None = None, clock: Clock = system_clock) ->
             allow_credentials=False,
             allow_methods=["GET", "POST", "PATCH", "DELETE"],
             allow_headers=["Authorization", "Content-Type", "Idempotency-Key"],
-            expose_headers=["Idempotent-Replayed"],
+            # Retry-After: 429/503 tell the client how long to wait.
+            expose_headers=["Idempotent-Replayed", "Retry-After"],
             max_age=600,
         )
-
-    app.add_middleware(
-        ProxyHttpsMiddleware,
-        trusted_proxies=settings.trusted_proxies,
-        require_https=settings.require_https,
-        hsts_max_age=settings.hsts_max_age,
-    )
-    app.add_middleware(CatchAllErrorsMiddleware)
+        app.add_middleware(CatchAllErrorsMiddleware)
 
     app.include_router(routes_auth.router)
     app.include_router(routes_meals.router)

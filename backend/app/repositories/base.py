@@ -11,7 +11,16 @@ from app.domain.models import AuthIdentity, Meal, User
 
 
 class DuplicateError(Exception):
-    """A uniqueness constraint was violated."""
+    """A uniqueness constraint was violated. `what` names which one."""
+
+    def __init__(self, what: str):
+        super().__init__(what)
+        self.what = what
+
+
+# DuplicateError.what values for insert_identity
+DUP_IDENTIFIER = "identifier"  # (provider, identifier) is linked to some user already
+DUP_USER_PROVIDER = "user_provider"  # this user already has a login method of this provider
 
 
 class Repository(Protocol):
@@ -27,7 +36,8 @@ class Repository(Protocol):
 
     # auth identities (login methods linked to a user)
     def insert_identity(self, identity: AuthIdentity, created_at: str) -> None:
-        """Raises DuplicateError if (provider, identifier) is already linked."""
+        """Raises DuplicateError(DUP_IDENTIFIER) if (provider, identifier) is already
+        linked, DuplicateError(DUP_USER_PROVIDER) if the user already has this provider."""
         ...
 
     def get_identity(self, provider: str, identifier: str) -> AuthIdentity | None: ...

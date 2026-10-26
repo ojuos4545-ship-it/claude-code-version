@@ -253,6 +253,149 @@ try {
     await page.locator(".meal-desc", { hasText: "잃으면 안 되는 기록" }).waitFor({ timeout: 3000 });
     await ctx.close();
   });
+
+  // ---- 2026-10-26 수정 확인 단계 ------------------------------------------------
+  await step("[1] 앱을 열 때 /v1/me가 503·429면 '다시 시도' 화면을 보이고 토큰을 지키며, 다시 시도로 이어서 쓴다", async () => {
+    const { ctx, page } = await open();
+    await startAnon(page);
+    await addMeal(page, "다시 시도 기록");
+    const token = await page.evaluate(() => localStorage.getItem("easy-meal-log.token"));
+    for (const [status, code] of [[503, "server_busy"], [429, "rate_limited"]]) {
+      await page.route("**/v1/me", (route) => route.fulfill(errorBody(status, code)));
+      await page.reload();
+      await page.locator("#reconnect").waitFor();
+      assert.equal(await page.locator("#onboarding").isVisible(), false);
+      assert.match(await page.locator("#reconnect-detail").textContent(), /잠시 후 다시/);
+      assert.equal(await page.evaluate(() => localStorage.getItem("easy-meal-log.token")), token);
+      await page.unroute("**/v1/me");
+    }
+    await page.locator("#retry-connect").click();
+    await page.locator(".meal-desc", { hasText: "다시 시도 기록" }).waitFor();
+    await ctx.close();
+  });
+
+  await step("[1] 첫 화면에서 이미 토큰이 있으면 '바로 시작하기'·로그인 전에 확인하고, 취소하면 토큰을 그대로 둔다", async () => {
+    const ctx = await browser.newContext({ timezoneId: "Asia/Seoul", viewport: { width: 390, height: 844 } });
+    const page = await ctx.newPage();
+    const dialogs = [];
+    page.on("dialog", (d) => { dialogs.push(d.message()); d.dismiss(); });
+    await page.goto(WEB);
+    // 다른 탭에서 시작한 경우처럼, 첫 화면이 떠 있는 동안 토큰이 생긴다.
+    await page.evaluate(() => localStorage.setItem("easy-meal-log.token", "existing-token"));
+    await page.locator("#consent").check();
+    await page.locator("#start-anonymous").click();
+    await page.locator("#login-box summary").click();
+    await page.locator("#login-email").fill("x@example.com");
+    await page.locator("#login-password").fill("password-123");
+    await page.locator("#login-form button[type=submit]").click();
+    await sleep(300);
+    assert.equal(dialogs.length, 2);
+    assert.match(dialogs[0], /이미 쓰고 있던 기록/);
+    assert.equal(await page.evaluate(() => localStorage.getItem("easy-meal-log.token")), "existing-token");
+    assert.equal(await page.locator("#onboarding").isVisible(), true);
+    await ctx.close();
+  });
+
+  await step("[4] 오류 문구: 503·탈퇴 비밀번호 403·제어 문자 422·긴 로그인 비밀번호·409 두 가지", async () => {
+    const { ctx, page } = await open();
+    await startAnon(page);
+    // 503 server_busy
+    await page.route("**/v1/meals", (route) => (route.request().method() === "POST"
+      ? route.fulfill({ ...errorBody(503, "server_busy"), headers: { "Access-Control-Allow-Origin": WEB, "Retry-After": "1" } })
+      : route.continue()));
+    await page.locator("#description").fill("바쁨");
+    await page.locator("#save").click();
+    assert.match(await toast(page), /잠시 후 다시/);
+    await page.unroute("**/v1/meals");
+    // 탭이 든 설명(실제 서버 422): 길이 안내가 아니라 한 줄 안내
+    await page.locator("#description").fill("밥\t국");
+    await page.locator("#save").click();
+    await page.locator("#toast", { hasText: "한 줄로" }).waitFor();
+    assert.doesNotMatch(await page.locator("#toast").textContent(), /200자/);
+    // 409: 이미 쓰는 이메일(실제 서버)
+    await fetch(`${API}/v1/auth/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: "taken@example.com", password: "password-123", privacy_consent: true }),
+    });
+    await page.locator('.tab[data-tab="settings"]').click();
+    await page.locator("#link-email").fill("taken@example.com");
+    await page.locator("#link-password").fill("password-123");
+    await page.locator("#link-form button[type=submit]").click();
+    await page.locator("#toast", { hasText: "이미 다른 계정에서 쓰고 있는 이메일" }).waitFor();
+    // 409: 다른 탭에서 이미 연결함(실제 서버) → 안내 후 화면을 서버 상태로 맞춘다
+    const token = await page.evaluate(() => localStorage.getItem("easy-meal-log.token"));
+    await fetch(`${API}/v1/auth/link`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ email: "other-tab@example.com", password: "password-123" }),
+    });
+    await page.locator("#link-email").fill("again@example.com");
+    await page.locator("#link-password").fill("password-123");
+    await page.locator("#link-form button[type=submit]").click();
+    await page.locator("#toast", { hasText: "이미 이메일이 연결돼 있어요" }).waitFor();
+    await page.locator("#account-email", { hasText: "other-tab@example.com" }).waitFor();
+    // 탈퇴 비밀번호가 틀리면(실제 서버 403 forbidden) 비밀번호 안내
+    await page.locator("#delete-password").fill("wrong-password");
+    await page.locator("#delete-form button[type=submit]").click();
+    await page.locator("#toast", { hasText: "비밀번호가 맞지 않아요" }).waitFor();
+    await ctx.close();
+
+    // 로그인 비밀번호 129자(실제 서버 422): "8자 이상"이 아니다
+    const second = await open();
+    await second.page.goto(WEB);
+    await second.page.locator("#login-box summary").click();
+    await second.page.locator("#login-email").fill("taken@example.com");
+    await second.page.locator("#login-password").fill("p".repeat(129));
+    await second.page.locator("#login-form button[type=submit]").click();
+    const msg = await toast(second.page);
+    assert.doesNotMatch(msg, /8자 이상/);
+    assert.match(msg, /128자/);
+    await second.ctx.close();
+  });
+
+  await step("[6] 긴 최근 메뉴 칩은 줄바꿈되고 두 줄까지만 보이며 320px에서도 가로로 넘치지 않는다", async () => {
+    const { ctx, page } = await open({ viewport: { width: 320, height: 640 } });
+    await startAnon(page);
+    const long = "김치찌개에밥반공기랑계란말이두개그리고어묵볶음조금먹고후식으로사과반쪽".repeat(3);
+    await addMeal(page, long);
+    const chip = page.locator("#recent .chip").first();
+    await chip.waitFor();
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    assert.ok(overflow <= 0, `가로 넘침 ${overflow}px`);
+    const lines = await chip.locator(".chip-text").evaluate((n) => Math.round(n.getBoundingClientRect().height / parseFloat(getComputedStyle(n).lineHeight)));
+    assert.ok(lines <= 2, `칩 ${lines}줄`);
+    assert.equal(await chip.getAttribute("title"), long);
+    await chip.click();
+    assert.equal(await page.locator("#description").inputValue(), long);
+    await ctx.close();
+  });
+
+  await step("[7] 느린 응답 중 주를 빠르게 옮겨도 제목과 요약이 같은 주다", async () => {
+    const { ctx, page } = await open();
+    await startAnon(page);
+    await addMeal(page, "이번 주 기록");
+    await page.locator('.tab[data-tab="week"]').click();
+    await page.locator("#week-headline", { hasText: "1일 기록했어요" }).waitFor();
+    await page.locator("#prev-week").click();
+    await page.locator("#week-headline", { hasText: "아직 기록이 없어요" }).waitFor();
+    // 다음 주(=이번 주) 요약만 늦게 온다: 다음 주로 갔다가 바로 지난주로 돌아온다.
+    const label = await page.locator("#week-label").textContent();
+    let slowStart = null;
+    await page.route("**/v1/summaries/weekly?start=*", async (route) => {
+      const start = new URL(route.request().url()).searchParams.get("start");
+      if (slowStart === null) slowStart = start;
+      if (start === slowStart) await sleep(1500);
+      await route.continue();
+    });
+    await page.locator("#next-week").click();
+    await sleep(150);
+    await page.locator("#prev-week").click();
+    await sleep(2500);
+    assert.equal(await page.locator("#week-label").textContent(), label);
+    assert.match(await page.locator("#week-headline").textContent(), /아직 기록이 없어요/);
+    await ctx.close();
+  });
 } finally {
   await browser.close();
   await stop(backend);

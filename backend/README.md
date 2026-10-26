@@ -30,6 +30,8 @@ APP_SECRET_KEY=... APP_TRUSTED_PROXIES=10.0.0.5 \
 
 시작할 때 DB 마이그레이션이 자동으로 적용된다. 수동 실행: `.venv/bin/python -m app.db.migrate up` / `down`(최근 1개 되돌림).
 
+- `0003_one_identity_per_provider`: 사용자당 로그인 수단 종류별 1개(`auth_identities(user_id, provider)` 유일 인덱스). 이 규칙을 이미 어긴 행(과거 동시 계정 연결)이 있으면 처음 연결된 것만 남기고 나머지를 지운 뒤 인덱스를 만든다. 되돌리면 인덱스만 지운다(지운 행은 돌아오지 않는다).
+
 ### 환경 변수
 
 | 이름 | 기본값 | 설명 |
@@ -62,14 +64,14 @@ APP_SECRET_KEY=... APP_TRUSTED_PROXIES=10.0.0.5 \
 
 인증이 필요한 요청은 `Authorization: Bearer <access_token>` 헤더를 보낸다. 쿠키는 쓰지 않으므로 웹과 모바일 앱이 같은 방식으로 호출한다(CORS도 credentials 모드 없이 허용). 모든 오류 응답 형식:
 `{"error": {"code": "...", "message": "...", "details": [{"field", "reason", "message"}]}}`
-(422 입력 오류, 401 인증 없음/만료, 403 비밀번호 확인 실패 또는 `https_required`, 404 없음 또는 남의 기록, 409 충돌, 429 `rate_limited`, 503 `server_busy`. 429·503에는 `Retry-After` 헤더(초)가 붙는다)
+(422 입력 오류, 401 인증 없음/만료, 403 비밀번호 확인 실패 또는 `https_required`, 404 없음 또는 남의 기록, 409 충돌, 429 `rate_limited`, 503 `server_busy`. 429·503에는 `Retry-After` 헤더(초)가 붙고, 브라우저에서도 읽을 수 있게 CORS로 노출한다. 403 `https_required`와 500에도 허용 출처의 CORS 헤더가 붙는다)
 
 | 메서드 · 경로 | 설명 | FR |
 |---|---|---|
 | `POST /v1/auth/signup` | `{email, password, privacy_consent: true, timezone?}` → 201 토큰 | FR-1 |
 | `POST /v1/auth/login` | `{email, password}` → 토큰 | FR-1 |
 | `POST /v1/auth/anonymous` | `{privacy_consent: true, timezone?}` → 201 토큰. 가입 없이 시작(로그인 수단 없는 사용자) | FR-1, Q4 |
-| `POST /v1/auth/link` | `{email, password}`. 로그인 수단이 없는 현재 사용자에 이메일 로그인 연결 → 200 사용자 정보. 이미 연결됐거나 이메일이 쓰이고 있으면 409 | FR-1, Q4 |
+| `POST /v1/auth/link` | `{email, password}`. 로그인 수단이 없는 현재 사용자에 이메일 로그인 연결 → 200 사용자 정보. 이미 연결됐거나 이메일이 쓰이고 있으면 409(`details[0].reason`이 `already_linked` 또는 `already_registered`). 동시 요청이 와도 하나만 연결된다 | FR-1, Q4 |
 | `POST /v1/auth/logout` | 현재 토큰 폐기 → 204 | FR-1 |
 | `GET /v1/me` · `PATCH /v1/me` | 내 정보 조회(`email`은 이메일 로그인 수단이 없는 사용자면 `null`) · 시간대(`timezone`, IANA 이름) 변경 | FR-1 |
 | `DELETE /v1/me` | 이메일 로그인이 있으면 본문 `{password}` 필수(틀리거나 없으면 403), 가입 없이 시작한 사용자는 본문 없이. 계정·기록·토큰 전부 삭제 → 204 | FR-6 |
@@ -124,7 +126,8 @@ PRD Q6에 따라 식단 기록을 민감정보로 보고 보수적으로 설정�
 
 ### 로그와 문서
 
-- 처리되지 않은 예외는 가장 바깥 미들웨어가 잡아 500으로 응답하고, 로그에는 예외 타입·메서드·경로(쿼리스트링 제외)만 남긴다. 예외를 서버로 다시 던지지 않으므로 uvicorn이 traceback과 예외 메시지(입력값이 섞일 수 있음)를 찍지 않는다. uvicorn 접근 로그에는 쿼리스트링이 남지만, 이 API의 쿼리에는 날짜·페이지 값만 있다.
+- 미들웨어 순서(바깥부터): 예외 처리(CORS 층 자체 실패 대비) → CORS → 예외 처리 → 프록시·HTTPS → 라우트. CORS를 HTTPS 거부와 500보다 바깥에 두어 허용 출처의 브라우저가 이 오류 본문을 읽을 수 있게 했다. CORS 프리플라이트는 HTTPS 검사 전에 CORS가 답한다(2xx가 아닌 프리플라이트는 헤더와 상관없이 브라우저에서 실패하고, 실제 요청은 읽을 수 있는 403으로 거부된다).
+- 처리되지 않은 예외는 예외 처리 미들웨어가 잡아 500으로 응답하고, 로그에는 예외 타입·메서드·경로(쿼리스트링 제외)만 남긴다. 예외를 서버로 다시 던지지 않으므로 uvicorn이 traceback과 예외 메시지(입력값이 섞일 수 있음)를 찍지 않는다. uvicorn 접근 로그에는 쿼리스트링이 남지만, 이 API의 쿼리에는 날짜·페이지 값만 있다.
 - `/docs`, `/redoc`, `/openapi.json`은 개발·테스트 모드에서만 열린다.
 
 ## 구조

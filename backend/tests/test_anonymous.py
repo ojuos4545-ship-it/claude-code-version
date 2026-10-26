@@ -1,6 +1,8 @@
 """Anonymous start, account linking, sliding sessions and privacy consent (PRD Q4, Q6)."""
 
 import sqlite3
+import threading
+from concurrent.futures import ThreadPoolExecutor
 
 from tests.conftest import create_meal
 
@@ -58,10 +60,13 @@ def test_link_conflicts(client, alice):
         "/v1/auth/link", json={"email": "alice@example.com", "password": "whatever1"}, headers=h
     )
     assert taken.status_code == 409
+    assert taken.json()["error"]["code"] == "conflict"
+    assert taken.json()["error"]["details"][0]["reason"] == "already_registered"
     again = client.post(
         "/v1/auth/link", json={"email": "other@example.com", "password": "whatever1"}, headers=alice
     )
     assert again.status_code == 409
+    assert again.json()["error"]["details"][0]["reason"] == "already_linked"
     assert (
         client.post("/v1/auth/link", json={"email": "a@b.co", "password": "x"}).status_code == 401
     )
@@ -87,3 +92,32 @@ def test_session_slides_while_in_use_and_expires_when_idle(client, clock):
     # Left unused for longer than the lifetime: expires.
     clock.advance(days=31)
     assert client.get("/v1/me", headers=h).status_code == 401
+
+
+def test_concurrent_link_requests_attach_only_one_email(client, settings):
+    # QA 2026-10-26: the "already linked?" check ran outside the transaction, so four
+    # simultaneous requests all passed it and linked four emails to one user.
+    h, body = start(client)
+    barrier = threading.Barrier(4)
+
+    def link(i: int):
+        barrier.wait()
+        return client.post(
+            "/v1/auth/link",
+            json={"email": f"race{i}@example.com", "password": "race-password"},
+            headers=h,
+        )
+
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        responses = list(pool.map(link, range(4)))
+    codes = sorted(r.status_code for r in responses)
+    assert codes == [200, 409, 409, 409], [r.text for r in responses]
+    reasons = {r.json()["error"]["details"][0]["reason"] for r in responses if r.status_code == 409}
+    assert reasons == {"already_linked"}
+
+    conn = sqlite3.connect(settings.database_path)
+    (n,) = conn.execute(
+        "SELECT COUNT(*) FROM auth_identities WHERE user_id = ?", (body["user"]["id"],)
+    ).fetchone()
+    conn.close()
+    assert n == 1

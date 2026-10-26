@@ -59,6 +59,7 @@ p { margin: 0 0 8px; }
 
 /* 첫 화면 */
 #onboarding h1 { font-size: 1.6rem; margin: 24px 0 12px; }
+#reconnect h1 { margin: 0 0 8px; }
 .promises { padding-left: 1.2em; margin: 0 0 16px; }
 .promises li { margin: 4px 0; }
 .consent-terms { margin: 8px 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; }
@@ -116,7 +117,17 @@ button.icon { width: 44px; padding: 0; font-size: 1.5rem; line-height: 1; }
   border-color: var(--accent);
   font-weight: 700;
 }
-.chip.recent { background: var(--bg); }
+.chip.recent { background: var(--bg); max-width: 100%; min-width: 0; text-align: left; }
+/* 띄어쓰기 없는 긴 메뉴: body의 keep-all을 풀어 어디서든 줄바꿈하고, 두 줄까지만 보인다(전체는 title·접근성 이름). */
+.chip-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
 .actions { display: flex; gap: 8px; align-items: end; }
 .actions #cancel-edit { margin-top: 12px; }
 
@@ -142,7 +153,7 @@ nav { display: flex; gap: 4px; }
 .meal-meta { color: var(--muted); font-size: 0.9rem; margin: 2px 0 0; }
 .meal-memo { font-size: 0.9rem; margin: 4px 0 0; overflow-wrap: anywhere; white-space: pre-wrap; }
 .meal-actions { display: flex; flex-shrink: 0; }
-.empty { color: var(--muted); text-align: center; padding: 24px 8px; }
+.empty, .loading { color: var(--muted); text-align: center; padding: 24px 8px; }
 
 /* 한 주 */
 .headline { font-size: 1.1rem; font-weight: 700; margin: 16px 0; text-align: center; }

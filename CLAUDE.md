@@ -32,7 +32,8 @@ APP_ENV=development .venv/bin/uvicorn app.main:create_app --factory --reload
 - 사용자(`users`)와 로그인 수단(`auth_identities`)이 분리돼 있다. 토큰은 `Authorization: Bearer` 불투명 토큰이고 DB에는 HMAC만 저장한다. 쿠키는 쓰지 않는다.
 - "오늘"과 날짜 판정은 사용자별 IANA 시간대 기준이다. 기록 생성 중복 방지는 `Idempotency-Key` 헤더로 한다.
 - 스키마는 `app/db/migrations/`의 up/down SQL로 관리하고 앱 시작 시 자동 적용된다.
-- 보안 미들웨어(`app/api/middleware.py`): 가장 바깥에서 처리되지 않은 예외를 500으로 바꾸고(다시 던지지 않음, 로그는 타입·메서드·경로만), 신뢰 프록시(`APP_TRUSTED_PROXIES`)의 `X-Forwarded-*`만 반영해 운영에서 HTTPS 강제·HSTS를 건다. `exception_handler(Exception)`을 다시 추가하지 않는다(uvicorn이 traceback을 찍는다).
+- 보안 미들웨어(`app/api/middleware.py`): 처리되지 않은 예외를 500으로 바꾸고(다시 던지지 않음, 로그는 타입·메서드·경로만), 신뢰 프록시(`APP_TRUSTED_PROXIES`)의 `X-Forwarded-*`만 반영해 운영에서 HTTPS 강제·HSTS를 건다. `exception_handler(Exception)`을 다시 추가하지 않는다(uvicorn이 traceback을 찍는다).
+- 미들웨어 순서(바깥부터, `app/main.py`): 예외 처리(CORS 층 자체 실패 대비) → CORS → 예외 처리(500) → 프록시·HTTPS → 라우트. CORS가 403 `https_required`와 500보다 바깥에 있어야 브라우저가 그 오류 본문을 읽는다. 순서를 바꾸면 `tests/test_qa_cors_error_responses.py`, `tests/test_cors.py`가 잡는다.
 - 인증 엔드포인트 요청 수 제한(`app/api/ratelimit.py`)과 argon2 동시 실행 제한(`HashGate`)은 프로세스 메모리 기반이라 인스턴스끼리 공유되지 않는다. `/docs` 등 API 문서는 개발·테스트 모드에서만 열린다.
 - 테스트 파일은 PRD 기능 번호별(`tests/test_fr1_*.py` ~ `test_fr8_*.py`)이다. 요구사항을 바꾸면 PRD와 해당 테스트를 함께 고친다.
 - 제품 원칙상 칼로리·중량 같은 수치, 점수·평가 필드를 API에 추가하지 않는다(PRD 2절).

@@ -9,7 +9,7 @@ from datetime import date
 from pathlib import Path
 
 from app.domain.models import MEAL_TYPE_ORDER, AuthIdentity, Meal, User
-from app.repositories.base import DuplicateError
+from app.repositories.base import DUP_IDENTIFIER, DUP_USER_PROVIDER, DuplicateError
 
 _MEAL_COLS = "id, user_id, description, meal_date, meal_type, portion, memo, created_at, updated_at"
 
@@ -108,7 +108,9 @@ class SqliteRepository:
                 ),
             )
         except sqlite3.IntegrityError as exc:
-            raise DuplicateError("identity") from exc
+            # "UNIQUE constraint failed: auth_identities.user_id, auth_identities.provider"
+            what = DUP_USER_PROVIDER if "auth_identities.user_id" in str(exc) else DUP_IDENTIFIER
+            raise DuplicateError(what) from exc
 
     def _identity(self, where: str, params: tuple) -> AuthIdentity | None:
         row = self.conn.execute(

@@ -60,48 +60,93 @@ function toast(message) {
   toastTimer = setTimeout(() => { t.hidden = true; }, 3000);
 }
 
-function errorMessage(err) {
-  if (!(err instanceof ApiError)) return "연결이 불안정해요. 잠시 후 다시 시도해 주세요.";
-  const field = err.details[0]?.field;
-  const reason = err.details[0]?.reason;
-  if (err.status === 429) return "시도가 많았어요. 잠시 후 다시 시도해 주세요.";
-  if (err.code === "invalid_credentials") return "이메일 또는 비밀번호가 맞지 않아요.";
-  if (err.status === 403) return "비밀번호가 맞지 않아요.";
-  if (err.status === 409) return "이미 사용 중인 이메일이에요.";
-  if (field === "description") return "먹은 것을 200자 안으로 적어 주세요.";
+// 오류 안내: 상태 코드만이 아니라 err.code·details와 화면 맥락(context)으로 고른다.
+// context: "meal"(기록 저장·삭제), "login", "link"(계정 연결), "delete-account", 그 밖은 생략.
+function fieldMessage(field, detail, context) {
+  const reason = detail?.reason ?? "";
+  const text = detail?.message ?? "";
+  const tooLong = /at most|too_long/.test(`${reason} ${text}`);
+  const control = /control|single line/.test(text);
+  if (field === "description") {
+    if (tooLong) return "먹은 것을 200자 안으로 적어 주세요.";
+    if (control) return "먹은 것은 탭이나 줄바꿈 없이 한 줄로 적어 주세요.";
+    return "먹은 것을 한 줄만 적어 주세요.";
+  }
+  if (field === "memo") {
+    if (control) return "메모에 쓸 수 없는 특수 문자가 있어요. 지우고 다시 저장해 주세요.";
+    return "메모는 500자 안으로 적어 주세요.";
+  }
   if (field === "meal_date" && reason === "future_date") return "아직 오지 않은 날짜에는 기록할 수 없어요.";
   if (field === "email") return "이메일 형식을 확인해 주세요.";
-  if (field === "password") return "비밀번호는 8자 이상이어야 해요.";
-  if (field === "memo") return "메모는 500자 안으로 적어 주세요.";
+  if (field === "password") {
+    if (reason === "string_too_long") return "비밀번호는 128자 이하로 적어 주세요.";
+    if (context === "login") return "이메일 또는 비밀번호가 맞지 않아요.";
+    return "비밀번호는 8자 이상이어야 해요.";
+  }
+  return null;
+}
+
+function errorMessage(err, context) {
+  if (!(err instanceof ApiError)) return "연결이 불안정해요. 잠시 후 다시 시도해 주세요.";
+  if (err.status === 429 || err.code === "rate_limited") return "시도가 많았어요. 잠시 후 다시 시도해 주세요.";
+  if (err.status === 503 || err.code === "server_busy") return "지금 요청이 많아요. 잠시 후 다시 시도해 주세요.";
+  if (err.code === "https_required") return "보안 연결(HTTPS)이 필요해요. 주소가 https://로 시작하는지 확인해 주세요.";
+  if (err.code === "invalid_credentials") return "이메일 또는 비밀번호가 맞지 않아요.";
+  if (err.status === 403) {
+    return context === "delete-account"
+      ? "비밀번호가 맞지 않아요. 확인하고 다시 입력해 주세요."
+      : "이 요청을 처리할 수 없어요.";
+  }
+  if (err.status === 409) {
+    const reason = err.details[0]?.reason;
+    if (context === "link" && reason === "already_registered") return "이미 다른 계정에서 쓰고 있는 이메일이에요.";
+    if (context === "link" && reason === "already_linked") return "이 계정에는 이미 이메일이 연결돼 있어요.";
+    return "다른 요청과 겹쳤어요. 화면을 새로 고친 뒤 다시 시도해 주세요.";
+  }
+  if (err.status === 422) {
+    const detail = err.details[0];
+    const msg = fieldMessage(detail?.field, detail, context);
+    if (msg) return msg;
+    return "입력한 내용을 확인해 주세요.";
+  }
+  if (err.status === 404) return "찾을 수 없어요. 화면을 새로 고쳐 주세요.";
   return "요청을 처리하지 못했어요. 잠시 후 다시 시도해 주세요.";
 }
 
 // 로그인이 풀렸으면 첫 화면으로, 그 밖의 오류는 안내만 한다.
-async function guard(fn) {
+async function guard(fn, context) {
   try {
     return await fn();
   } catch (err) {
-    if (err instanceof ApiError && err.status === 401 && state.user) {
+    if (err instanceof ApiError && err.status === 401 && err.code !== "invalid_credentials" && state.user) {
       signOutLocally("다시 로그인해 주세요.");
       return undefined;
     }
-    toast(errorMessage(err));
+    toast(errorMessage(err, context));
     return undefined;
   }
 }
 
 // ---- 화면 전환 ---------------------------------------------------------------
-function showOnboarding() {
-  $("#app").hidden = true;
-  $("#onboarding").hidden = false;
+function showScreen(id) {
+  for (const name of ["onboarding", "reconnect", "app"]) $(`#${name}`).hidden = name !== id;
+}
+const showOnboarding = () => showScreen("onboarding");
+
+// 토큰이 있는데 확인하지 못했으면(네트워크 오류, 5xx, 429) 첫 화면을 띄우지 않는다.
+// 첫 화면에서 "바로 시작하기"를 누르면 기존 토큰이 새 익명 계정으로 바뀌어 기록을 잃기 때문이다.
+function showReconnect(err) {
+  $("#reconnect-detail").textContent = errorMessage(err);
+  showScreen("reconnect");
+  $("#retry-connect").focus();
 }
 
 async function enterApp(user) {
   state.user = user;
+  renderedDate = null; // 다른 사용자의 목록이 남지 않게
   state.date = today();
   state.weekStart = mondayOf(state.date);
-  $("#onboarding").hidden = true;
-  $("#app").hidden = false;
+  showScreen("app");
   await showTab("log");
 }
 
@@ -185,19 +230,34 @@ function renderMeal(meal) {
   );
 }
 
+// 날짜·주를 빠르게 옮기면 응답이 요청 순서와 다르게 올 수 있다.
+// 요청마다 번호를 붙이고, 가장 최근 요청의 응답만 화면에 그린다.
+let logRequest = 0;
+let weekRequest = 0;
+let renderedDate = null;
+
 async function renderLog() {
   const t = today();
-  $("#date-label").textContent = dateLabel(state.date);
-  $("#next-day").disabled = state.date >= t;
-  $("#go-today").hidden = state.date === t;
+  const date = state.date;
+  const request = ++logRequest;
+  $("#date-label").textContent = dateLabel(date);
+  $("#next-day").disabled = date >= t;
+  $("#go-today").hidden = date === t;
+  const ul = $("#meal-list");
+  if (renderedDate !== date) {
+    // 다른 날짜의 목록이 새 제목 아래 남아 있지 않게 한다.
+    renderedDate = null;
+    ul.replaceChildren(el("li", { className: "loading", textContent: "불러오는 중…" }));
+  }
 
   const [list, recent] = await Promise.all([
-    guard(() => api(`/v1/meals?date=${state.date}`)),
+    guard(() => api(`/v1/meals?date=${date}`)),
     guard(() => api("/v1/meals/recent-descriptions")),
   ]);
+  if (request !== logRequest || date !== state.date) return; // 늦게 온 이전 요청의 응답
   if (!list) return;
+  renderedDate = date;
 
-  const ul = $("#meal-list");
   ul.replaceChildren(...list.items.map(renderMeal));
   if (list.items.length === 0) {
     ul.append(el("li", { className: "empty", textContent: "아직 기록이 없어요. 생각나는 것 하나만 적어도 충분해요." }));
@@ -206,7 +266,8 @@ async function renderLog() {
   const box = $("#recent");
   box.replaceChildren(
     ...(recent?.items ?? []).map((text) => {
-      const chip = el("button", { type: "button", className: "chip recent", textContent: text });
+      const chip = el("button", { type: "button", className: "chip recent", title: text },
+        el("span", { className: "chip-text", textContent: text }));
       chip.addEventListener("click", () => {
         $("#description").value = text;
         $("#save").focus();
@@ -242,7 +303,7 @@ async function saveMeal(event) {
       await createMeal({ ...body, meal_date: state.date });
     }
     return true;
-  });
+  }, "meal");
   button.disabled = false;
   if (!ok) return;
   toast(state.editingId ? "고쳤어요." : "기록했어요.");
@@ -255,7 +316,7 @@ async function deleteMeal(meal) {
   const ok = await guard(async () => {
     await api(`/v1/meals/${meal.id}`, { method: "DELETE" });
     return true;
-  });
+  }, "meal");
   if (!ok) return;
   if (state.editingId === meal.id) resetForm();
   toast("지웠어요.");
@@ -273,11 +334,13 @@ async function moveDay(n) {
 // ---- 한 주 탭 ------------------------------------------------------------------
 async function renderWeek() {
   const start = state.weekStart;
+  const request = ++weekRequest;
   const end = addDays(start, 6);
   $("#week-label").textContent = `${shortDate(start)} – ${shortDate(end)}`;
   $("#next-week").disabled = addDays(start, 7) > today();
 
   const s = await guard(() => api(`/v1/summaries/weekly?start=${start}`));
+  if (request !== weekRequest || start !== state.weekStart) return; // 늦게 온 이전 요청의 응답
   if (!s) return;
   // 기록하지 않은 날을 실패로 보이게 하지 않는다(PRD 원칙 4).
   $("#week-headline").textContent = s.days_logged > 0
@@ -331,10 +394,23 @@ function renderSettings() {
 
 async function linkAccount(event) {
   event.preventDefault();
-  const user = await guard(() => api("/v1/auth/link", {
-    method: "POST",
-    body: { email: $("#link-email").value, password: $("#link-password").value },
-  }));
+  let conflict = null;
+  const user = await guard(async () => {
+    try {
+      return await api("/v1/auth/link", {
+        method: "POST",
+        body: { email: $("#link-email").value, password: $("#link-password").value },
+      });
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 409) conflict = err.details[0]?.reason;
+      throw err;
+    }
+  }, "link");
+  if (conflict === "already_linked") {
+    // 다른 탭이나 기기에서 이미 연결했다: 화면을 서버 상태에 맞춘다.
+    const me = await guard(() => api("/v1/me"));
+    if (me) { state.user = me; renderSettings(); }
+  }
   if (!user) return;
   state.user = user;
   $("#link-form").reset();
@@ -368,14 +444,24 @@ async function deleteAccount(event) {
   const ok = await guard(async () => {
     await api("/v1/me", { method: "DELETE", body });
     return true;
-  });
+  }, "delete-account");
   if (!ok) return;
   $("#delete-form").reset();
   signOutLocally("탈퇴했어요. 모든 기록을 삭제했어요.");
 }
 
 // ---- 첫 화면 -------------------------------------------------------------------
+// 다른 탭에서 시작했거나 하는 이유로 이미 토큰이 있으면, 덮어쓰기 전에 확인한다.
+// 가입 없이 쓰던 사용자는 그 토큰이 기록으로 돌아갈 유일한 수단이다.
+function mayReplaceToken() {
+  if (!tokenStore.get()) return true;
+  return confirm(
+    "이 브라우저에 이미 쓰고 있던 기록이 있어요. 계정을 연결하지 않았다면, 새로 시작하거나 다른 계정으로 로그인한 뒤에는 그 기록을 다시 볼 수 없어요. 계속할까요?",
+  );
+}
+
 async function startAnonymous() {
+  if (!mayReplaceToken()) return;
   const data = await guard(() => api("/v1/auth/anonymous", {
     method: "POST",
     body: { privacy_consent: true, timezone: browserTimeZone() },
@@ -387,10 +473,11 @@ async function startAnonymous() {
 
 async function login(event) {
   event.preventDefault();
+  if (!mayReplaceToken()) return;
   const data = await guard(() => api("/v1/auth/login", {
     method: "POST",
     body: { email: $("#login-email").value, password: $("#login-password").value },
-  }));
+  }), "login");
   if (!data) return;
   tokenStore.set(data.access_token);
   $("#login-form").reset();
@@ -429,23 +516,33 @@ function bind() {
   $("#sync-timezone").addEventListener("click", syncTimezone);
   $("#logout").addEventListener("click", logout);
   $("#delete-form").addEventListener("submit", deleteAccount);
+  $("#retry-connect").addEventListener("click", resume);
 }
 
-async function boot() {
-  bind();
+// 저장된 토큰으로 이어서 쓴다. 401(토큰이 무효)일 때만 토큰을 지우고 첫 화면으로 간다.
+async function resume() {
   if (!tokenStore.get()) {
     showOnboarding();
     return;
   }
+  const retry = $("#retry-connect");
+  retry.disabled = true;
+  let user;
   try {
-    await enterApp(await api("/v1/me"));
+    user = await api("/v1/me");
   } catch (err) {
     if (err instanceof ApiError && err.status === 401) signOutLocally();
-    else {
-      showOnboarding();
-      toast(errorMessage(err));
-    }
+    else showReconnect(err);
+    return;
+  } finally {
+    retry.disabled = false;
   }
+  await enterApp(user);
+}
+
+async function boot() {
+  bind();
+  await resume();
 }
 
 boot();

@@ -37,7 +37,7 @@ from app.errors import (
     Unauthenticated,
     ValidationFailed,
 )
-from app.repositories.base import DuplicateError, Repository
+from app.repositories.base import DUP_USER_PROVIDER, DuplicateError, Repository
 
 _hasher = PasswordHasher()
 # Verified against when the email is unknown, so login timing does not reveal accounts.
@@ -68,6 +68,21 @@ class HashGate:
 
 
 _DEFAULT_GATE = HashGate(4)
+
+
+# 409 bodies keep code "conflict"; details[0].reason tells clients which conflict it is.
+def _email_taken() -> Conflict:
+    return Conflict(
+        "Email is already registered.",
+        [{"field": "email", "reason": "already_registered", "message": "email is in use"}],
+    )
+
+
+def _already_linked() -> Conflict:
+    return Conflict(
+        "An email login is already linked to this account.",
+        [{"field": "account", "reason": "already_linked", "message": "already linked"}],
+    )
 
 
 @dataclass(frozen=True)
@@ -177,18 +192,29 @@ class AuthService:
                 )
                 return self.issue_session(user)
         except DuplicateError as exc:
-            raise Conflict("Email is already registered.") from exc
+            raise _email_taken() from exc
 
     def link_password(self, user: User, email: str, password: str) -> None:
-        """Add email + password to a user who has no login method yet."""
+        """Add email + password to a user who has no login method yet.
+
+        The argon2 hash is computed before the transaction (it is slow and must not
+        hold the write lock). The "already linked?" check and the insert then run in
+        one BEGIN IMMEDIATE transaction, so concurrent requests are serialized and
+        only the first one links; the unique index on (user_id, provider) backs this
+        up in the database.
+        """
         if self.repo.get_user_identity(user.id, PASSWORD_PROVIDER) is not None:
-            raise Conflict("An email login is already linked to this account.")
+            raise _already_linked()  # cheap early answer; not relied on for safety
         identity = AuthIdentity(PASSWORD_PROVIDER, email, user.id, self._hash(password))
         try:
             with self.repo.transaction():
+                if self.repo.get_user_identity(user.id, PASSWORD_PROVIDER) is not None:
+                    raise _already_linked()
                 self.repo.insert_identity(identity, to_iso(self.clock()))
         except DuplicateError as exc:
-            raise Conflict("Email is already registered.") from exc
+            if exc.what == DUP_USER_PROVIDER:
+                raise _already_linked() from exc
+            raise _email_taken() from exc
 
     def login_with_password(self, email: str, password: str) -> IssuedToken:
         identity = self.repo.get_identity(PASSWORD_PROVIDER, email)
