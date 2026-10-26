@@ -10,6 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - `.claude/agents/<name>.md`: 프로젝트 범위 서브에이전트 정의. 파일 이름과 프론트매터의 `name`을 같게 맞춘다.
   - `code-reviewer.md`: 버그, 코딩 규칙, 성능을 점검하는 리뷰어. 기본은 읽기 전용이고, 지시에 수정이 포함될 때만 코드를 고친다.
+  - `product-manager.md`: PRD 작성과 개발 일정 관리를 맡는 프로덕트 매니저. PRD는 기본으로 `docs/prd/<기능-이름>.md`에 저장하고, 문서 외 파일은 지시 없이 고치지 않는다.
 
 ## 에이전트 파일 작성 규칙
 
