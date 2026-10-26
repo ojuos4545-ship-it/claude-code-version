@@ -52,11 +52,13 @@ APP_ENV=development .venv/bin/uvicorn app.main:create_app --factory --reload
 
 | 메서드 · 경로 | 설명 | FR |
 |---|---|---|
-| `POST /v1/auth/signup` | `{email, password, timezone?}` → 201 토큰 | FR-1 |
+| `POST /v1/auth/signup` | `{email, password, privacy_consent: true, timezone?}` → 201 토큰 | FR-1 |
 | `POST /v1/auth/login` | `{email, password}` → 토큰 | FR-1 |
+| `POST /v1/auth/anonymous` | `{privacy_consent: true, timezone?}` → 201 토큰. 가입 없이 시작(로그인 수단 없는 사용자) | FR-1, Q4 |
+| `POST /v1/auth/link` | `{email, password}`. 로그인 수단이 없는 현재 사용자에 이메일 로그인 연결 → 200 사용자 정보. 이미 연결됐거나 이메일이 쓰이고 있으면 409 | FR-1, Q4 |
 | `POST /v1/auth/logout` | 현재 토큰 폐기 → 204 | FR-1 |
 | `GET /v1/me` · `PATCH /v1/me` | 내 정보 조회(`email`은 이메일 로그인 수단이 없는 사용자면 `null`) · 시간대(`timezone`, IANA 이름) 변경 | FR-1 |
-| `DELETE /v1/me` | 본문 `{password}`. 계정·기록·토큰 전부 삭제 → 204 | FR-6 |
+| `DELETE /v1/me` | 이메일 로그인이 있으면 본문 `{password}` 필수(틀리거나 없으면 403), 가입 없이 시작한 사용자는 본문 없이. 계정·기록·토큰 전부 삭제 → 204 | FR-6 |
 | `POST /v1/meals` | `{description, meal_date?, meal_type?, portion?, memo?}` → 201. `Idempotency-Key` 헤더로 재시도 중복 방지(같은 키 재요청은 200 + `Idempotent-Replayed: true`) | FR-2 |
 | `GET /v1/meals?date=YYYY-MM-DD` | 하루 조회 | FR-5 |
 | `GET /v1/meals?from=…&to=…` | 기간 조회(양끝 포함, 최대 31일). `limit`(1~200, 기본 100), `offset`, 응답의 `next_offset` | FR-5 |
@@ -67,6 +69,11 @@ APP_ENV=development .venv/bin/uvicorn app.main:create_app --factory --reload
 | `GET /v1/summaries/weekly?start=YYYY-MM-DD` | 7일간 기록한 날 수, 날짜별 건수, 식사량 분포 | FR-8 |
 
 값: `meal_type` = `breakfast|lunch|dinner|snack`, `portion` = `small|medium|large`(화면 표시 이름은 클라이언트가 정함). 정의되지 않은 항목(예: `kcal`)을 보내면 422로 거부한다. "오늘"과 미래 날짜 판정은 사용자 시간대 기준이다.
+
+## 세션과 동의
+
+- 토큰은 쓰는 동안 계속 연장된다: 유효 기간(`APP_TOKEN_TTL_SECONDS`, 기본 30일)의 절반이 지난 뒤 사용하면 다시 전체 기간으로 늘어난다. 가입 없이 시작한 사용자는 토큰 말고 다시 들어올 방법이 없어서, 고정 만료면 기록을 잃기 때문이다. 기간 내내 쓰지 않으면 만료된다.
+- 가입과 "가입 없이 시작" 모두 `privacy_consent: true`가 필수이고, 동의 시각을 `users.consented_at`에 남긴다. 동의 문구는 법률 검토 전 초안이다(PRD Q6).
 
 ## 구조
 

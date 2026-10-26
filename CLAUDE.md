@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 두 가지를 담는다.
 
 - Claude Code 커스텀 서브에이전트(`.claude/agents/`)
-- 다이어트용 간편 식단 기록 앱 "Easy Meal Log": 기준 문서 `docs/prd/easy-meal-log.md`, MVP 백엔드 `backend/`
+- 다이어트용 간편 식단 기록 앱 "Easy Meal Log": 기준 문서 `docs/prd/easy-meal-log.md`, MVP 백엔드 `backend/`, 웹 클라이언트 `web/`
 
 ## 백엔드 명령 (`backend/`에서 실행)
 
@@ -18,6 +18,13 @@ APP_ENV=development .venv/bin/uvicorn app.main:create_app --factory --reload
 .venv/bin/python -m pytest tests/test_fr2_create.py::<테스트명>  # 테스트 하나
 .venv/bin/ruff check . && .venv/bin/ruff format --check .
 ```
+
+## 웹 (`web/`)
+
+- 빌드 도구 없는 HTML + CSS + JS 모듈. API 주소는 `web/config.js`(기본 `http://localhost:8000`). 개발용 정적 서버: `python3 -m http.server 5173 --directory web`(백엔드 개발 모드 CORS 기본값이 5173 허용).
+- 브라우저 종단 테스트: 저장소 루트에서 `node web/tests/e2e.mjs`. 백엔드(8000)와 정적 서버(5173)를 직접 띄우고 끈다. 그 포트가 이미 쓰이고 있으면 실패한다.
+- 사용자 입력은 `textContent`로만 넣는다(`innerHTML` 금지). 토큰은 `localStorage`에 있어서 XSS가 곧 토큰 탈취다.
+- 화면 문구도 제품 원칙을 따른다: 기록하지 않은 날을 실패·미달로 표현하지 않는다.
 
 ## 백엔드 구조
 

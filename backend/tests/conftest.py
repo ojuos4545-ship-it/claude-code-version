@@ -58,7 +58,8 @@ _counter = itertools.count()
 
 def signup(client, email: str | None = None, password: str = "correct-horse-1", **extra):
     email = email or f"user{next(_counter)}@example.com"
-    r = client.post("/v1/auth/signup", json={"email": email, "password": password, **extra})
+    body = {"email": email, "password": password, "privacy_consent": True, **extra}
+    r = client.post("/v1/auth/signup", json=body)
     assert r.status_code == 201, r.text
     return {"Authorization": f"Bearer {r.json()['access_token']}"}
 

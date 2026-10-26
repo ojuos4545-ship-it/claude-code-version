@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import re
 from datetime import date
-from typing import Annotated
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, BeforeValidator, ConfigDict, Field, field_validator, model_validator
 
@@ -37,10 +37,9 @@ class _Strict(BaseModel):
 
 
 # ---- auth ------------------------------------------------------------------
-class SignupRequest(_Strict):
+class LinkPasswordRequest(_Strict):
     email: str = Field(max_length=254)
     password: str = Field(min_length=PASSWORD_MIN, max_length=PASSWORD_MAX)
-    timezone: str | None = Field(default=None, max_length=64)
 
     @field_validator("email")
     @classmethod
@@ -49,6 +48,16 @@ class SignupRequest(_Strict):
         if not _EMAIL.match(v):
             raise ValueError("must be a valid email address")
         return v
+
+
+class SignupRequest(LinkPasswordRequest):
+    timezone: str | None = Field(default=None, max_length=64)
+    privacy_consent: Literal[True]  # PRD Q6: consent to collecting meal records
+
+
+class AnonymousStartRequest(_Strict):
+    timezone: str | None = Field(default=None, max_length=64)
+    privacy_consent: Literal[True]
 
 
 class LoginRequest(_Strict):
@@ -66,7 +75,7 @@ class UpdateMeRequest(_Strict):
 
 
 class DeleteAccountRequest(_Strict):
-    password: str = Field(max_length=PASSWORD_MAX)
+    password: str | None = Field(default=None, max_length=PASSWORD_MAX)  # anonymous: omit
 
 
 class UserOut(BaseModel):

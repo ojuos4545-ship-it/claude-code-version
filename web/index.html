@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>가벼운 식단 기록</title>
+  <meta name="description" content="칼로리 계산 없이 먹은 것 한 줄로 끝내는 식단 기록">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">본문으로 건너뛰기</a>
+
+  <!-- 처음 방문: 동의 후 바로 시작하거나 이메일로 로그인 -->
+  <main id="onboarding" class="screen" hidden>
+    <h1>가벼운 식단 기록</h1>
+    <ul class="promises">
+      <li>칼로리 계산 없이, 먹은 것 한 줄이면 끝</li>
+      <li>놓친 끼니는 나중에 몰아서 적어도 괜찮아요</li>
+      <li>점수도, 평가도 없어요</li>
+    </ul>
+
+    <section aria-labelledby="consent-title" class="card">
+      <h2 id="consent-title">시작하기 전에</h2>
+      <details>
+        <summary>개인정보 수집·이용 안내 보기</summary>
+        <dl class="consent-terms">
+          <dt>수집 항목</dt><dd>먹은 것, 날짜, 끼니, 식사량, 메모, 시간대. 계정을 연결하면 이메일</dd>
+          <dt>이용 목적</dt><dd>내 식단 기록을 저장하고 보여 주기 위해서만 씁니다</dd>
+          <dt>보관 기간</dt><dd>탈퇴하면 모든 기록을 바로 삭제합니다</dd>
+        </dl>
+      </details>
+      <label class="check">
+        <input type="checkbox" id="consent">
+        <span>[필수] 식단 기록의 수집·이용에 동의합니다</span>
+      </label>
+      <button type="button" id="start-anonymous" class="primary" disabled>바로 시작하기</button>
+      <p class="hint">가입 없이 시작해요. 계정 연결은 나중에 원할 때 하면 돼요.</p>
+    </section>
+
+    <details class="card" id="login-box">
+      <summary>이미 이메일 계정이 있어요</summary>
+      <form id="login-form" novalidate>
+        <label for="login-email">이메일</label>
+        <input id="login-email" type="email" autocomplete="username" required>
+        <label for="login-password">비밀번호</label>
+        <input id="login-password" type="password" autocomplete="current-password" required>
+        <button type="submit" class="primary">로그인</button>
+      </form>
+    </details>
+  </main>
+
+  <!-- 로그인 후 -->
+  <div id="app" class="screen" hidden>
+    <header class="topbar">
+      <span class="brand">가벼운 식단 기록</span>
+      <nav aria-label="화면">
+        <button type="button" class="tab" data-tab="log" aria-current="page">기록</button>
+        <button type="button" class="tab" data-tab="week">한 주</button>
+        <button type="button" class="tab" data-tab="settings">설정</button>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section id="tab-log" aria-labelledby="date-label">
+        <div class="datebar">
+          <button type="button" id="prev-day" class="icon" aria-label="전날">‹</button>
+          <h1 id="date-label" aria-live="polite"></h1>
+          <button type="button" id="next-day" class="icon" aria-label="다음 날">›</button>
+          <button type="button" id="go-today" class="link">오늘로</button>
+        </div>
+
+        <form id="meal-form" class="card" novalidate>
+          <label for="description" id="form-title">무엇을 먹었나요?</label>
+          <input id="description" maxlength="200" autocomplete="off" placeholder="예: 김치찌개, 밥 반 공기">
+          <div id="recent" class="chips" aria-label="최근에 적은 메뉴"></div>
+
+          <fieldset>
+            <legend>끼니 <span class="optional">선택</span></legend>
+            <div class="chips" data-group="meal_type">
+              <button type="button" class="chip" data-value="breakfast" aria-pressed="false">아침</button>
+              <button type="button" class="chip" data-value="lunch" aria-pressed="false">점심</button>
+              <button type="button" class="chip" data-value="dinner" aria-pressed="false">저녁</button>
+              <button type="button" class="chip" data-value="snack" aria-pressed="false">간식</button>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>양 <span class="optional">선택</span></legend>
+            <div class="chips" data-group="portion">
+              <button type="button" class="chip" data-value="small" aria-pressed="false">적게</button>
+              <button type="button" class="chip" data-value="medium" aria-pressed="false">보통</button>
+              <button type="button" class="chip" data-value="large" aria-pressed="false">많이</button>
+            </div>
+          </fieldset>
+          <details id="memo-box">
+            <summary>메모 <span class="optional">선택</span></summary>
+            <label for="memo" class="sr-only">메모</label>
+            <textarea id="memo" maxlength="500" rows="2" placeholder="기분이나 상황을 자유롭게"></textarea>
+          </details>
+
+          <div class="actions">
+            <button type="submit" class="primary" id="save">기록하기</button>
+            <button type="button" id="cancel-edit" hidden>취소</button>
+          </div>
+        </form>
+
+        <h2 class="sr-only">이 날의 기록</h2>
+        <ul id="meal-list" class="meals"></ul>
+      </section>
+
+      <section id="tab-week" aria-labelledby="week-label" hidden>
+        <div class="datebar">
+          <button type="button" id="prev-week" class="icon" aria-label="이전 주">‹</button>
+          <h1 id="week-label"></h1>
+          <button type="button" id="next-week" class="icon" aria-label="다음 주">›</button>
+        </div>
+        <p id="week-headline" class="headline"></p>
+        <ol id="week-days" class="week"></ol>
+        <p id="week-portions" class="hint"></p>
+      </section>
+
+      <section id="tab-settings" aria-labelledby="settings-title" hidden>
+        <h1 id="settings-title">설정</h1>
+
+        <div class="card" id="account-anonymous" hidden>
+          <h2>계정 연결</h2>
+          <p>지금은 이 브라우저에서만 기록을 볼 수 있어요. 이메일을 연결하면 다른 기기에서도 이어서 쓸 수 있어요.</p>
+          <form id="link-form" novalidate>
+            <label for="link-email">이메일</label>
+            <input id="link-email" type="email" autocomplete="username" required>
+            <label for="link-password">비밀번호 (8자 이상)</label>
+            <input id="link-password" type="password" autocomplete="new-password" minlength="8" required>
+            <button type="submit" class="primary">연결하기</button>
+          </form>
+        </div>
+        <div class="card" id="account-linked" hidden>
+          <h2>계정</h2>
+          <p>이메일: <strong id="account-email"></strong></p>
+        </div>
+
+        <div class="card">
+          <h2>시간대</h2>
+          <p>"오늘" 날짜를 정하는 기준이에요: <strong id="timezone"></strong></p>
+          <button type="button" id="sync-timezone" hidden>이 기기 시간대로 맞추기</button>
+        </div>
+
+        <div class="card">
+          <button type="button" id="logout">로그아웃</button>
+        </div>
+
+        <div class="card danger-zone">
+          <h2>탈퇴</h2>
+          <p>계정과 모든 기록을 바로 삭제해요. 되돌릴 수 없어요.</p>
+          <form id="delete-form" novalidate>
+            <div id="delete-password-row" hidden>
+              <label for="delete-password">비밀번호 확인</label>
+              <input id="delete-password" type="password" autocomplete="current-password">
+            </div>
+            <button type="submit" class="danger">모든 기록 삭제하고 탈퇴</button>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

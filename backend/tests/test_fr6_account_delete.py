@@ -71,8 +71,11 @@ def test_wrong_password_keeps_everything(client, alice):
     assert client.get(f"/v1/meals/{meal['id']}", headers=alice).status_code == 200
 
 
-def test_missing_password_is_validation_error(client, alice):
-    assert client.request("DELETE", "/v1/me", json={}, headers=alice).status_code == 422
+def test_password_user_must_confirm_password(client, alice):
+    # Omitting the password is allowed only for users who have none (anonymous).
+    assert client.request("DELETE", "/v1/me", json={}, headers=alice).status_code == 403
+    assert client.request("DELETE", "/v1/me", headers=alice).status_code == 403
+    assert client.get("/v1/me", headers=alice).status_code == 200
 
 
 def test_failure_midway_rolls_back_everything(client, settings, monkeypatch):

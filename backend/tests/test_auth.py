@@ -10,7 +10,8 @@ from tests.conftest import signup
 
 def test_signup_returns_token_usable_for_me(client):
     r = client.post(
-        "/v1/auth/signup", json={"email": " New@Example.com ", "password": "longenough1"}
+        "/v1/auth/signup",
+        json={"email": " New@Example.com ", "password": "longenough1", "privacy_consent": True},
     )
     assert r.status_code == 201
     body = r.json()
@@ -40,12 +41,15 @@ def test_user_identity_is_separate_from_login_method(client, settings):
         "SELECT provider, identifier, user_id FROM auth_identities WHERE user_id = ?", (uid,)
     ).fetchone()
     conn.close()
-    assert user_cols == {"id", "timezone", "created_at"}
+    assert user_cols == {"id", "timezone", "created_at", "consented_at"}
     assert identity == ("password", "split@example.com", uid)
 
 
 def test_auth_uses_header_not_cookies(client):
-    r = client.post("/v1/auth/signup", json={"email": "c@example.com", "password": "abcdefgh"})
+    r = client.post(
+        "/v1/auth/signup",
+        json={"email": "c@example.com", "password": "abcdefgh", "privacy_consent": True},
+    )
     assert "set-cookie" not in r.headers
     client.cookies.clear()
     assert client.get("/v1/me").status_code == 401
@@ -53,7 +57,10 @@ def test_auth_uses_header_not_cookies(client):
 
 def test_duplicate_email_conflicts(client):
     signup(client, "dup@example.com")
-    r = client.post("/v1/auth/signup", json={"email": "DUP@example.com", "password": "abcdefgh"})
+    r = client.post(
+        "/v1/auth/signup",
+        json={"email": "DUP@example.com", "password": "abcdefgh", "privacy_consent": True},
+    )
     assert r.status_code == 409
     assert r.json()["error"]["code"] == "conflict"
 
@@ -65,10 +72,11 @@ def test_duplicate_email_conflicts(client):
         ({"email": "a@b.co", "password": "short"}, "password"),
         ({"email": "a@b.co", "password": "abcdefgh", "timezone": "Mars/Base"}, "timezone"),
         ({"email": "a@b.co", "password": "abcdefgh", "weight": 70}, "weight"),
+        ({"email": "a@b.co", "password": "abcdefgh", "privacy_consent": False}, "privacy_consent"),
     ],
 )
 def test_signup_validation(client, body, field):
-    r = client.post("/v1/auth/signup", json=body)
+    r = client.post("/v1/auth/signup", json={"privacy_consent": True, **body})
     assert r.status_code == 422
     err = r.json()["error"]
     assert err["code"] == "validation_error"
@@ -76,7 +84,9 @@ def test_signup_validation(client, body, field):
 
 
 def test_validation_error_does_not_echo_password(client):
-    r = client.post("/v1/auth/signup", json={"email": "x@y.zz", "password": "secret1"})
+    r = client.post(
+        "/v1/auth/signup", json={"email": "x@y.zz", "password": "secret1", "privacy_consent": True}
+    )
     assert r.status_code == 422
     assert "secret1" not in r.text
 

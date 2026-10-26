@@ -5,8 +5,11 @@ Two independent parts:
   the user logged in, and is sent in the Authorization header (no cookies), so web
   and mobile clients use it identically.
 - Login methods: rows in auth_identities linked to a user. Only email + password
-  ("password" provider) exists now. An anonymous start would create a user with no
-  identity and issue a session; linking an account later adds an identity row.
+  ("password" provider) exists now. An anonymous start creates a user with no
+  identity and issues a session; linking an account later adds an identity row.
+
+Sessions slide: a token used after half its lifetime gets a fresh full lifetime. An
+anonymous user has no other way back in, so a fixed expiry would lose their data.
 """
 
 from __future__ import annotations
@@ -75,9 +78,15 @@ class AuthService:
     def authenticate(self, token: str | None) -> User:
         if not token:
             raise Unauthenticated()
-        user = self.repo.get_session_user(self._token_hash(token), to_iso(self.clock()))
-        if user is None:
+        now = self.clock()
+        token_hash = self._token_hash(token)
+        found = self.repo.get_session(token_hash, to_iso(now))
+        if found is None:
             raise Unauthenticated("Token is invalid or expired.")
+        user, expires_at = found
+        # Write only once the token is past half its lifetime, not on every request.
+        if expires_at < to_iso(now + self.ttl / 2):
+            self.repo.extend_session(token_hash, to_iso(now + self.ttl))
         return user
 
     def logout(self, token: str) -> None:
@@ -88,8 +97,14 @@ class AuthService:
         if not is_valid_timezone(timezone):
             raise ValidationFailed.field("timezone", "invalid", "unknown IANA time zone")
         user = User(id=uuid.uuid4().hex, timezone=timezone, created_at=to_iso(self.clock()))
-        self.repo.insert_user(user)
+        # Every creation path requires the privacy consent, so consent time = creation time.
+        self.repo.insert_user(user, consented_at=user.created_at)
         return user
+
+    def start_anonymous(self, timezone: str) -> IssuedToken:
+        """A user with no login method: start logging right away, link an account later."""
+        with self.repo.transaction():
+            return self.issue_session(self._new_user(timezone))
 
     def profile(self, user: User) -> Profile:
         identity = self.repo.get_user_identity(user.id, PASSWORD_PROVIDER)
@@ -115,6 +130,17 @@ class AuthService:
         except DuplicateError as exc:
             raise Conflict("Email is already registered.") from exc
 
+    def link_password(self, user: User, email: str, password: str) -> None:
+        """Add email + password to a user who has no login method yet."""
+        if self.repo.get_user_identity(user.id, PASSWORD_PROVIDER) is not None:
+            raise Conflict("An email login is already linked to this account.")
+        identity = AuthIdentity(PASSWORD_PROVIDER, email, user.id, _hasher.hash(password))
+        try:
+            with self.repo.transaction():
+                self.repo.insert_identity(identity, to_iso(self.clock()))
+        except DuplicateError as exc:
+            raise Conflict("Email is already registered.") from exc
+
     def login_with_password(self, email: str, password: str) -> IssuedToken:
         identity = self.repo.get_identity(PASSWORD_PROVIDER, email)
         if not _verify(identity.secret_hash if identity else None, password) or identity is None:
@@ -126,11 +152,14 @@ class AuthService:
         return self.issue_session(user)
 
     # ---- account deletion (FR-6) --------------------------------------------
-    def delete_account(self, user: User, password: str) -> None:
-        """Delete sessions, login methods, all meals and the user in one transaction."""
+    def delete_account(self, user: User, password: str | None) -> None:
+        """Delete sessions, login methods, all meals and the user in one transaction.
+
+        A user with a password must confirm it. An anonymous user has no other
+        credential, so holding the token is the only check possible.
+        """
         identity = self.repo.get_user_identity(user.id, PASSWORD_PROVIDER)
-        # When identity-less (anonymous) users are added, decide their confirmation step.
-        if not _verify(identity.secret_hash if identity else None, password):
+        if identity is not None and not _verify(identity.secret_hash, password or ""):
             raise Forbidden("Password confirmation failed.")
         with self.repo.transaction():
             self.repo.delete_sessions_for_user(user.id)

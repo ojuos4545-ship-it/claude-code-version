@@ -75,10 +75,10 @@ class SqliteRepository:
             self._in_tx = False
 
     # ---- users -----------------------------------------------------------
-    def insert_user(self, user: User) -> None:
+    def insert_user(self, user: User, consented_at: str) -> None:
         self.conn.execute(
-            "INSERT INTO users (id, timezone, created_at) VALUES (?, ?, ?)",
-            (user.id, user.timezone, user.created_at),
+            "INSERT INTO users (id, timezone, created_at, consented_at) VALUES (?, ?, ?, ?)",
+            (user.id, user.timezone, user.created_at, consented_at),
         )
 
     def get_user(self, user_id: str) -> User | None:
@@ -137,13 +137,18 @@ class SqliteRepository:
             (token_hash, user_id, created_at, expires_at),
         )
 
-    def get_session_user(self, token_hash: str, now: str) -> User | None:
+    def get_session(self, token_hash: str, now: str) -> tuple[User, str] | None:
         row = self.conn.execute(
-            "SELECT u.id, u.timezone, u.created_at FROM sessions s "
+            "SELECT u.id, u.timezone, u.created_at, s.expires_at FROM sessions s "
             "JOIN users u ON u.id = s.user_id WHERE s.token_hash = ? AND s.expires_at > ?",
             (token_hash, now),
         ).fetchone()
-        return None if row is None else _row_to_user(row)
+        return None if row is None else (_row_to_user(row), row["expires_at"])
+
+    def extend_session(self, token_hash: str, expires_at: str) -> None:
+        self.conn.execute(
+            "UPDATE sessions SET expires_at = ? WHERE token_hash = ?", (expires_at, token_hash)
+        )
 
     def delete_session(self, token_hash: str) -> None:
         self.conn.execute("DELETE FROM sessions WHERE token_hash = ?", (token_hash,))
