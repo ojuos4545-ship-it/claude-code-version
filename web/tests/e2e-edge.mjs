@@ -67,7 +67,6 @@ async function step(name, fn) {
 async function open({ timezoneId = "Asia/Seoul", viewport = { width: 390, height: 844 } } = {}) {
   const ctx = await browser.newContext({ timezoneId, viewport });
   const page = await ctx.newPage();
-  page.on("dialog", (d) => d.accept());
   return { ctx, page };
 }
 async function startAnon(page) {
@@ -277,18 +276,24 @@ try {
   await step("[1] 첫 화면에서 이미 토큰이 있으면 '바로 시작하기'·로그인 전에 확인하고, 취소하면 토큰을 그대로 둔다", async () => {
     const ctx = await browser.newContext({ timezoneId: "Asia/Seoul", viewport: { width: 390, height: 844 } });
     const page = await ctx.newPage();
+    // 화면 안 확인 창의 문구를 모으고 매번 취소한다.
     const dialogs = [];
-    page.on("dialog", (d) => { dialogs.push(d.message()); d.dismiss(); });
+    const dismiss = async () => {
+      await page.locator("#confirm-dialog[open]").waitFor();
+      dialogs.push(await page.locator("#confirm-message").textContent());
+      await page.locator("#confirm-cancel").click();
+    };
     await page.goto(WEB);
     // 다른 탭에서 시작한 경우처럼, 첫 화면이 떠 있는 동안 토큰이 생긴다.
     await page.evaluate(() => localStorage.setItem("easy-meal-log.token", "existing-token"));
     await page.locator("#consent").check();
     await page.locator("#start-anonymous").click();
+    await dismiss();
     await page.locator("#login-box summary").click();
     await page.locator("#login-email").fill("x@example.com");
     await page.locator("#login-password").fill("password-123");
     await page.locator("#login-form button[type=submit]").click();
-    await sleep(300);
+    await dismiss();
     assert.equal(dialogs.length, 2);
     assert.match(dialogs[0], /이미 쓰고 있던 기록/);
     assert.equal(await page.evaluate(() => localStorage.getItem("easy-meal-log.token")), "existing-token");
@@ -338,6 +343,7 @@ try {
     // 탈퇴 비밀번호가 틀리면(실제 서버 403 forbidden) 비밀번호 안내
     await page.locator("#delete-password").fill("wrong-password");
     await page.locator("#delete-form button[type=submit]").click();
+    await page.locator("#confirm-ok").click();
     await page.locator("#toast", { hasText: "비밀번호가 맞지 않아요" }).waitFor();
     await ctx.close();
 

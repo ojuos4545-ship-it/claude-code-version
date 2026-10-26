@@ -52,7 +52,8 @@ try {
     if (m.type() === "error" && !/status of 40[13]/.test(m.text())) consoleErrors.push(m.text());
   });
   page.on("pageerror", (e) => consoleErrors.push(String(e)));
-  page.on("dialog", (d) => d.accept());
+  // 확인은 화면 안 확인 창(#confirm-dialog)으로 받는다.
+  const confirmOk = () => page.locator("#confirm-ok").click();
   const toast = () => page.locator("#toast").textContent();
 
   step("CSP: connect-src가 config.js의 API 주소와 같고, 인라인 스크립트는 막힌다");
@@ -121,6 +122,7 @@ try {
   await page.locator(".meal-desc", { hasText: "닭가슴살 샐러드" }).waitFor();
   await page.getByRole("button", { name: "오늘로" }).click();
   await page.getByRole("button", { name: "김치찌개 삭제" }).first().click();
+  await confirmOk();
   await page.waitForFunction(() => document.querySelectorAll(".meal").length === 1);
 
   step("US-5/7: 한 주 보기는 기록한 날 수만 보여 준다");
@@ -156,6 +158,7 @@ try {
   await page.getByRole("button", { name: "설정" }).click();
   await page.getByLabel("비밀번호 확인").fill("e2e-password");
   await page.getByRole("button", { name: "모든 기록 삭제하고 탈퇴" }).click();
+  await confirmOk();
   await page.locator("#onboarding").waitFor();
   const r = await fetch(`${API}/v1/auth/login`, {
     method: "POST",
@@ -170,6 +173,7 @@ try {
   await page.getByRole("button", { name: "설정" }).click();
   assert.equal(await page.locator("#delete-password-row").isHidden(), true);
   await page.getByRole("button", { name: "모든 기록 삭제하고 탈퇴" }).click();
+  await confirmOk();
   await page.locator("#onboarding").waitFor();
 
   assert.deepEqual(consoleErrors, [], "브라우저 콘솔 오류 없음");

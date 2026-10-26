@@ -1,5 +1,6 @@
 // 화면 상태와 렌더링. 사용자 입력은 항상 textContent로 넣는다(innerHTML 금지).
 import { api, ApiError, createMeal, tokenStore } from "./api.js";
+import { config } from "./config.js";
 
 const $ = (sel) => document.querySelector(sel);
 
@@ -49,6 +50,35 @@ function el(tag, props = {}, ...children) {
   const node = Object.assign(document.createElement(tag), props);
   for (const c of children) if (c != null) node.append(c);
   return node;
+}
+
+// 브라우저 기본 confirm() 대신 화면 안 확인 창을 쓴다.
+// claude.ai 같은 iframe 환경에서는 confirm()이 뜨지 않고 항상 false를 돌려준다.
+function askConfirm(message, okLabel = "확인") {
+  const dialog = $("#confirm-dialog");
+  const ok = $("#confirm-ok");
+  const cancel = $("#confirm-cancel");
+  const opener = document.activeElement;
+  $("#confirm-message").textContent = message;
+  ok.textContent = okLabel;
+  return new Promise((resolve) => {
+    function finish(value) {
+      ok.removeEventListener("click", onOk);
+      cancel.removeEventListener("click", onCancel);
+      dialog.removeEventListener("cancel", onEscape);
+      dialog.close();
+      if (opener instanceof HTMLElement && opener.isConnected) opener.focus();
+      resolve(value);
+    }
+    const onOk = () => finish(true);
+    const onCancel = () => finish(false);
+    const onEscape = (e) => { e.preventDefault(); finish(false); };
+    ok.addEventListener("click", onOk);
+    cancel.addEventListener("click", onCancel);
+    dialog.addEventListener("cancel", onEscape);
+    dialog.showModal();
+    cancel.focus(); // 되돌릴 수 없는 동작이 많아 기본 초점은 취소에 둔다
+  });
 }
 
 let toastTimer;
@@ -312,7 +342,7 @@ async function saveMeal(event) {
 }
 
 async function deleteMeal(meal) {
-  if (!confirm(`"${meal.description}" 기록을 지울까요?`)) return;
+  if (!(await askConfirm(`"${meal.description}" 기록을 지울까요?`, "지우기"))) return;
   const ok = await guard(async () => {
     await api(`/v1/meals/${meal.id}`, { method: "DELETE" });
     return true;
@@ -429,8 +459,10 @@ async function syncTimezone() {
 }
 
 async function logout() {
-  if (state.user.email === null
-    && !confirm("계정을 연결하지 않으면 로그아웃 후 지금까지의 기록을 다시 볼 수 없어요. 그래도 로그아웃할까요?")) {
+  if (state.user.email === null && !(await askConfirm(
+    "계정을 연결하지 않으면 로그아웃 후 지금까지의 기록을 다시 볼 수 없어요. 그래도 로그아웃할까요?",
+    "로그아웃",
+  ))) {
     return;
   }
   await guard(() => api("/v1/auth/logout", { method: "POST" }));
@@ -439,7 +471,7 @@ async function logout() {
 
 async function deleteAccount(event) {
   event.preventDefault();
-  if (!confirm("계정과 모든 기록을 지금 삭제할까요? 되돌릴 수 없어요.")) return;
+  if (!(await askConfirm("계정과 모든 기록을 지금 삭제할까요? 되돌릴 수 없어요.", "삭제하고 탈퇴"))) return;
   const body = state.user.email === null ? undefined : { password: $("#delete-password").value };
   const ok = await guard(async () => {
     await api("/v1/me", { method: "DELETE", body });
@@ -453,15 +485,16 @@ async function deleteAccount(event) {
 // ---- 첫 화면 -------------------------------------------------------------------
 // 다른 탭에서 시작했거나 하는 이유로 이미 토큰이 있으면, 덮어쓰기 전에 확인한다.
 // 가입 없이 쓰던 사용자는 그 토큰이 기록으로 돌아갈 유일한 수단이다.
-function mayReplaceToken() {
+async function mayReplaceToken() {
   if (!tokenStore.get()) return true;
-  return confirm(
+  return askConfirm(
     "이 브라우저에 이미 쓰고 있던 기록이 있어요. 계정을 연결하지 않았다면, 새로 시작하거나 다른 계정으로 로그인한 뒤에는 그 기록을 다시 볼 수 없어요. 계속할까요?",
+    "계속하기",
   );
 }
 
 async function startAnonymous() {
-  if (!mayReplaceToken()) return;
+  if (!(await mayReplaceToken())) return;
   const data = await guard(() => api("/v1/auth/anonymous", {
     method: "POST",
     body: { privacy_consent: true, timezone: browserTimeZone() },
@@ -473,7 +506,7 @@ async function startAnonymous() {
 
 async function login(event) {
   event.preventDefault();
-  if (!mayReplaceToken()) return;
+  if (!(await mayReplaceToken())) return;
   const data = await guard(() => api("/v1/auth/login", {
     method: "POST",
     body: { email: $("#login-email").value, password: $("#login-password").value },
@@ -541,6 +574,7 @@ async function resume() {
 }
 
 async function boot() {
+  $("#demo-banner").hidden = !config.demo;
   bind();
   await resume();
 }

@@ -23,6 +23,16 @@ node web/tests/e2e.mjs   # 저장소 루트에서. 백엔드 .venv와 Playwright
 
 실제 백엔드와 정적 서버를 띄워 브라우저로 US-1~US-8 흐름을 끝까지 수행한다(휴대폰 폭 390px).
 
+## 체험 모드 (서버 없이 화면 확인)
+
+`config.js`의 `demo: true`면 API 호출을 서버 대신 `demo-api.js`가 브라우저 저장소(localStorage)로 처리한다. 화면과 흐름 확인용이고, 기록은 그 브라우저에만 남는다. 요청 수 제한·HTTPS 강제 같은 서버 보안 기능은 흉내 내지 않는다.
+
+```bash
+python3 web/tools/build_demo.py <출력 폴더>   # demo: true 설정, 정적 호스팅용 index.html 생성
+```
+
+claude.ai 아티팩트처럼 iframe 안에서 도는 환경에서는 브라우저 기본 `confirm()`이 뜨지 않으므로, 확인은 화면 안 확인 창(`#confirm-dialog`, `askConfirm`)으로 받는다. 새 확인 동작도 이 함수를 쓴다.
+
 ## 화면
 
 | 화면 | 하는 일 |

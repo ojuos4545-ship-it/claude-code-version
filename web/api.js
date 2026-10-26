@@ -30,6 +30,14 @@ export async function api(path, { method = "GET", body, headers = {} } = {}) {
   const token = tokenStore.get();
   if (token) h.Authorization = `Bearer ${token}`;
 
+  if (config.demo) {
+    // 체험 모드: 서버 대신 브라우저 저장소로 처리한다(demo-api.js).
+    const { demoRequest } = await import("./demo-api.js");
+    const { status, data } = await demoRequest(method, path, body, h);
+    if (status >= 400) throw new ApiError(status, data);
+    return data;
+  }
+
   const res = await fetch(config.apiBase + path, {
     method,
     headers: h,

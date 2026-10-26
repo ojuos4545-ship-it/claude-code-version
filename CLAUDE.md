@@ -25,6 +25,8 @@ APP_ENV=development .venv/bin/uvicorn app.main:create_app --factory --reload
 - 브라우저 종단 테스트: 저장소 루트에서 `node web/tests/e2e.mjs`. 백엔드(8000)와 정적 서버(5173)를 직접 띄우고 끈다. 그 포트가 이미 쓰이고 있으면 실패한다.
 - 사용자 입력은 `textContent`로만 넣는다(`innerHTML` 금지). 토큰은 `localStorage`에 있어서 XSS가 곧 토큰 탈취다. `index.html`의 CSP meta가 인라인 스크립트·스타일을 막고, `connect-src`는 `config.js`의 `apiBase`와 같아야 한다.
 - 화면 문구도 제품 원칙을 따른다: 기록하지 않은 날을 실패·미달로 표현하지 않는다.
+- 확인 창은 `confirm()` 대신 `askConfirm`(화면 안 `<dialog>`)을 쓴다. iframe(claude.ai 아티팩트)에서는 `confirm()`이 항상 false다.
+- 체험 모드: `config.js`의 `demo: true`면 `demo-api.js`가 브라우저 저장소로 API를 흉내 낸다. 묶음 생성은 `python3 web/tools/build_demo.py <출력 폴더>`. API 응답 모양을 바꾸면 `demo-api.js`도 함께 고친다.
 
 ## 백엔드 구조
 
