@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS meals;
+DROP TABLE IF EXISTS sessions;
+DROP TABLE IF EXISTS auth_identities;
+DROP TABLE IF EXISTS users;

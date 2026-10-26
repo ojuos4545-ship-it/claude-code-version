@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+*.egg-info/
+
+# Local data (SQLite DB)
+data/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Env files with secrets
+.env
+.env.*
