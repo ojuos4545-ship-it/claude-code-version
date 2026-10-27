@@ -49,7 +49,7 @@ APP_ENV=development .venv/bin/uvicorn app.main:create_app --factory --reload
   - `qa-engineer.md`: 직접 실행·테스트하며 기능, 에러 처리, 성능, 사용성을 검증한다. 테스트 코드만 쓰고 제품 코드는 지시 없이 고치지 않는다. 코드만 읽는 리뷰는 `code-reviewer`와 역할을 나눈다.
   - `researcher.md`: 주제를 웹에서 조사해 최신·신뢰 출처 위주로 모으고, 글쓰기 에이전트용 리서치 노트(출처 URL 포함)로 정리한다. 노트는 기본으로 `docs/research/<주제-이름>.md`에 저장한다. 코드는 건드리지 않는다.
   - `writer.md`: 리서치 노트(`docs/research/`)를 메인 소스로, 스타일·SEO 가이드(`docs/guides/`)를 반드시 지켜 블로그 글을 쓴다. 이미지 자리는 SEO 가이드의 `[IMAGE: ...]` 마커로 표시하고, 초안은 기본으로 `docs/drafts/<주제-이름>.md`에 저장한다.
-  - `assembler.md`: 초안 글과 이미지를 받아 최종 미리보기(`final.md` + 네이버 블로그 레이아웃 `preview.html`)를 만든다. 글은 고치지 않고 이미지 자리만 바꾼다. 기본 출력은 `docs/final/<주제-이름>/`.
+  - `assembler.md`: 초안 글과 이미지를 받아 최종 미리보기(`final.md`, `preview.html`)와 네이버 에디터 복붙용 `paste.html`, 사진 업로드 체크리스트 `upload-guide.md`를 만든다(HTML은 `tools/build_preview.py`로 생성). 글은 고치지 않고 이미지 자리만 바꾼다. 기본 출력은 `docs/final/<주제-이름>/`.
 - `docs/guides/`: 블로그 가이드. `style-guide.md`(말투·서식), `seo-guide.md`(검색 노출), `image-guide.md`(이미지 규격과 HTML→Playwright 캡처). 이미지 캡처는 `python3 tools/make_blog_images.py <src 폴더> <출력 폴더>`이고, `pip install playwright`가 필요하다.
 - 에이전트들은 PRD(`docs/prd/`)를 공통 기준으로 삼는다: product-manager가 쓰고, backend-developer가 구현하고, qa-engineer가 수용 기준으로 검증한다.
 

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>클로드 코드 핵심 기능 5가지, 처음 쓰는 분이 먼저 익힐 것</title><style>
+body{margin:0;background:#fff;color:#333;font-family:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif}
+.preview-only{background:#03c75a;color:#fff;font-size:13px;padding:10px 14px;line-height:1.5}
+.preview-only button{margin-left:10px;padding:4px 12px;border:0;border-radius:4px;background:#fff;color:#03c75a;font-weight:700;cursor:pointer}
+.wrap{max-width:740px;margin:0 auto;padding:24px 20px 80px;box-sizing:border-box}
+.title{font-size:26px;font-weight:700;line-height:1.4;color:#222;margin:0 0 6px}
+.meta{color:#999;font-size:13px;margin-bottom:28px}
+#body{font-size:15px;line-height:1.6;overflow-wrap:break-word}
+#body p{margin:0;padding:0;line-height:1.6}
+#body p.code{font-family:Consolas,Menlo,monospace;font-size:14px;background:#f6f6f6}
+#body hr{border:0;border-top:1px solid #ccc;margin:0}
+#body blockquote{margin:0;padding:10px 16px;border-left:4px solid #03c75a;background:#f4f7f5}
+#body img{max-width:100%;height:auto}
+#body code{font-family:Consolas,Menlo,monospace;font-size:.92em;background:#f3f3f3}
+#body a{color:#0a7d3c;word-break:break-all}
+mark.todo{background:#fff176}
+mark.slot{background:#ffe082;font-weight:700}
+.tags{margin-top:32px;font-size:13px;color:#555}
+.tags span{display:inline-block;background:#f0f2f1;padding:3px 10px;border-radius:14px;margin:0 6px 6px 0}
+@media(max-width:480px){.title{font-size:22px}}
+</style></head><body>
+<div class="preview-only">복붙용입니다. 아래 [본문 복사]를 누른 뒤 에디터에 붙여넣고, 【사진】 자리에 사진을 올리세요.<button id="copy" type="button">본문 복사</button></div>
+<div class="wrap">
+<div class="title">클로드 코드 핵심 기능 5가지, 처음 쓰는 분이 먼저 익힐 것</div>
+<div class="meta">카테고리 · 작성일 (제목은 에디터 제목 칸에 따로 입력)</div>
+<div id="body">
+<blockquote><p>💡 <strong>한 줄 요약:</strong> 처음에는 CLAUDE.md, 권한 모드, 스킬, 서브에이전트, MCP 다섯 가지만 알면 충분하고, 공식 문서도 그중 CLAUDE.md부터 시작하라고 안내합니다.</p></blockquote>
+<p class="sp"><br></p>
+<p style="text-align:center"><mark class="slot">【사진 01】 01_thumbnail_core-features.png</mark></p>
+<p class="sp"><br></p>
+<p>안녕하세요, 여러분! 클로드 코드 핵심 기능이 무엇인지 알아보려니 명령어와 용어가 너무 많아 막막하셨죠?</p>
+<p>"기능이 이렇게 많은데 뭐부터 눌러야 하지?" 하는 고민, 처음 쓰는 분이라면 누구나 한 번쯤 하게 됩니다.</p>
+<p class="sp"><br></p>
+<p>오늘은 Anthropic 공식 문서를 바탕으로, 첫 주에 실제로 마주치게 될 기능 다섯 가지를 골라 정리해 드리겠습니다.</p>
+<p>이 글 하나만 끝까지 읽으시면 각 기능이 무엇이고, 언제 쓰며, 어디서 조심해야 하는지 큰 그림이 잡히실 거예요.</p>
+<p class="sp"><br></p>
+<p>참고로 공식 문서가 "핵심 5가지"를 따로 지정해 둔 것은 아닙니다.</p>
+<p>다섯 가지는 초보자가 먼저 마주치는 순서를 기준으로 <strong>필자가 고른 것</strong>이라는 점을 미리 밝혀 둡니다.</p>
+<p class="sp"><br></p>
+<hr>
+<p class="sp"><br></p>
+<p><span style="font-size:24px"><b>1. 시작하기 전에 - 클로드 코드를 쓰려면 무엇이 필요할까요?</b></span></p>
+<p class="sp"><br></p>
+<p>클로드 코드는 터미널, VS Code, JetBrains, 데스크톱 앱, 웹에서 쓸 수 있는 AI 코딩 도구입니다.</p>
+<p>프로젝트 폴더에서 <code>claude</code>를 실행하면 시작되고, 처음에는 로그인 과정을 거칩니다.</p>
+<p class="sp"><br></p>
+<p>설치는 공식 문서가 권장하는 네이티브 설치 한 줄이면 됩니다.</p>
+<p class="sp"><br></p>
+<p class="code"># macOS, Linux, WSL</p>
+<p class="code">curl -fsSL https://claude.ai/install.sh | bash</p>
+<p class="code"><br></p>
+<p class="code"># Windows PowerShell</p>
+<p class="code">irm https://claude.ai/install.ps1 | iex</p>
+<p class="sp"><br></p>
+<p>설치가 끝나면 새 터미널을 열고 <code>claude --version</code>으로 확인해 보세요.</p>
+<p>(설치 직후 <code>claude</code>를 찾지 못한다면 PATH 설정을 먼저 의심해 보시면 됩니다.)</p>
+<p class="sp"><br></p>
+<p style="text-align:center"><mark class="slot">【사진 02】 02_diagram_start-steps.png</mark></p>
+<p class="sp"><br></p>
+<p>많은 분들이 가장 먼저 궁금해하시는 건 비용이죠.</p>
+<p>조사일 기준 공식 요금 페이지를 보면 Free 플랜에는 클로드 코드가 포함되지 않고, 유료 플랜에 포함된다고 적혀 있습니다.</p>
+<p class="sp"><br></p>
+<table style="border-collapse:collapse;width:100%">
+<thead>
+<tr>
+<th style="border:1px solid #ddd;padding:8px;background:#f3f3f3;text-align:left">플랜</th>
+<th style="border:1px solid #ddd;padding:8px;background:#f3f3f3;text-align:left">요금 표기 (USD, 세금 제외)</th>
+<th style="border:1px solid #ddd;padding:8px;background:#f3f3f3;text-align:left">클로드 코드</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="border:1px solid #ddd;padding:8px">Free</td>
+<td style="border:1px solid #ddd;padding:8px">$0</td>
+<td style="border:1px solid #ddd;padding:8px">포함되지 않음</td>
+</tr>
+<tr>
+<td style="border:1px solid #ddd;padding:8px">Pro</td>
+<td style="border:1px solid #ddd;padding:8px">월 $20 (연간 결제 시 월 $17)</td>
+<td style="border:1px solid #ddd;padding:8px">포함</td>
+</tr>
+<tr>
+<td style="border:1px solid #ddd;padding:8px">Max</td>
+<td style="border:1px solid #ddd;padding:8px">월 $100부터</td>
+<td style="border:1px solid #ddd;padding:8px">포함</td>
+</tr>
+</tbody>
+</table>
+<p class="sp"><br></p>
+<p>요금은 바뀔 수 있고, 한국 원화 금액이나 부가세 포함 여부는 확인하지 못했습니다.</p>
+<p>결제 전에는 공식 요금 페이지에서 직접 확인해 주세요.</p>
+<p class="sp"><br></p>
+<blockquote><p>📌 <strong>전문가 Tip:</strong> 버전 번호는 빠르게 바뀌어서, 아래에서 설명하는 기능의 동작이 사용 중인 버전과 다를 수 있습니다. 최신 버전 기준으로 정리했으니 <code>claude --version</code>으로 먼저 확인해 보세요.</p></blockquote>
+<p class="sp"><br></p>
+<hr>
+<p class="sp"><br></p>
+<p><span style="font-size:24px"><b>2. 클로드 코드 핵심 기능 5가지 - 무엇부터 익혀야 할까?</b></span></p>
+<p class="sp"><br></p>
+<p>본격적으로 다섯 가지를 하나씩 짚어볼게요.</p>
+<p>순서는 "먼저 익히면 좋은 것"부터입니다.</p>
+<p class="sp"><br></p>
+<p><span style="font-size:19px"><b>첫째, CLAUDE.md - 매번 같은 설명을 반복하고 계시진 않나요?</b></span></p>
+<p class="sp"><br></p>
+<p>클로드 코드는 새 세션을 시작할 때마다 빈 상태에서 출발합니다.</p>
+<p>어제 알려준 프로젝트 규칙을 오늘은 기억하지 못한다는 뜻이죠.</p>
+<p class="sp"><br></p>
+<p>이때 쓰는 것이 <strong>CLAUDE.md</strong>입니다.</p>
+<p>프로젝트 규칙을 적어 두면 클로드가 세션을 시작할 때 읽고 시작하는 메모 파일이에요.</p>
+<p class="sp"><br></p>
+<p>• 프로젝트용은 <code>./CLAUDE.md</code> 또는 <code>./.claude/CLAUDE.md</code>, 내 모든 프로젝트용은 <code>~/.claude/CLAUDE.md</code>에 둡니다.</p>
+<p>• <code>/init</code>을 실행하면 코드베이스를 분석해서 시작용 파일을 만들어 줍니다.</p>
+<p>• 파일당 200줄 이하를 권장하며, 너무 길면 지침을 덜 따를 수 있습니다.</p>
+<p>• 클로드가 스스로 메모하는 자동 메모리도 있고, <code>/memory</code>로 편집하거나 켜고 끌 수 있습니다.</p>
+<p class="sp"><br></p>
+<p style="text-align:center"><mark class="slot">【사진 03】 03_card_claude-md.png</mark></p>
+<p class="sp"><br></p>
+<p>하지만 중요한 건 CLAUDE.md가 <strong>강제 규칙이 아니라 참고 맥락</strong>이라는 점입니다.</p>
+<p>반드시 막아야 하는 동작이 있다면 공식 문서는 훅 같은 다른 수단을 쓰라고 안내합니다.</p>
+<p class="sp"><br></p>
+<p>제가 작업하는 저장소의 CLAUDE.md에는 서버 실행·테스트 명령, 폴더 구조, 지켜야 할 제품 원칙을 적어 두었습니다.</p>
+<p>새 세션을 열 때마다 같은 설명을 처음부터 다시 적지 않아도 되는 구조예요.</p>
+<p>다만 강제는 아니라서, 어겨서는 안 되는 규칙은 확인 수단을 따로 두는 편이 안전합니다.</p>
+<p class="sp"><br></p>
+<p><span style="font-size:19px"><b>둘째, 권한 모드와 플랜 모드 - 마음대로 고치면 어쩌죠?</b></span></p>
+<p class="sp"><br></p>
+<p>비개발자분들이 가장 불안해하시는 부분이 아닐까 싶어요.</p>
+<p>"내 파일을 멋대로 바꾸면 어떡하지?" 하는 걱정이죠.</p>
+<p class="sp"><br></p>
+<p>클로드 코드에는 얼마나 맡길지 정하는 <strong>권한 모드</strong>가 있습니다.</p>
+<p>세션 중에 <code>Shift+Tab</code>을 누르면 모드가 순환하고, 기본 순환은 default, acceptEdits, plan 순서입니다.</p>
+<p class="sp"><br></p>
+<p>• <strong>Manual(default):</strong> 읽기만 자동으로 하고, 나머지는 물어봅니다.</p>
+<p>• <strong>Edit automatically(acceptEdits):</strong> 파일 편집은 묻지 않고 진행합니다.</p>
+<p>• <strong>Plan:</strong> 파일을 읽고 계획만 세우며, 소스 편집은 막습니다.</p>
+<p class="sp"><br></p>
+<p>초보자분께는 플랜 모드를 가장 먼저 권해 드려요.</p>
+<p><code>Shift+Tab</code>이나 프롬프트 앞의 <code>/plan</code>으로 들어가 계획을 먼저 보고, 마음에 들면 승인하는 흐름입니다.</p>
+<p class="sp"><br></p>
+<p style="text-align:center"><mark class="slot">【사진 04】 04_diagram_permission-modes.png</mark></p>
+<p class="sp"><br></p>
+<blockquote><p>📌 <strong>전문가 Tip:</strong> 최신 버전에서는 터미널과 VS Code 세션의 기본 모드가 auto로 알려져 있습니다. auto는 분류기가 위험한 작업을 검토해 주지만, 공식 문서도 안전을 보장하는 것은 아니라고 밝힙니다. 처음에는 <code>Shift+Tab</code>으로 지금 어떤 모드인지 꼭 확인하세요. 잘못 바뀐 파일은 <code>/rewind</code>로 되돌릴 수 있습니다.</p></blockquote>
+<p class="sp"><br></p>
+<p>여러 파일을 건드리는 작업이라면 계획부터 받아 보시길 권합니다.</p>
+<p>방향이 어긋난 것을 파일이 바뀌기 전에 발견하면 되돌릴 일 자체가 줄어들기 때문이에요.</p>
+<p class="sp"><br></p>
+<p><span style="font-size:19px"><b>셋째, 슬래시 명령과 스킬 - 같은 작업을 자꾸 시키고 계신가요?</b></span></p>
+<p class="sp"><br></p>
+<p>메시지 맨 앞에 <code>/</code>를 입력하면 쓸 수 있는 명령과 스킬 목록이 나옵니다.</p>
+<p><code>/clear</code>, <code>/compact</code>, <code>/resume</code>, <code>/usage</code>처럼 대화를 관리하는 기본 명령도 여기서 볼 수 있어요.</p>
+<p class="sp"><br></p>
+<p><strong>스킬</strong>은 자주 하는 절차를 <code>SKILL.md</code> 파일로 저장해 두는 기능입니다.</p>
+<p>폴더 이름이 곧 <code>/이름</code> 명령이 되고, 내가 직접 부르거나 클로드가 설명을 보고 필요할 때 불러옵니다.</p>
+<p class="sp"><br></p>
+<p>• 개인용은 <code>~/.claude/skills/&lt;이름&gt;/SKILL.md</code>, 프로젝트용은 <code>.claude/skills/&lt;이름&gt;/SKILL.md</code>에 둡니다.</p>
+<p>• 옛 방식인 <code>.claude/commands/</code> 파일도 계속 작동하지만, 새로 만든다면 스킬 형식이 권장됩니다.</p>
+<p>• 부작용이 있는 작업은 <code>disable-model-invocation: true</code>로 내가 부를 때만 실행되게 할 수 있습니다.</p>
+<p class="sp"><br></p>
+<p>예전 블로그나 영상에서 <code>.claude/commands</code> 중심으로 설명한 것을 보셨다면, 지금은 스킬로 통합되는 흐름이라고 이해하시면 됩니다.</p>
+<p class="sp"><br></p>
+<p style="text-align:center"><mark class="slot">【사진 05】 05_card_skills.png</mark></p>
+<p class="sp"><br></p>
+<p><span style="font-size:19px"><b>넷째, 서브에이전트 - 작업을 나눠 맡길 수는 없을까요?</b></span></p>
+<p class="sp"><br></p>
+<p>서브에이전트는 메인 대화와 <strong>따로 일하는 전문 보조 AI</strong>입니다.</p>
+<p>독립된 컨텍스트 창과 별도 지침, 제한된 도구를 가지고, 끝나면 결과 요약만 돌려줍니다.</p>
+<p class="sp"><br></p>
+<p>덕분에 코드 탐색처럼 읽을 게 많은 일을 맡겨도 메인 대화가 지저분해지지 않아요.</p>
+<p>만드는 방법은 두 가지입니다.</p>
+<p class="sp"><br></p>
+<p>1. 클로드에게 "읽기 전용 코드 리뷰어 서브에이전트를 만들어줘"라고 요청합니다.</p>
+<p>2. <code>.claude/agents/</code>(프로젝트) 또는 <code>~/.claude/agents/</code>(전체)에 마크다운 파일을 직접 씁니다. (필수 항목은 <code>name</code>과 <code>description</code>입니다.)</p>
+<p class="sp"><br></p>
+<p>주의할 점이 있습니다.</p>
+<p>최신 버전의 <code>/agents</code>는 예전처럼 만들기 마법사를 열지 않고, 요청하거나 파일을 직접 편집하라는 안내만 보여줍니다.</p>
+<p class="sp"><br></p>
+<p style="text-align:center"><mark class="slot">【사진 06】 06_diagram_subagent.png</mark></p>
+<p class="sp"><br></p>
+<p>제 저장소의 <code>.claude/agents/</code>에는 기획, 서버 구현, 검증, 코드 리뷰 담당 서브에이전트가 있습니다.</p>
+<p>이 글도 조사, 글쓰기, 이미지 제작, 조립 담당을 따로 두고 차례로 맡겨 만들었어요.</p>
+<p>각 단계의 결과를 파일로 확인하며 넘어갈 수 있었고, 조사 담당에게는 웹 검색과 읽기·쓰기 도구만 주고 코드 실행 도구는 주지 않는 식으로 도구도 나눴습니다.</p>
+<p class="sp"><br></p>
+<p><span style="font-size:19px"><b>다섯째, MCP - 외부 서비스와 연결할 수 있을까요?</b></span></p>
+<p class="sp"><br></p>
+<p><strong>MCP(Model Context Protocol)</strong>는 AI 도구를 외부 데이터와 서비스에 잇는 개방형 표준입니다.</p>
+<p>공식 문서의 예로는 Google Drive 문서 읽기, Jira 티켓 갱신, Slack 데이터 활용이 있어요.</p>
+<p class="sp"><br></p>
+<p>원격 서버는 아래 형식으로 추가합니다.</p>
+<p class="sp"><br></p>
+<p class="code">claude mcp add --transport http &lt;이름&gt; &lt;URL&gt;</p>
+<p class="sp"><br></p>
+<p>세션 안에서 <code>/mcp</code>를 입력하면 연결 상태를 확인하고 로그인할 수 있고, 터미널에서는 <code>claude mcp list</code>로 목록을 봅니다.</p>
+<p>예전 예제에 나오는 <code>sse</code> 방식은 지원 중단 예정으로 표시되니, 원격 서버는 <code>http</code>를 쓰시는 편이 좋습니다.</p>
+<p class="sp"><br></p>
+<blockquote><p>📌 <strong>전문가 Tip:</strong> 신뢰하지 않는 MCP 서버는 프롬프트 인젝션, 즉 숨은 악성 지시에 노출될 위험이 있다고 공식 문서가 경고합니다. 출처를 확인한 서버만 연결하세요.</p></blockquote>
+<p class="sp"><br></p>
+<p style="text-align:center"><mark class="slot">【사진 07】 07_card_mcp.png</mark></p>
+<p class="sp"><br></p>
+<hr>
+<p class="sp"><br></p>
+<p><span style="font-size:24px"><b>3. 다섯 가지를 한눈에 - 장단점은 무엇일까요?</b></span></p>
+<p class="sp"><br></p>
+<p>지금까지 본 기능을 표로 모아 보겠습니다.</p>
+<p>어디까지가 장점이고 어디부터 조심해야 하는지 비교해 보세요.</p>
+<p class="sp"><br></p>
+<table style="border-collapse:collapse;width:100%">
+<thead>
+<tr>
+<th style="border:1px solid #ddd;padding:8px;background:#f3f3f3;text-align:left">기능</th>
+<th style="border:1px solid #ddd;padding:8px;background:#f3f3f3;text-align:left">장점 👍</th>
+<th style="border:1px solid #ddd;padding:8px;background:#f3f3f3;text-align:left">단점·주의 👎</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="border:1px solid #ddd;padding:8px">CLAUDE.md</td>
+<td style="border:1px solid #ddd;padding:8px">매 세션 프로젝트 규칙이 자동 적용</td>
+<td style="border:1px solid #ddd;padding:8px">강제가 아닌 맥락, 길면 준수율 하락</td>
+</tr>
+<tr>
+<td style="border:1px solid #ddd;padding:8px">권한·플랜 모드</td>
+<td style="border:1px solid #ddd;padding:8px">계획을 먼저 확인, 승인 피로 감소</td>
+<td style="border:1px solid #ddd;padding:8px">auto는 안전 보장이 아님</td>
+</tr>
+<tr>
+<td style="border:1px solid #ddd;padding:8px">스킬</td>
+<td style="border:1px solid #ddd;padding:8px">반복 절차 저장, 쓸 때만 본문 로드</td>
+<td style="border:1px solid #ddd;padding:8px">철자가 틀린 필드는 오류 없이 무시됨</td>
+</tr>
+<tr>
+<td style="border:1px solid #ddd;padding:8px">서브에이전트</td>
+<td style="border:1px solid #ddd;padding:8px">메인 대화 보존, 도구 제한, 병렬 조사</td>
+<td style="border:1px solid #ddd;padding:8px">토큰 사용량이 합산됨</td>
+</tr>
+<tr>
+<td style="border:1px solid #ddd;padding:8px">MCP</td>
+<td style="border:1px solid #ddd;padding:8px">외부 서비스와 직접 연동</td>
+<td style="border:1px solid #ddd;padding:8px">신뢰할 수 없는 서버는 보안 위험</td>
+</tr>
+</tbody>
+</table>
+<p class="sp"><br></p>
+<p style="text-align:center"><mark class="slot">【사진 08】 08_table_pros-cons.png</mark></p>
+<p class="sp"><br></p>
+<p>그렇다면 다섯 가지를 처음부터 전부 세팅해야 할까요?</p>
+<p>그렇지 않습니다. 공식 문서는 기능을 많이 추가할수록 컨텍스트를 차지해 오히려 성능이 떨어질 수 있다고 경고해요.</p>
+<p class="sp"><br></p>
+<p>그래서 추천하는 순서는 이렇습니다.</p>
+<p class="sp"><br></p>
+<p>1. CLAUDE.md로 프로젝트 규칙을 적습니다.</p>
+<p>2. 권한 모드를 확인하고 플랜 모드에 익숙해집니다.</p>
+<p>3. 같은 실수나 같은 요청이 반복될 때 스킬을 만듭니다.</p>
+<p>4. 읽을 양이 많은 작업은 서브에이전트에 맡깁니다.</p>
+<p>5. 외부 서비스가 필요해질 때 MCP를 연결합니다.</p>
+<p class="sp"><br></p>
+<p>훅은 항상 실행되어야 하는 자동 명령이라 설정 난도가 있어서, 위 다섯 가지에 익숙해진 다음 단계로 남겨 두었습니다.</p>
+<p class="sp"><br></p>
+<hr>
+<p class="sp"><br></p>
+<p><span style="font-size:24px"><b>4. 자주 묻는 질문 - 이런 건 어떨까요?</b></span></p>
+<p class="sp"><br></p>
+<p><strong>Q. 무료로 쓸 수 있나요?</strong></p>
+<p>조사일 기준 요금 페이지에는 Free 플랜에 클로드 코드가 포함되지 않는다고 나옵니다.</p>
+<p>Pro 이상의 유료 플랜이나 API 크레딧(Console 계정)이 필요해요.</p>
+<p class="sp"><br></p>
+<p><strong>Q. 터미널을 한 번도 안 써봤는데 괜찮을까요?</strong></p>
+<p>VS Code, 데스크톱 앱, 웹에서도 쓸 수 있어서 터미널이 부담스럽다면 그쪽부터 시작하셔도 됩니다.</p>
+<p>다만 데스크톱 앱은 유료 구독이 필요합니다.</p>
+<p class="sp"><br></p>
+<p><strong>Q. Windows에서도 되나요?</strong></p>
+<p>됩니다. PowerShell과 CMD용 설치 명령이 따로 있고, Git for Windows 설치가 권장됩니다.</p>
+<p class="sp"><br></p>
+<p><strong>Q. 스킬과 서브에이전트는 뭐가 다른가요?</strong></p>
+<p>스킬은 내 대화에 불러와 쓰는 재사용 지침서이고, 서브에이전트는 따로 일하고 요약만 돌려주는 일꾼입니다.</p>
+<p class="sp"><br></p>
+<p><span style="font-size:19px"><b>공식 문서에서 더 확인하고 싶다면</b></span></p>
+<p class="sp"><br></p>
+<p>• 개요: <a href="https://code.claude.com/docs/en/overview">https://code.claude.com/docs/en/overview</a></p>
+<p>• 퀵스타트(설치): <a href="https://code.claude.com/docs/en/quickstart">https://code.claude.com/docs/en/quickstart</a></p>
+<p>• CLAUDE.md와 메모리: <a href="https://code.claude.com/docs/en/memory">https://code.claude.com/docs/en/memory</a></p>
+<p>• 권한 모드: <a href="https://code.claude.com/docs/en/permission-modes">https://code.claude.com/docs/en/permission-modes</a></p>
+<p>• 스킬: <a href="https://code.claude.com/docs/en/skills">https://code.claude.com/docs/en/skills</a></p>
+<p>• 서브에이전트: <a href="https://code.claude.com/docs/en/sub-agents">https://code.claude.com/docs/en/sub-agents</a></p>
+<p>• MCP: <a href="https://code.claude.com/docs/en/mcp">https://code.claude.com/docs/en/mcp</a></p>
+<p>• 요금: <a href="https://claude.com/pricing">https://claude.com/pricing</a></p>
+<p class="sp"><br></p>
+<hr>
+<p class="sp"><br></p>
+<p><span style="font-size:24px"><b>5. 마무리하며</b></span></p>
+<p class="sp"><br></p>
+<p>오늘은 클로드 코드 핵심 기능 다섯 가지, 곧 CLAUDE.md와 권한·플랜 모드, 스킬, 서브에이전트, MCP를 차례로 살펴보았습니다.</p>
+<p>정리하면 "다 알 필요 없이 CLAUDE.md 하나와 권한 모드부터"라는 한 줄로 요약할 수 있어요.</p>
+<p class="sp"><br></p>
+<p style="text-align:center"><mark class="slot">【사진 09】 09_card_first-week.png</mark></p>
+<p class="sp"><br></p>
+<p>처음엔 낯설어도 작은 설정 하나가 쌓이면 어느새 손에 익기 마련입니다.</p>
+<p>오늘 정리한 내용이 첫걸음을 떼는 데 작은 도움이 되었기를 바랍니다.</p>
+<p class="sp"><br></p>
+<p>여러분은 어떤 기능이 가장 궁금하셨나요?</p>
+<p>써보시면서 막혔던 부분이나 궁금한 점은 댓글로 남겨주세요. 함께 풀어봐요. 감사합니다!</p>
+</div>
+<div class="tags"><span>#클로드코드</span><span>#ClaudeCode</span><span>#클로드코드사용법</span><span>#클로드코드기능</span><span>#CLAUDEmd</span><span>#플랜모드</span><span>#서브에이전트</span><span>#MCP</span><span>#AI코딩도구</span><span>#초보자가이드</span></div>
+</div>
+<script>
+document.getElementById('copy').onclick=function(){
+  var r=document.createRange();r.selectNodeContents(document.getElementById('body'));
+  var s=getSelection();s.removeAllRanges();s.addRange(r);
+  var ok=document.execCommand('copy');s.removeAllRanges();
+  this.textContent=ok?'복사됨':'복사 실패: 본문을 직접 선택하세요';
+};
+</script></body></html>
