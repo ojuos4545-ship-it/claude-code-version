@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>비교표</title>
+<style>:root{--bg:#FAF7F2;--card:#FFFFFF;--ink:#1F2937;--sub:#6B7280;--line:#E8E1D6;
+      --accent:#C8553D;--accent-soft:#F6E3DC;--ok:#2F6F5E;--ok-soft:#DDEDE7}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg)}
+body{font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",
+     "Apple SD Gothic Neo","NanumGothic","WenQuanYi Zen Hei",sans-serif;color:var(--ink);
+     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.35}
+.canvas{width:1080px;padding:80px;background:var(--bg)}
+.square{height:1080px;display:flex;flex-direction:column;justify-content:center}
+.kicker{font-size:36px;font-weight:600;color:var(--accent);margin-bottom:28px}
+h1{font-size:84px;font-weight:800;line-height:1.2;letter-spacing:-1px}
+h2{font-size:56px;font-weight:800;line-height:1.25;margin-bottom:48px}
+.sub{font-size:40px;color:var(--sub);margin-top:28px}
+code,.mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Noto Sans Mono CJK KR",monospace;
+           font-size:34px;background:var(--accent-soft);padding:2px 12px;border-radius:10px}
+.num{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;
+     border-radius:50%;background:var(--accent);color:#fff;font-size:34px;font-weight:700;flex:none}
+table{width:100%;border-collapse:collapse;background:var(--card);
+ border:2px solid var(--line);border-radius:24px;overflow:hidden;font-size:38px;table-layout:fixed}
+th,td{padding:26px 24px;text-align:left;border-bottom:2px solid var(--line);vertical-align:middle}
+th{font-size:36px;background:var(--bg)}th.ok{color:var(--ok)}th.no{color:var(--accent)}
+tr:last-child td{border-bottom:none}td.g{font-weight:700}
+.foot{font-size:36px;color:var(--sub);margin-top:30px}
+td .st{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+td small{font-size:36px;color:var(--sub)}
+.y{color:var(--ok);font-weight:700}.n{color:var(--warn,var(--accent));font-weight:700}
+col.c1{width:48%}th,td{padding:12px 24px}td .st{gap:4px}td small{line-height:1.25}h2{margin-bottom:40px}</style></head>
+<body><div class="canvas"><h2>권한 모드 6가지 한눈에</h2>
+<table><colgroup><col class="c1"><col></colgroup>
+<tr><th>모드 · 표시 글자</th><th class="ok">묻지 않는 일</th></tr>
+<tr><td><span class="st"><code>default</code><small>manual mode on</small></span></td><td><span class="st"><b>읽기만</b><small>민감한 작업에</small></span></td></tr><tr><td><span class="st"><code>acceptEdits</code><small>accept edits on</small></span></td><td><span class="st"><b>읽기·파일 편집</b><small>고치며 검토할 때</small></span></td></tr><tr><td><span class="st"><code>plan</code><small>plan mode on</small></span></td><td><span class="st"><b>읽기·탐색</b><small>계획부터 세울 때</small></span></td></tr><tr><td><span class="st"><code>auto</code><small>auto mode on</small></span></td><td><span class="st"><b>안전 검사 통과 작업</b><small>긴 작업에</small></span></td></tr><tr><td><span class="st"><code>dontAsk</code><small>don't ask on</small></span></td><td><span class="st"><b>미리 허용한 것만</b><small>무인 자동화에</small></span></td></tr><tr><td><span class="st"><code>bypassPermissions</code><small>bypass permissions on</small></span></td><td><span class="st"><b>거의 모든 작업</b><small>격리 환경 전용</small></span></td></tr>
+</table>
+<div class="foot">아래 작은 글자는 잘 맞는 때</div></div></body></html>

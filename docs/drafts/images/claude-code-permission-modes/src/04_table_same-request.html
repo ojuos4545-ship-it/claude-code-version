@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>비교표</title>
+<style>:root{--bg:#FAF7F2;--card:#FFFFFF;--ink:#1F2937;--sub:#6B7280;--line:#E8E1D6;
+      --accent:#C8553D;--accent-soft:#F6E3DC;--ok:#2F6F5E;--ok-soft:#DDEDE7}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg)}
+body{font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",
+     "Apple SD Gothic Neo","NanumGothic","WenQuanYi Zen Hei",sans-serif;color:var(--ink);
+     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.35}
+.canvas{width:1080px;padding:80px;background:var(--bg)}
+.square{height:1080px;display:flex;flex-direction:column;justify-content:center}
+.kicker{font-size:36px;font-weight:600;color:var(--accent);margin-bottom:28px}
+h1{font-size:84px;font-weight:800;line-height:1.2;letter-spacing:-1px}
+h2{font-size:56px;font-weight:800;line-height:1.25;margin-bottom:48px}
+.sub{font-size:40px;color:var(--sub);margin-top:28px}
+code,.mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Noto Sans Mono CJK KR",monospace;
+           font-size:34px;background:var(--accent-soft);padding:2px 12px;border-radius:10px}
+.num{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;
+     border-radius:50%;background:var(--accent);color:#fff;font-size:34px;font-weight:700;flex:none}
+table{width:100%;border-collapse:collapse;background:var(--card);
+ border:2px solid var(--line);border-radius:24px;overflow:hidden;font-size:38px;table-layout:fixed}
+th,td{padding:26px 24px;text-align:left;border-bottom:2px solid var(--line);vertical-align:middle}
+th{font-size:36px;background:var(--bg)}th.ok{color:var(--ok)}th.no{color:var(--accent)}
+tr:last-child td{border-bottom:none}td.g{font-weight:700}
+.foot{font-size:36px;color:var(--sub);margin-top:30px}
+td .st{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+td small{font-size:36px;color:var(--sub)}
+.y{color:var(--ok);font-weight:700}.n{color:var(--warn,var(--accent));font-weight:700}
+col.c1{width:34%}col.c2{width:30%}</style></head>
+<body><div class="canvas"><h2>같은 요청, 모드만 바꾸면</h2>
+<table><colgroup><col class="c1"><col class="c2"><col></colgroup>
+<tr><th>모드</th><th class="no">거부된 도구</th><th class="ok">app.js</th></tr>
+<tr><td><code>default</code></td><td><span class="n">편집</span></td><td>그대로</td></tr>
+<tr><td><code>acceptEdits</code></td><td>없음</td><td><span class="y">1줄 추가</span></td></tr>
+<tr><td><code>plan</code></td><td>없음</td><td><span class="st">그대로<small>계획만 작성</small></span></td></tr>
+<tr><td><code>dontAsk</code></td><td><span class="n">편집, 셸 명령</span></td><td>그대로</td></tr>
+</table>
+<div class="foot">요청은 app.js 맨 아래에 한 줄 추가</div></div></body></html>
