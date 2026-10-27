@@ -41,7 +41,8 @@ def inline(text: str) -> str:
 
 def table(lines):
     t = markdown.markdown("\n".join(lines), extensions=["tables"])
-    t = t.replace("<table>", '<table style="border-collapse:collapse;width:100%">')
+    # 에디터는 CSS보다 width 속성을 더 잘 따르므로 둘 다 지정해 본문 폭까지 늘린다
+    t = t.replace("<table>", '<table width="100%" style="border-collapse:collapse;width:100%;table-layout:fixed">')
     t = re.sub(r"<th(?: [^>]*)?>", '<th style="border:1px solid #ddd;padding:8px;background:#f3f3f3;text-align:left">', t)
     t = re.sub(r"<td(?: [^>]*)?>", '<td style="border:1px solid #ddd;padding:8px">', t)
     return t
