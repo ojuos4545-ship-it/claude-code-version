@@ -133,7 +133,9 @@ def render(blocks, images_dir: Path, mode: str):
         elif kind == "quote":
             out.append("<blockquote>" + "".join(f"<p>{inline(x)}</p>" for x in data) + "</blockquote>")
         elif kind == "code":
-            out += [f'<p class="code">{html.escape(x) or "<br>"}</p>' for x in data]
+            # 앞쪽 공백(들여쓰기)은 브라우저·에디터가 합치므로 &nbsp;로 바꿔 보존한다
+            out += [f'<p class="code">{"&nbsp;" * (len(x) - len(x.lstrip(" ")))}{html.escape(x.lstrip(" ")) or "<br>"}</p>'
+                    for x in data]
         elif kind == "table":
             out.append(table(data))
         elif kind == "img":
@@ -159,7 +161,7 @@ body{margin:0;background:#fff;color:#333;font-family:"Noto Sans KR","Malgun Goth
 .meta{color:#999;font-size:13px;margin-bottom:28px}
 #body{font-size:15px;line-height:1.6;overflow-wrap:break-word}
 #body p{margin:0;padding:0;line-height:1.6}
-#body p.code{font-family:Consolas,Menlo,monospace;font-size:14px;background:#f6f6f6}
+#body p.code{font-family:Consolas,Menlo,monospace;font-size:14px;background:#f6f6f6;white-space:pre-wrap}
 #body hr{border:0;border-top:1px solid #ccc;margin:0}
 #body blockquote{margin:0;padding:10px 16px;border-left:4px solid #03c75a;background:#f4f7f5}
 #body img{max-width:100%;height:auto}
