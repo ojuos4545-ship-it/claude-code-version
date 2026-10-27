@@ -10,7 +10,7 @@ from playwright.sync_api import sync_playwright
 WIDTH = 1080
 SCALE = 2  # 2배 해상도로 캡처한다(레이아웃 폭은 그대로 1080px, 파일은 2160px)
 CSS = Path(__file__).with_name("blog-image.css")
-THEME_3D = Path(__file__).with_name("blog-image-3d.css")  # --theme=3d 로 켠다
+THEME_3D = Path(__file__).with_name("blog-image-3d.css")  # 기본 테마(라인+3D). --theme=flat 이면 적용하지 않는다
 MAX_BYTES = 1_000_000  # 넘으면 JPEG로 저장
 BLOCK_EXTERNAL = re.compile(r"^https?://")
 
@@ -45,7 +45,7 @@ def launch(p):
         return p.chromium.launch(executable_path=path)
 
 
-def main(src: Path, out: Path, theme: str = "flat") -> int:
+def main(src: Path, out: Path, theme: str = "3d") -> int:
     out.mkdir(parents=True, exist_ok=True)
     failed = False
     with sync_playwright() as p:
@@ -85,5 +85,5 @@ if __name__ == "__main__":
     args = [a for a in sys.argv[1:] if not a.startswith("--theme=")]
     theme = next((a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--theme=")), "flat")
     if len(args) != 2 or theme not in ("flat", "3d"):
-        sys.exit("사용법: make_blog_images.py <src 폴더> <출력 폴더> [--theme=flat|3d]")
+        sys.exit("사용법: make_blog_images.py <src 폴더> <출력 폴더> [--theme=3d|flat]")
     sys.exit(main(Path(args[0]), Path(args[1]), theme))
