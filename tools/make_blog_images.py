@@ -83,7 +83,7 @@ def main(src: Path, out: Path, theme: str = "3d") -> int:
 
 if __name__ == "__main__":
     args = [a for a in sys.argv[1:] if not a.startswith("--theme=")]
-    theme = next((a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--theme=")), "flat")
+    theme = next((a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--theme=")), "3d")
     if len(args) != 2 or theme not in ("flat", "3d"):
         sys.exit("사용법: make_blog_images.py <src 폴더> <출력 폴더> [--theme=3d|flat]")
     sys.exit(main(Path(args[0]), Path(args[1]), theme))
