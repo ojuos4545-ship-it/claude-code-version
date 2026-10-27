@@ -10,6 +10,7 @@ from playwright.sync_api import sync_playwright
 WIDTH = 1080
 SCALE = 2  # 2배 해상도로 캡처한다(레이아웃 폭은 그대로 1080px, 파일은 2160px)
 CSS = Path(__file__).with_name("blog-image.css")
+THEME_3D = Path(__file__).with_name("blog-image-3d.css")  # --theme=3d 로 켠다
 MAX_BYTES = 1_000_000  # 넘으면 JPEG로 저장
 BLOCK_EXTERNAL = re.compile(r"^https?://")
 
@@ -44,7 +45,7 @@ def launch(p):
         return p.chromium.launch(executable_path=path)
 
 
-def main(src: Path, out: Path) -> int:
+def main(src: Path, out: Path, theme: str = "flat") -> int:
     out.mkdir(parents=True, exist_ok=True)
     failed = False
     with sync_playwright() as p:
@@ -54,6 +55,8 @@ def main(src: Path, out: Path) -> int:
         for html in sorted(src.glob("*.html")):
             page.goto(html.resolve().as_uri())
             page.add_style_tag(content=CSS.read_text(encoding="utf-8").replace("url(\"fonts/", f'url("{CSS.parent.as_uri()}/fonts/'))
+            if theme == "3d":
+                page.add_style_tag(content=THEME_3D.read_text(encoding="utf-8"))
             page.evaluate("document.fonts.ready")
             if not page.evaluate("document.fonts.check('700 40px PretendardBlog', '한글')"):
                 problems_font = ["Pretendard 폰트가 로드되지 않았습니다"]
@@ -79,6 +82,8 @@ def main(src: Path, out: Path) -> int:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        sys.exit("사용법: make_blog_images.py <src 폴더> <출력 폴더>")
-    sys.exit(main(Path(sys.argv[1]), Path(sys.argv[2])))
+    args = [a for a in sys.argv[1:] if not a.startswith("--theme=")]
+    theme = next((a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--theme=")), "flat")
+    if len(args) != 2 or theme not in ("flat", "3d"):
+        sys.exit("사용법: make_blog_images.py <src 폴더> <출력 폴더> [--theme=flat|3d]")
+    sys.exit(main(Path(args[0]), Path(args[1]), theme))

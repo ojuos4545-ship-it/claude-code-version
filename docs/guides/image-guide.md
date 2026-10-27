@@ -337,6 +337,10 @@ if __name__ == "__main__":
     sys.exit(main(Path(sys.argv[1]), Path(sys.argv[2])))
 ```
 
+* **라인 + 3D 테마:** 명령 끝에 `--theme=3d`를 붙이면 `tools/blog-image-3d.css`가 기본 스타일 위에 덧씌워진다. 두꺼운 윤곽선(`--ink`), 겹겹이 쌓은 입체 그림자, 아이소메트릭 큐브 라인 아트(썸네일 큰 큐브, 본문 제목 위 작은 큐브)가 특징이다. 3D 그림자 때문에 캔버스 오른쪽·아래 여백이 96px로 늘어난다. 테마 없이 실행하면 기존 플랫 스타일이다. 3D 장식 요소(큐브)는 HTML이 아니라 CSS로만 넣으므로 `src/` HTML은 두 테마가 공유한다.
+  ```bash
+  python3 tools/make_blog_images.py docs/drafts/images/<주제-이름>/src docs/drafts/images/<주제-이름> --theme=3d
+  ```
 * 스크립트가 `WARN`을 내면 글자를 줄이거나 배치를 고친 뒤 다시 돌린다. `WARN`인 채로 넘기지 않는다.
 * 스크립트는 넘침과 글자 크기만 검사한다. **두부 문자와 어색한 배치는 6장 6번처럼 눈으로 봐야 한다.**
 
