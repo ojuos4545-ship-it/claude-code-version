@@ -1,36 +1,43 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><style>:root{--bg:#FAF7F2;--card:#FFFFFF;--ink:#1F2937;--sub:#6B7280;--line:#E8E1D6;
-      --accent:#C8553D;--accent-soft:#F6E3DC;--ok:#2F6F5E;--ok-soft:#DDEDE7}
+      --accent:#C8553D;--accent-soft:#F6E3DC;--ok:#2F6F5E;--ok-soft:#DDEDE7;
+      --edge:#D9CDB8;--accent-dark:#9E3F2B;--shadow:rgba(31,41,55,.18)}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg)}
 body{font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic","Apple SD Gothic Neo","NanumGothic","WenQuanYi Zen Hei",sans-serif;color:var(--ink);
      -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.35}
-.canvas{width:1080px;padding:80px;background:var(--bg)}
+.canvas{width:1080px;padding:80px 90px 110px 80px;background:var(--bg);position:relative}
 .square{height:1080px;display:flex;flex-direction:column;justify-content:center}
 .kicker{font-size:36px;font-weight:600;color:var(--accent);margin-bottom:28px}
 h1{font-size:84px;font-weight:800;line-height:1.2;letter-spacing:-1px}
-h2{font-size:56px;font-weight:800;line-height:1.25;margin-bottom:48px}
+h2{font-size:56px;font-weight:800;line-height:1.25;margin-bottom:56px}
 .sub{font-size:40px;color:var(--sub);margin-top:28px}
-code,.mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Noto Sans Mono CJK KR","WenQuanYi Zen Hei Mono",monospace;
+code{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Noto Sans Mono CJK KR","WenQuanYi Zen Hei Mono",monospace;
            font-size:34px;background:var(--accent-soft);padding:2px 12px;border-radius:10px}
 .num{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;
      border-radius:50%;background:var(--accent);color:#fff;font-size:34px;font-weight:700;flex:none}
-.row{display:flex;align-items:center;gap:24px;font-size:44px;background:var(--card);
- border:2px solid var(--line);border-radius:24px;padding:28px 36px;margin-bottom:24px}
-.row .lab{font-weight:700;flex:none}
-.row .val{color:var(--sub);font-size:38px}
-.list{margin-top:56px}
-.list .row{font-size:42px;padding:20px 32px;margin-bottom:16px}
-table{width:100%;border-collapse:collapse;background:var(--card);border:2px solid var(--line);border-radius:24px;overflow:hidden;font-size:38px}
-th,td{padding:28px 24px;text-align:left;border-bottom:2px solid var(--line)}
+.solid{background:var(--card);border:3px solid var(--ink);border-radius:24px;
+  box-shadow:4px 4px 0 var(--ink),8px 8px 0 var(--edge),16px 28px 36px var(--shadow)}
+.solid.hot{background:var(--accent-soft);
+  box-shadow:4px 4px 0 var(--ink),8px 8px 0 var(--accent-dark),16px 28px 36px var(--shadow)}
+svg.line{width:72px;height:72px;fill:none;stroke:var(--ink);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;flex:none}
+svg.line .hot{stroke:var(--accent)}
+.row{display:flex;align-items:center;gap:22px;padding:22px 32px;margin-bottom:34px}
+.row:last-of-type{margin-bottom:0}
+.row .t{display:flex;flex-direction:column}
+.row .lab{font-size:44px;font-weight:700}
+.row .val{color:var(--sub);font-size:36px}
+.list{margin-top:48px;margin-right:30px}
+.list .row{font-size:42px;font-weight:700;padding:16px 28px;margin-bottom:28px}
+.tbl{overflow:hidden;margin-right:8px}
+table{width:100%;border-collapse:collapse;font-size:38px}
+th,td{padding:22px 20px;text-align:left;border-bottom:3px solid var(--line);vertical-align:middle}
 th{font-size:36px;background:var(--bg)}th.ok{color:var(--ok)}th.no{color:var(--accent)}
 td:first-child{font-weight:700}tr:last-child td{border-bottom:none}
-.flow{display:flex;flex-direction:column;align-items:stretch;gap:8px}
-.node{display:flex;align-items:center;gap:28px;background:var(--card);border:2px solid var(--line);border-radius:24px;padding:28px 36px}
+.c1{display:flex;align-items:center;gap:14px}
+.flow{display:flex;flex-direction:column;align-items:stretch;margin-right:8px}
+.node{display:flex;align-items:center;gap:24px;padding:22px 32px}
 .node b{font-size:44px}.node small{font-size:34px;color:var(--sub);margin-left:auto}
-.arrow{font-size:48px;color:var(--accent);font-weight:700;text-align:center;line-height:1}
-.note{font-size:34px;color:var(--sub);margin-top:24px}
-</style></head><body><div class="canvas"><h2>초안은 4단계로 만듭니다</h2><div class="flow">
-<div class="node"><span class="num">1</span><b><code>claude</code> 실행</b><small>프로젝트 폴더에서</small></div><div class="arrow">↓</div>
-<div class="node"><span class="num">2</span><b><code>/init</code> 입력</b><small>초안 자동 생성</small></div><div class="arrow">↓</div>
-<div class="node"><span class="num">3</span><b>초안 열기</b><small>/memory로 열기</small></div><div class="arrow">↓</div>
-<div class="node"><span class="num">4</span><b>줄 덜어내기</b><small>그대로 두지 않기</small></div></div></div></body></html>
+.arr{height:56px;display:flex;justify-content:center;align-items:center}
+.arr svg{width:40px;height:48px;fill:none;stroke:var(--accent);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.note{font-size:34px;color:var(--sub);margin-top:56px}
+</style></head><body><div class="canvas"><h2>초안은 4단계로 만듭니다</h2><div class="flow"><div class="node solid"><span class="num">1</span><svg class="line" style="width:72px;height:72px" viewBox="0 0 48 48"><path d="M5 9h38v30H5z"/><path d="M13 19l6 5-6 5"/><path d="M24 31h10"/></svg><b><code>claude</code> 실행</b><small>프로젝트 폴더에서</small></div><div class="arr"><svg viewBox="0 0 40 48"><path d="M20 4v38"/><path d="M8 30l12 12 12-12"/></svg></div><div class="node solid hot"><span class="num">2</span><svg class="line" style="width:72px;height:72px" viewBox="0 0 48 48"><circle cx="24" cy="24" r="7"/><circle cx="24" cy="24" r="14"/><path d="M38.0 24.0L44.0 24.0"/><path d="M33.9 33.9L38.1 38.1"/><path d="M24.0 38.0L24.0 44.0"/><path d="M14.1 33.9L9.9 38.1"/><path d="M10.0 24.0L4.0 24.0"/><path d="M14.1 14.1L9.9 9.9"/><path d="M24.0 10.0L24.0 4.0"/><path d="M33.9 14.1L38.1 9.9"/></svg><b><code>/init</code> 입력</b><small>초안 자동 생성</small></div><div class="arr"><svg viewBox="0 0 40 48"><path d="M20 4v38"/><path d="M8 30l12 12 12-12"/></svg></div><div class="node solid"><span class="num">3</span><svg class="line" style="width:72px;height:72px" viewBox="0 0 48 48"><path d="M11 4h18l8 8v32H11z"/><path d="M29 4v8h8"/><path d="M17 24h14M17 32h14"/></svg><b>초안 열기</b><small>/memory로 열기</small></div><div class="arr"><svg viewBox="0 0 40 48"><path d="M20 4v38"/><path d="M8 30l12 12 12-12"/></svg></div><div class="node solid"><span class="num">4</span><svg class="line" style="width:72px;height:72px" viewBox="0 0 48 48"><circle cx="24" cy="24" r="19"/><path d="M14 24h20"/></svg><b>줄 덜어내기</b><small>그대로 두지 않기</small></div></div></div></body></html>
