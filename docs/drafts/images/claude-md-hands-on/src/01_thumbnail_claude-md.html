@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>썸네일</title>
+<style>:root{--bg:#FAF7F2;--card:#FFFFFF;--ink:#1F2937;--sub:#6B7280;--line:#E8E1D6;
+      --accent:#C8553D;--accent-soft:#F6E3DC;--ok:#2F6F5E;--ok-soft:#DDEDE7}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg)}
+body{font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",
+     "Apple SD Gothic Neo","NanumGothic","WenQuanYi Zen Hei",sans-serif;color:var(--ink);
+     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.35}
+.canvas{width:1080px;padding:80px;background:var(--bg)}
+.square{height:1080px;display:flex;flex-direction:column;justify-content:center}
+.kicker{font-size:36px;font-weight:600;color:var(--accent);margin-bottom:28px}
+h1{font-size:84px;font-weight:800;line-height:1.2;letter-spacing:-1px}
+h2{font-size:56px;font-weight:800;line-height:1.25;margin-bottom:48px}
+.sub{font-size:40px;color:var(--sub);margin-top:28px}
+code,.mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Noto Sans Mono CJK KR",monospace;
+           font-size:34px;background:var(--accent-soft);padding:2px 12px;border-radius:10px}
+.num{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;
+     border-radius:50%;background:var(--accent);color:#fff;font-size:34px;font-weight:700;flex:none}
+.list{margin-top:44px}.li{display:flex;align-items:center;gap:24px;font-size:44px;font-weight:600;margin-bottom:16px}
+.canvas.square{position:relative;overflow:hidden;padding:90px 80px}
+.blob{position:absolute;right:-170px;top:-170px;width:520px;height:520px;border-radius:50%;background:var(--accent-soft)}
+.blob2{position:absolute;right:70px;top:70px;width:150px;height:150px;border-radius:50%;background:var(--accent)}
+.canvas.square>*{position:relative}
+.canvas.square>.blob,.canvas.square>.blob2{position:absolute}
+h1{font-size:104px;line-height:1.12;letter-spacing:-3px}h1 em{font-style:normal;color:var(--accent)}
+.kicker{font-size:38px;letter-spacing:0}
+.list{margin-top:56px;display:flex;flex-direction:column;gap:14px}
+.li{font-size:44px;margin:0;padding:16px 28px;background:var(--card);border:2px solid var(--line);border-radius:22px;width:620px}</style></head>
+<body><div class="canvas square">
+<div class="blob"></div><div class="blob2"></div>
+<div class="kicker">클로드 코드</div>
+<h1>CLAUDE.md<br><em>작성법</em></h1>
+<div class="sub">초안은 받고, 줄은 지운다</div>
+<div class="list">
+<div class="li"><span class="num">1</span><span>/init으로 초안</span></div>
+<div class="li"><span class="num">2</span>줄 지우며 다듬기</div>
+<div class="li"><span class="num">3</span>새 세션에서 확인</div>
+</div></div></body></html>

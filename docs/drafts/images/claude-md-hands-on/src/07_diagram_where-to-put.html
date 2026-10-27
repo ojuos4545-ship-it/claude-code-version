@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>다이어그램</title>
+<style>:root{--bg:#FAF7F2;--card:#FFFFFF;--ink:#1F2937;--sub:#6B7280;--line:#E8E1D6;
+      --accent:#C8553D;--accent-soft:#F6E3DC;--ok:#2F6F5E;--ok-soft:#DDEDE7}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg)}
+body{font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",
+     "Apple SD Gothic Neo","NanumGothic","WenQuanYi Zen Hei",sans-serif;color:var(--ink);
+     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.35}
+.canvas{width:1080px;padding:80px;background:var(--bg)}
+.square{height:1080px;display:flex;flex-direction:column;justify-content:center}
+.kicker{font-size:36px;font-weight:600;color:var(--accent);margin-bottom:28px}
+h1{font-size:84px;font-weight:800;line-height:1.2;letter-spacing:-1px}
+h2{font-size:56px;font-weight:800;line-height:1.25;margin-bottom:48px}
+.sub{font-size:40px;color:var(--sub);margin-top:28px}
+code,.mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Noto Sans Mono CJK KR",monospace;
+           font-size:34px;background:var(--accent-soft);padding:2px 12px;border-radius:10px}
+.num{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;
+     border-radius:50%;background:var(--accent);color:#fff;font-size:34px;font-weight:700;flex:none}
+.route{background:var(--card);border:2px solid var(--line);border-radius:24px;padding:22px 32px;margin-bottom:20px}
+.route small{font-size:36px;color:var(--sub);display:block}
+.to{display:flex;align-items:center;gap:16px;margin-top:6px}.to b{font-size:46px}</style></head>
+<body><div class="canvas"><h2>내용을 어디에 둘까</h2><div class="route row"><small>항상 필요한 지식</small><div class="to"><svg style="transform:rotate(-90deg)" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C8553D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v15M6 13l6 6 6-6"/></svg><b>CLAUDE.md</b></div></div><div class="route row"><small>일부 파일에만 해당</small><div class="to"><svg style="transform:rotate(-90deg)" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C8553D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v15M6 13l6 6 6-6"/></svg><b>경로 한정 규칙</b></div></div><div class="route row"><small>가끔 필요한 절차</small><div class="to"><svg style="transform:rotate(-90deg)" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C8553D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v15M6 13l6 6 6-6"/></svg><b>스킬</b></div></div><div class="route row"><small>예외 없이 막을 것</small><div class="to"><svg style="transform:rotate(-90deg)" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C8553D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v15M6 13l6 6 6-6"/></svg><b>훅·deny 규칙</b></div></div></div></body></html>
