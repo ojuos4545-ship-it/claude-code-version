@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>비교표</title>
+<style>:root{--bg:#FAF7F2;--card:#FFFFFF;--ink:#1F2937;--sub:#6B7280;--line:#E8E1D6;
+      --accent:#C8553D;--accent-soft:#F6E3DC;--ok:#2F6F5E;--ok-soft:#DDEDE7}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg)}
+body{font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",
+     "Apple SD Gothic Neo","NanumGothic","WenQuanYi Zen Hei",sans-serif;color:var(--ink);
+     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.35}
+.canvas{width:1080px;padding:80px;background:var(--bg)}
+.square{height:1080px;display:flex;flex-direction:column;justify-content:center}
+.kicker{font-size:36px;font-weight:600;color:var(--accent);margin-bottom:28px}
+h1{font-size:84px;font-weight:800;line-height:1.2;letter-spacing:-1px}
+h2{font-size:56px;font-weight:800;line-height:1.25;margin-bottom:48px}
+.sub{font-size:40px;color:var(--sub);margin-top:28px}
+code,.mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Noto Sans Mono CJK KR",monospace;
+           font-size:34px;background:var(--accent-soft);padding:2px 12px;border-radius:10px}
+.num{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;
+     border-radius:50%;background:var(--accent);color:#fff;font-size:34px;font-weight:700;flex:none}
+table{width:100%;border-collapse:collapse;background:var(--card);
+ border:2px solid var(--line);border-radius:24px;overflow:hidden;font-size:38px;table-layout:fixed}
+th,td{padding:26px 20px;text-align:left;border-bottom:2px solid var(--line);vertical-align:middle}
+th{font-size:36px;background:var(--bg)}th.ok{color:var(--ok)}th.no{color:var(--accent)}
+th:first-child,td:first-child{width:270px}
+td:first-child{font-weight:700;font-size:36px}tr:last-child td{border-bottom:none}</style></head>
+<body><div class="canvas">
+<h2>역할마다 도구를 다르게</h2>
+<table>
+<tr><th>에이전트</th><th class="ok">도구</th><th class="no">이유</th></tr>
+<tr><td>매니저</td><td>읽기·쓰기만</td><td>Bash 없음</td></tr>
+<tr><td>개발자</td><td>전부 상속</td><td>구현·실행</td></tr>
+<tr><td>QA</td><td>전부 상속</td><td>직접 실행 검증</td></tr>
+<tr><td>리뷰어</td><td>전부 상속</td><td>읽기 전용은 지침</td></tr>
+</table></div></body></html>
