@@ -47,6 +47,10 @@ mark.slot{background:#ffe082;font-weight:700}
 <p>이 글의 기능 설명과 권장 수치는 <strong>조사일(2026-10-27)에 연 공식 문서 기준</strong>입니다.</p>
 <p>클로드 코드는 업데이트가 잦으니 <code>claude --version</code>으로 버전을 확인하고, 글 아래의 공식 문서와 함께 봐 주세요.</p>
 <p class="sp"><br></p>
+<p>글 중간의 '직접 해 본 결과'는 2026-10-27에 Claude Code 2.1.311 버전으로, 파일 세 개짜리 연습용 할 일 목록 프로젝트에서 돌려 본 기록입니다.</p>
+<p>질문을 한 번 보내고 답을 바로 받아 오는 실행 방식(<code>claude -p</code>)을 썼어요.</p>
+<p>AI는 같은 질문에도 답이 조금씩 달라질 수 있으니, 여러분 화면에서는 결과가 다를 수 있습니다.</p>
+<p class="sp"><br></p>
 <hr>
 <p class="sp"><br></p>
 <p><span style="font-size:24px"><b>1. 쓰기 전과 후 - CLAUDE.md는 왜 필요할까?</b></span></p>
@@ -88,7 +92,44 @@ mark.slot{background:#ffe082;font-weight:700}
 </tbody>
 </table>
 <p class="sp"><br></p>
-<p><mark class="todo">[경험 보강 필요: CLAUDE.md를 쓰기 전과 후에 같은 요청을 했을 때 달라진 점, 예를 들어 매번 말하던 것을 더 이상 말하지 않아도 된 순간]</mark></p>
+<p>이 차이를 직접 비교해 봤습니다.</p>
+<p>같은 연습 프로젝트를 둘로 복사해 한쪽에만 뒤에서 보여 드릴 예시 A 같은 CLAUDE.md를 두고, 똑같이 물었어요.</p>
+<p>"이 페이지를 고친 뒤에 화면이 잘 열리는지 확인하려면 어떻게 해야 해? 방법만 알려 줘."라는 질문입니다.</p>
+<p class="sp"><br></p>
+<table style="border-collapse:collapse;width:100%">
+<thead>
+<tr>
+<th style="border:1px solid #ddd;padding:8px;background:#f3f3f3;text-align:left"></th>
+<th style="border:1px solid #ddd;padding:8px;background:#f3f3f3;text-align:left">CLAUDE.md 없음</th>
+<th style="border:1px solid #ddd;padding:8px;background:#f3f3f3;text-align:left">CLAUDE.md 있음</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="border:1px solid #ddd;padding:8px">답의 모양</td>
+<td style="border:1px solid #ddd;padding:8px">확인 방법 5가지를 나열</td>
+<td style="border:1px solid #ddd;padding:8px"><code>python3 -m http.server 8000</code> 하나로 4단계 안내</td>
+</tr>
+<tr>
+<td style="border:1px solid #ddd;padding:8px">내용</td>
+<td style="border:1px solid #ddd;padding:8px">파일 직접 열기, 개발자 도구, 화면 크기별 확인 등 일반론 (프로젝트와 상관없는 내용도 섞임)</td>
+<td style="border:1px solid #ddd;padding:8px">파일에 적어 둔 미리보기 방법 그대로</td>
+</tr>
+<tr>
+<td style="border:1px solid #ddd;padding:8px">첫 문장</td>
+<td style="border:1px solid #ddd;padding:8px">"확인하는 방법은 다음과 같습니다"</td>
+<td style="border:1px solid #ddd;padding:8px">실행할 명령부터 (결론 먼저)</td>
+</tr>
+<tr>
+<td style="border:1px solid #ddd;padding:8px">마지막 문장</td>
+<td style="border:1px solid #ddd;padding:8px">"원하시면 제가 직접 서버를 띄워 드릴 수도 있습니다"</td>
+<td style="border:1px solid #ddd;padding:8px">"이 프로젝트 규칙상 코드를 바꾼 뒤 같은 방법으로 확인하고 알려 드릴게요"</td>
+</tr>
+</tbody>
+</table>
+<p class="sp"><br></p>
+<p>파일에 한 줄 적어 둔 것만으로 답이 '일반적인 정답 목록'에서 '이 프로젝트의 정답 하나'로 좁혀졌어요.</p>
+<p>다만 한 번 돌려 본 결과이고, 같은 질문도 문장은 매번 조금씩 달라집니다.</p>
 <p class="sp"><br></p>
 <p>다만 이 파일은 지시서가 아니라 <strong>참고 자료</strong>에 가깝습니다.</p>
 <p>공식 문서에 따르면 내용은 시스템 프롬프트가 아니라 그 뒤의 사용자 메시지로 전달되기 때문에, 엄격한 준수가 보장되지는 않아요.</p>
@@ -140,7 +181,7 @@ mark.slot{background:#ffe082;font-weight:700}
 </table>
 <p class="sp"><br></p>
 <p><code>./</code>는 프로젝트 폴더 맨 위를 뜻하고, <code>~</code>는 내 컴퓨터의 홈 폴더입니다.</p>
-<p>프로젝트 안에서 나만 쓰는 설정은 <code>CLAUDE.local.md</code>에 두고 <code>.gitignore</code>(git이 추적하지 않을 파일을 적는 목록)에 추가하면 공유되지 않아요.</p>
+<p>프로젝트 안에서 나만 쓰는 설정까지 합치면 네 곳이 되는데, 그건 <code>CLAUDE.local.md</code>에 두고 <code>.gitignore</code>(git이 추적하지 않을 파일을 적는 목록)에 추가하면 공유되지 않아요.</p>
 <p class="sp"><br></p>
 <p>여기서 많은 분들이 헷갈려 하시는 게 "파일이 여러 개면 어느 것이 이기나요?"라는 질문입니다.</p>
 <p>공식 문서의 설명은 덮어쓰기가 아니라 <strong>이어 붙이기</strong>예요.</p>
@@ -161,7 +202,7 @@ mark.slot{background:#ffe082;font-weight:700}
 <p>아래 순서대로 차근차근 따라와 주세요.</p>
 <p class="sp"><br></p>
 <p>1. <strong>프로젝트 폴더에서 <code>claude</code> 실행:</strong> 연습용 폴더로 이동해 실행합니다. (파일이 만들어질 위치가 이 폴더이니 폴더를 잘못 고르지 않았는지 먼저 확인하세요.)</p>
-<p>2. <strong><code>/init</code> 입력:</strong> Claude가 코드를 분석해 빌드 명령, 테스트 방법, 발견한 관례를 담은 초안을 만듭니다. (이미 CLAUDE.md가 있으면 덮어쓰지 않고 개선안을 내놓습니다. 환경 변수, 곧 실행 환경에 미리 켜 두는 설정값인 <code>CLAUDE_CODE_NEW_INIT=1</code>을 켜면 스킬·훅까지 묻는 대화형 흐름이 되는데, 입문 단계에서는 없어도 충분해요.)</p>
+<p>2. <strong><code>/init</code> 입력:</strong> Claude가 코드를 분석해 빌드 명령, 테스트 방법, 발견한 관례를 담은 초안을 만듭니다. (이미 CLAUDE.md가 있으면 덮어쓰지 않고 개선안을 내놓아요. 환경 변수, 곧 미리 켜 두는 설정값인 <code>CLAUDE_CODE_NEW_INIT=1</code>을 켜면 스킬·훅까지 묻는 대화형 흐름이 되는데, 입문 단계에서는 없어도 충분합니다.)</p>
 <p>3. <strong><code>/memory</code>로 초안 열어 읽기:</strong> 메모리 파일 목록이 나오고, 고르면 편집기로 열립니다. (아직 없는 파일을 고르면 먼저 만들어 줍니다.)</p>
 <p>4. <strong>줄이기:</strong> Claude가 코드만 봐도 알 만한 줄(폴더 설명 등)은 지우고, 모호한 줄은 구체적으로 바꿉니다. (이 단계가 작성의 핵심입니다.)</p>
 <p>5. <strong>코드에 없는 정보 3~5줄 추가:</strong> 실행할 때의 함정, 팀이 정한 결정처럼 코드에서 읽어 낼 수 없는 것을 적습니다. (줄 수는 제가 입문자용으로 제안하는 감각이지 공식 수치가 아닙니다.)</p>
@@ -171,11 +212,41 @@ mark.slot{background:#ffe082;font-weight:700}
 <p>초안이 몇 줄로, 어떤 항목으로 나오는지는 프로젝트와 환경마다 다릅니다.</p>
 <p>그래서 2~4단계에서 여러분의 눈으로 직접 읽어 보는 과정이 꼭 필요해요.</p>
 <p class="sp"><br></p>
-<p><mark class="todo">[경험 보강 필요: /init을 처음 실행했을 때 나온 초안의 모습(줄 수, 어떤 항목이 들어 있었는지)과 그중 지운 부분·남긴 부분]</mark></p>
+<p>연습 프로젝트(아직 CLAUDE.md가 없는 상태)에서 <code>/init</code>을 실행해 보니, 15초 남짓 만에 17줄짜리 파일이 만들어졌습니다.</p>
+<p><code>Overview</code>, <code>Structure</code>, <code>Conventions</code> 세 구역이었고, 담긴 내용은 이렇습니다.</p>
+<p class="sp"><br></p>
+<p>• 빌드·린트·테스트 도구가 없으니 <code>index.html</code>을 브라우저로 열어 확인한다는 안내</p>
+<p>• <code>index.html</code>과 <code>app.js</code>가 같은 id(<code>task</code>, <code>add</code>, <code>list</code>)를 쓰니 한쪽을 바꾸면 양쪽을 고치라는 경고</p>
+<p>• 파일별 역할 설명, 그리고 <code>old/legacy.js</code>는 쓰지 않는 파일이니 건드리지 말라는 메모</p>
+<p class="sp"><br></p>
+<p>눈에 띈 점은 세 가지였어요.</p>
+<p class="sp"><br></p>
+<p>• <strong>언어:</strong> 화면 문구는 한국어인데 초안은 영어로 쓰여 있었습니다. 한국어로 바꿀지 정하는 것도 다듬기의 일부예요.</p>
+<p>• <strong>지울 후보:</strong> 파일별 역할 설명은 코드를 열면 바로 아는 내용이라 4단계에서 지울 후보였습니다.</p>
+<p>• <strong>남길 후보:</strong> id 경고와 <code>old/</code> 메모는 코드만 봐서는 놓치기 쉬운 함정이라 남길 후보였고요.</p>
+<p class="sp"><br></p>
+<p>이 기준대로 줄이고 한국어로 바꾸니 7줄이 되었습니다.</p>
+<p class="sp"><br></p>
+<p class="code"># 프로젝트</p>
+<p class="code">- 연습용 할 일 목록 웹페이지 (HTML, CSS, JavaScript만 사용)</p>
+<p class="code">- 확인: index.html을 브라우저로 열기 (빌드·테스트 도구 없음)</p>
+<p class="code"><br></p>
+<p class="code"># 주의</p>
+<p class="code">- index.html의 id(`task`, `add`, `list`)는 app.js와 짝이라, 바꾸면 두 파일을 함께 고친다</p>
+<p class="code">- `old/`는 쓰지 않는 예전 연습 코드라 건드리지 않는다</p>
 <p class="sp"><br></p>
 <p>6단계의 확인 화면도 환경마다 조금씩 다르게 보일 수 있습니다.</p>
 <p class="sp"><br></p>
-<p><mark class="todo">[경험 보강 필요: /context에서 Memory files 목록에 CLAUDE.md가 뜬 화면 캡처와 확인했을 때의 소감]</mark></p>
+<p>새 세션에서 <code>/context</code>를 실행해 보니 아래처럼 Memory files 항목에 방금 만든 파일이 올라와 있었어요. (필요한 부분만 옮겼습니다.)</p>
+<p class="sp"><br></p>
+<p class="code">Memory files   369 tokens   0.0%</p>
+<p class="code"><br></p>
+<p class="code">Type      Path                          Tokens</p>
+<p class="code">Project   .../todo-practice/CLAUDE.md   369</p>
+<p class="sp"><br></p>
+<p>17줄짜리 초안이 차지한 분량은 369토큰이었고, 전체의 소수점 이하(0.0%)였습니다.</p>
+<p>(토큰은 AI가 글을 읽을 때 쓰는 단위로, 단어를 잘게 나눈 조각 정도로 보시면 됩니다.)</p>
+<p>목록에 파일이 보이면 읽힌다는 뜻이니, 가장 먼저 확인할 곳이 바로 여기예요.</p>
 <p class="sp"><br></p>
 <blockquote><p>📌 <strong>전문가 Tip:</strong> 공식 모범 사례는 <code>/init</code>이 시작 버전을 만들어 줄 뿐이고, 거기서부터의 일은 주로 줄을 지우는 것이라고 설명합니다. 초안이 허전해 보여도 채우려 하기보다 덜어 내는 쪽에 시간을 써 보세요.</p></blockquote>
 <p class="sp"><br></p>
@@ -274,9 +345,35 @@ mark.slot{background:#ffe082;font-weight:700}
 </tbody>
 </table>
 <p class="sp"><br></p>
+<p>표의 문구는 공식 문서의 예시를 한국어로 풀어 쓰거나 합친 것이라, 원문과 글자까지 똑같지는 않아요.</p>
+<p class="sp"><br></p>
 <p style="text-align:center"><mark class="slot">【사진 05】 05_table_good-bad.png</mark></p>
 <p class="sp"><br></p>
-<p><mark class="todo">[경험 보강 필요: 처음 쓴 규칙이 모호해서 잘 안 지켜졌다가, 구체적으로 바꾸자 달라진 사례]</mark></p>
+<p>모호한 규칙과 구체적인 규칙의 차이도 직접 확인해 봤습니다.</p>
+<p>연습 프로젝트에 "새로고침해도 할 일 목록이 남도록 저장 기능을 추가해 줘."라고 요청하고, CLAUDE.md의 규칙 한 줄만 다르게 뒀어요.</p>
+<p class="sp"><br></p>
+<table style="border-collapse:collapse;width:100%">
+<thead>
+<tr>
+<th style="border:1px solid #ddd;padding:8px;background:#f3f3f3;text-align:left">규칙</th>
+<th style="border:1px solid #ddd;padding:8px;background:#f3f3f3;text-align:left">결과 (<code>app.js</code>의 저장 키 이름)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="border:1px solid #ddd;padding:8px">"데이터는 적절하게 저장해"</td>
+<td style="border:1px solid #ddd;padding:8px"><code>todos</code></td>
+</tr>
+<tr>
+<td style="border:1px solid #ddd;padding:8px">"할 일 목록은 localStorage의 <code>todo-items</code> 키에 JSON 배열로 저장한다"</td>
+<td style="border:1px solid #ddd;padding:8px"><code>todo-items</code> (답변에도 "CLAUDE.md 규칙을 따랐다"고 적음)</td>
+</tr>
+</tbody>
+</table>
+<p class="sp"><br></p>
+<p>모호한 규칙이 무시된 건 아니에요.</p>
+<p>기준이 없으니 Claude가 알아서 이름을 정했을 뿐이고, 구체적으로 적자 정해 둔 이름 그대로 쓰였습니다.</p>
+<p>키 이름처럼 코드만 봐서는 알 수 없는 약속일수록 한 줄로 적어 둘 가치가 있어요.</p>
 <p class="sp"><br></p>
 <p>대문자 강조도 한마디 덧붙일게요.</p>
 <p>공식 모범 사례에 따르면 요즘 모델에는 <code>IMPORTANT</code> 같은 강조가 필요 없고, 오히려 규칙을 과하게 적용하게 만들 수 있다고 합니다.</p>
@@ -345,13 +442,25 @@ mark.slot{background:#ffe082;font-weight:700}
 <p><code>@경로</code>로 다른 파일을 불러와 정리할 수는 있지만, 가져온 파일도 함께 로드되어 분량이 줄지는 않습니다.</p>
 <p>여러 단계의 절차라면 스킬로, 일부 파일에만 해당하는 내용이라면 앞서 본 경로 한정 규칙으로 옮기는 쪽이 좋아요.</p>
 <p class="sp"><br></p>
-<p><mark class="todo">[경험 보강 필요: CLAUDE.md가 길어졌다가 줄여 본 경험, 또는 서로 모순된 규칙 때문에 헷갈렸던 경험]</mark></p>
+<p>줄이는 효과도 숫자로 확인해 봤어요.</p>
+<p>앞서 <code>/init</code>이 만든 17줄 초안은 369토큰이었는데, 코드에서 알 수 있는 줄을 지운 7줄 버전은 <code>/context</code>에서 180토큰으로 나왔습니다.</p>
+<p>같은 정보를 담고도 분량이 절반 정도로 줄어든 셈이고, 파일이 커질수록 이 차이도 커집니다.</p>
 <p class="sp"><br></p>
 <p><strong>3) 모순을 방치하는 실수</strong></p>
 <p class="sp"><br></p>
 <p>사용자 파일, 프로젝트 파일, 하위 폴더 파일, 규칙 파일이 서로 다른 말을 하면 Claude가 아무거나 고를 수 있습니다.</p>
 <p>가끔 한 번씩 훑어보며 겹치거나 엇갈리는 줄이 없는지 점검해 주세요.</p>
 <p><code>/doctor</code>로 설정과 CLAUDE.md의 문제를 진단받을 수도 있습니다.</p>
+<p class="sp"><br></p>
+<p>모순을 일부러 만들어서도 시험해 봤어요.</p>
+<p><code>CLAUDE.md</code>에는 "답변은 한 줄로만 짧게 해", <code>.claude/rules/answer.md</code>에는 "답변은 항목별로 나눠서 자세하게 설명해"라고 적고 "app.js가 하는 일을 설명해 줘."를 세 번 물었습니다.</p>
+<p class="sp"><br></p>
+<p>• 1회: 항목별로 나누되 각 항목은 짧게 쓰는 절충안으로 답하고, 어느 지침을 따를지 알려 달라고 되물었어요.</p>
+<p>• 2회, 3회: 둘 다 <code>CLAUDE.md</code>의 한 줄 답변을 따랐다고 밝혔습니다.</p>
+<p class="sp"><br></p>
+<p>공식 문서 설명처럼 어느 쪽을 따를지 매번 달랐어요.</p>
+<p>세 번 모두 충돌 사실을 스스로 알려 준 건 다행이지만, 항상 그럴 거라고 믿기는 어렵습니다.</p>
+<p>이런 알림이 보이면 한쪽을 지우거나 하나로 합치는 게 가장 확실한 해결책이에요.</p>
 <p class="sp"><br></p>
 <p><strong>4) 옛 조언을 그대로 따르는 실수</strong></p>
 <p class="sp"><br></p>
@@ -432,7 +541,14 @@ mark.slot{background:#ffe082;font-weight:700}
 <p>자동 메모리는 로컬 세션에서 기본으로 켜져 있고, <code>/memory</code>에서 켜고 끌 수 있어요.</p>
 <p>저장된 메모도 평문 마크다운이라 열어서 고치거나 지울 수 있습니다.</p>
 <p class="sp"><br></p>
-<p><mark class="todo">[경험 보강 필요: 자동 메모리가 저장한 내용을 /memory에서 열어 본 소감]</mark></p>
+<p>자동 메모리도 연습 프로젝트에서 시험해 봤는데, 문서 설명과 똑같이 보이지는 않았어요.</p>
+<p>"앞으로 패키지는 npm 말고 항상 pnpm을 써 줘. 기억해 둬."라고 하자 자동 메모리 폴더가 아니라 프로젝트의 <code>CLAUDE.md</code>에 규칙 한 줄이 적혔습니다.</p>
+<p>"나는 이모지가 싫어"라고만 말했을 때는 그 답변에서만 반영됐고, 새로 생긴 파일이나 메모리 폴더는 없었어요.</p>
+<p class="sp"><br></p>
+<p>공식 문서는 기억해 달라고 하면 자동 메모리에 저장된다고 설명합니다.</p>
+<p>제 시험은 클라우드 환경에서 대화 없이 한 번에 실행하는 방식이었고, 문서에도 일부 실행 환경에서는 자동 메모리가 기본으로 꺼진다는 설명이 있어요.</p>
+<p>정확한 원인은 확인하지 못했습니다.</p>
+<p>그러니 여러분은 평소 쓰는 대화 화면에서 <code>/memory</code>를 열어 자동 메모리 폴더에 무엇이 쌓였는지 직접 확인해 보세요.</p>
 <p class="sp"><br></p>
 <p><strong>Q. 서브에이전트도 CLAUDE.md를 읽나요?</strong></p>
 <p>일반 서브에이전트는 메인 대화가 로드한 CLAUDE.md를 처음부터 받습니다.</p>
@@ -450,7 +566,7 @@ mark.slot{background:#ffe082;font-weight:700}
 <p><strong>Q. <code>#</code>을 입력해서 메모리를 추가한다던데요?</strong></p>
 <p>예전 자료에 나오는 방법이고 지금 공식 문서에는 없습니다.</p>
 <p>현재 공식 안내는 Claude에게 "이걸 CLAUDE.md에 추가해 줘"라고 말하거나 <code>/memory</code>로 직접 편집하는 방법이에요.</p>
-<p>대화 중에 한 말은 자동 메모리로 저장될 수 있으니, CLAUDE.md에 넣고 싶다면 그렇게 분명히 말씀해 주세요.</p>
+<p>공식 문서는 "기억해 줘"라고 부탁한 내용이 자동 메모리에 저장된다고 설명하니, CLAUDE.md에 넣고 싶다면 "CLAUDE.md에 추가해 줘"라고 분명히 말씀해 주세요.</p>
 <p class="sp"><br></p>
 <p><span style="font-size:19px"><b>공식 문서에서 더 확인하고 싶다면</b></span></p>
 <p class="sp"><br></p>

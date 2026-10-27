@@ -11,8 +11,8 @@
 | 01 | `01_thumbnail_claude-md.png` |  | 정방형 비율, CLAUDE.md 작성법의 흐름(/init으로 초안 만들기, 줄 지우며 다듬기, 새 세션에서 확인)을 세 칸으로 나열한 대표 이미지 |
 | 02 | `02_diagram_session-memory.png` |  새 팀원도 같은 맥락이 필요할 때 | CLAUDE.md 작성법의 출발점인 세션 흐름도. 새 세션은 빈 컨텍스트로 시작하고, 내가 쓰는 CLAUDE.md는 세션을 시작할 때 읽히며, Claude가 스스로 쓰는 자동 메모리와 함께 세션 사이를 이어 주는 구조 |
 | 03 | `03_card_locations.png` | 처음에는 프로젝트용 하나로 시작하시길 권해요. | CLAUDE.md 작성법 중 파일 위치 카드. 개인용 ~/.claude/CLAUDE.md, 프로젝트용 ./CLAUDE.md 또는 ./.claude/CLAUDE.md, 하위 폴더 CLAUDE.md(그 폴더 파일을 다룰 때 로드), 프로젝트 안 개인용 CLAUDE.local.md를 한 장에 정리한 카드 |
-| 04 | `04_diagram_seven-steps.png` | [경험 보강 필요: /context에서 Memory files 목록에 C | CLAUDE.md 작성법 7단계 흐름도. claude 실행, /init, /memory로 열기, 줄 지우기와 구체화, 코드에 없는 정보 추가, 새 세션에서 /context 확인, 같은 실수가 반복될 때만 한 줄 추가의 순서 |
-| 05 | `05_table_good-bad.png` | 막연한 말보다 확인 가능한 말이 좋다는 점은 공식 문서의 대비 예에서도  | CLAUDE.md 작성법의 나쁜 예와 좋은 예를 짝지은 비교표. 코드를 깔끔하게 써는 들여쓰기는 2칸으로, 바꾼 것을 테스트해는 커밋 전에 npm test 실행으로, 폴더 구조 나열은 src/legacy/ 함정 한 줄로 바꾼 모습 |
+| 04 | `04_diagram_seven-steps.png` | 목록에 파일이 보이면 읽힌다는 뜻이니, 가장 먼저 확인할 곳이 바로 여기 | CLAUDE.md 작성법 7단계 흐름도. claude 실행, /init, /memory로 열기, 줄 지우기와 구체화, 코드에 없는 정보 추가, 새 세션에서 /context 확인, 같은 실수가 반복될 때만 한 줄 추가의 순서 |
+| 05 | `05_table_good-bad.png` | 표의 문구는 공식 문서의 예시를 한국어로 풀어 쓰거나 합친 것이라, 원문 | CLAUDE.md 작성법의 나쁜 예와 좋은 예를 짝지은 비교표. 코드를 깔끔하게 써는 들여쓰기는 2칸으로, 바꾼 것을 테스트해는 커밋 전에 npm test 실행으로, 폴더 구조 나열은 src/legacy/ 함정 한 줄로 바꾼 모습 |
 | 06 | `06_card_what-to-write.png` | 개인용 값은 .gitignore한 CLAUDE.local.md에 두는 것 | CLAUDE.md 작성법 판별 질문 카드. 코드를 읽으면 찾을 수 있나, 실제로 찾아볼까 두 질문이 모두 예이면 뺀다. 적을 것은 테스트·린트 명령, 오해를 부르는 코드, 저장소에 없는 결정, 두 번 이상 교정한 것 |
 | 07 | `07_diagram_where-to-put.png` | 내용을 어디에 두면 좋을지는 아래처럼 정리됩니다. | CLAUDE.md 작성법에서 내용을 옮기는 기준도. 항상 필요한 지식은 CLAUDE.md, 일부 파일에만 해당하면 경로 한정 규칙, 가끔 필요한 절차는 스킬, 예외 없이 막아야 하면 훅·deny 규칙으로 가는 갈림길 |
 | 08 | `08_card_three-lines.png` | 정리하면 "/init으로 시작하고, 지우는 데 시간을 쓰고, 짧고 구체적 | CLAUDE.md 작성법 핵심 3줄 카드. /init으로 시작하고 지우는 데 시간을 쓴다, 짧고 구체적으로 쓴다, 꼭 막아야 하는 것은 훅이나 deny 규칙에 맡긴다 |
