@@ -8,6 +8,8 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 WIDTH = 1080
+SCALE = 2  # 2배 해상도로 캡처한다(레이아웃 폭은 그대로 1080px, 파일은 2160px)
+CSS = Path(__file__).with_name("blog-image.css")
 MAX_BYTES = 1_000_000  # 넘으면 JPEG로 저장
 BLOCK_EXTERNAL = re.compile(r"^https?://")
 
@@ -28,7 +30,7 @@ CHECK_JS = """
       if (size < (mono ? 28 : 32)) problems.push('글자가 작음(' + size + 'px): ' + el.textContent.trim().slice(0, 20));
     }
   }
-  if (c.scrollWidth > c.clientWidth + 1) problems.push('캔버스 가로 넘침');
+  if (c.scrollWidth > c.clientWidth + 1 && getComputedStyle(c).overflow === 'visible') problems.push('캔버스 가로 넘침');
   return problems;
 }
 """ % (WIDTH, WIDTH)
@@ -47,12 +49,17 @@ def main(src: Path, out: Path) -> int:
     failed = False
     with sync_playwright() as p:
         browser = launch(p)
-        page = browser.new_page(viewport={"width": WIDTH, "height": 1080}, device_scale_factor=1)
+        page = browser.new_page(viewport={"width": WIDTH, "height": 1080}, device_scale_factor=SCALE)
         page.route(BLOCK_EXTERNAL, lambda route: route.abort())  # 외부 API·폰트·이미지 차단
         for html in sorted(src.glob("*.html")):
             page.goto(html.resolve().as_uri())
+            page.add_style_tag(content=CSS.read_text(encoding="utf-8").replace("url(\"fonts/", f'url("{CSS.parent.as_uri()}/fonts/'))
             page.evaluate("document.fonts.ready")
-            problems = page.evaluate(CHECK_JS)
+            if not page.evaluate("document.fonts.check('700 40px PretendardBlog', '한글')"):
+                problems_font = ["Pretendard 폰트가 로드되지 않았습니다"]
+            else:
+                problems_font = []
+            problems = problems_font + page.evaluate(CHECK_JS)
             canvas = page.locator(".canvas")
             png = out / f"{html.stem}.png"
             canvas.screenshot(path=str(png))
@@ -62,7 +69,7 @@ def main(src: Path, out: Path) -> int:
                 png.unlink()
                 png = jpg
             box = canvas.bounding_box()
-            print(f"{'OK  ' if not problems else 'WARN'} {png.name} {int(box['width'])}x{int(box['height'])}"
+            print(f"{'OK  ' if not problems else 'WARN'} {png.name} {int(box['width'] * SCALE)}x{int(box['height'] * SCALE)}"
                   f" {png.stat().st_size // 1024}KB")
             for msg in problems:
                 print("   -", msg)

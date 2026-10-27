@@ -1,0 +1,13 @@
+/* 블로그 이미지 공통 덮어쓰기 스타일. make_blog_images.py가 각 HTML 뒤에 주입한다. */
+@font-face{font-family:"PretendardBlog";font-weight:400;src:url("fonts/Pretendard-Regular.subset.woff2") format("woff2")}
+@font-face{font-family:"PretendardBlog";font-weight:600;src:url("fonts/Pretendard-SemiBold.subset.woff2") format("woff2")}
+@font-face{font-family:"PretendardBlog";font-weight:700 900;src:url("fonts/Pretendard-ExtraBold.subset.woff2") format("woff2")}
+body{font-family:"PretendardBlog","Pretendard","Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+     text-rendering:geometricPrecision;font-feature-settings:"ss05" 0}
+code,.mono,.node b.mono{font-family:"JetBrains Mono","SFMono-Regular",Menlo,Consolas,"PretendardBlog",monospace;
+     font-weight:700;letter-spacing:-.5px;font-size:32px;background:var(--accent-soft);color:#8E3A28;border-radius:12px}
+h2{position:relative;padding-top:36px;letter-spacing:-1.5px}
+h2::before{content:"";position:absolute;left:0;top:0;width:72px;height:10px;border-radius:5px;background:var(--accent)}
+.row,.node,table{box-shadow:0 2px 0 var(--line),0 10px 24px rgba(31,41,55,.06)}
+.num{box-shadow:0 4px 10px rgba(200,85,61,.28)}
+.arrow svg{display:block}
