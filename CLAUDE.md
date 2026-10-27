@@ -47,6 +47,7 @@ APP_ENV=development .venv/bin/uvicorn app.main:create_app --factory --reload
   - `product-manager.md`: PRD 작성과 개발 일정 관리를 맡는 프로덕트 매니저. 읽기·쓰기 도구만 쓴다(Bash 없음). PRD는 기본으로 `docs/prd/<기능-이름>.md`에 저장한다.
   - `backend-developer.md`: 서버 아키텍처, API, 데이터 처리, 외부 연동, 보안·성능을 맡는 구현 담당.
   - `qa-engineer.md`: 직접 실행·테스트하며 기능, 에러 처리, 성능, 사용성을 검증한다. 테스트 코드만 쓰고 제품 코드는 지시 없이 고치지 않는다. 코드만 읽는 리뷰는 `code-reviewer`와 역할을 나눈다.
+  - `researcher.md`: 주제를 웹에서 조사해 최신·신뢰 출처 위주로 모으고, 글쓰기 에이전트용 리서치 노트(출처 URL 포함)로 정리한다. 노트는 기본으로 `docs/research/<주제-이름>.md`에 저장한다. 코드는 건드리지 않는다.
 - 에이전트들은 PRD(`docs/prd/`)를 공통 기준으로 삼는다: product-manager가 쓰고, backend-developer가 구현하고, qa-engineer가 수용 기준으로 검증한다.
 
 ## 에이전트 파일 작성 규칙
