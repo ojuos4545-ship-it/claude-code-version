@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>다이어그램</title>
+<style>:root{--bg:#FAF7F2;--card:#FFFFFF;--ink:#1F2937;--sub:#6B7280;--line:#E8E1D6;
+      --accent:#C8553D;--accent-soft:#F6E3DC;--ok:#2F6F5E;--ok-soft:#DDEDE7}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg)}
+body{font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",
+     "Apple SD Gothic Neo","NanumGothic","WenQuanYi Zen Hei",sans-serif;color:var(--ink);
+     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.35}
+.canvas{width:1080px;padding:80px;background:var(--bg)}
+.square{height:1080px;display:flex;flex-direction:column;justify-content:center}
+.kicker{font-size:36px;font-weight:600;color:var(--accent);margin-bottom:28px}
+h1{font-size:84px;font-weight:800;line-height:1.2;letter-spacing:-1px}
+h2{font-size:56px;font-weight:800;line-height:1.25;margin-bottom:48px}
+.sub{font-size:40px;color:var(--sub);margin-top:28px}
+code,.mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Noto Sans Mono CJK KR",monospace;
+           font-size:34px;background:var(--accent-soft);padding:2px 12px;border-radius:10px}
+.num{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;
+     border-radius:50%;background:var(--accent);color:#fff;font-size:34px;font-weight:700;flex:none}
+.col{display:flex;flex-direction:column;gap:6px}
+.node{display:flex;align-items:center;gap:24px;background:var(--card);border:2px solid var(--line);border-radius:24px;padding:18px 32px}
+.node b{font-size:40px;min-width:270px}.node b.mono{font-size:36px;background:var(--accent-soft);padding:4px 14px;min-width:0;width:290px}
+.node small{font-size:34px;color:var(--sub)}
+.arrow{font-size:40px;color:var(--accent);font-weight:700;padding-left:60px;display:flex;align-items:center;gap:14px}
+.arrow code{font-size:30px}
+.foot{font-size:36px;color:var(--sub);margin-top:28px}</style></head>
+<body><div class="canvas">
+<h2>Shift+Tab으로 모드 순환</h2>
+<div class="col">
+<div class="node"><span class="num">1</span><b class="mono">default</b><small>읽기만 자동, 나머지는 질문</small></div>
+<div class="arrow">↓ <code>Shift+Tab</code></div>
+<div class="node"><span class="num">2</span><b class="mono">acceptEdits</b><small>파일 편집은 묻지 않음</small></div>
+<div class="arrow">↓ <code>Shift+Tab</code></div>
+<div class="node"><span class="num">3</span><b class="mono">plan</b><small>계획만 세우고 편집 차단</small></div>
+<div class="arrow">↓ 계획 승인</div>
+<div class="node"><span class="num">4</span><b style="width:290px">진행</b><small>승인한 계획대로 작업</small></div>
+</div>
+<div class="foot">plan 다음에는 다시 default</div></div></body></html>
