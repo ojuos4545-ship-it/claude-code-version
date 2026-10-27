@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>다이어그램</title>
+<style>:root{--bg:#FAF7F2;--card:#FFFFFF;--ink:#1F2937;--sub:#6B7280;--line:#E8E1D6;
+      --accent:#C8553D;--accent-soft:#F6E3DC;--ok:#2F6F5E;--ok-soft:#DDEDE7}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg)}
+body{font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",
+     "Apple SD Gothic Neo","NanumGothic","WenQuanYi Zen Hei",sans-serif;color:var(--ink);
+     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.35}
+.canvas{width:1080px;padding:80px;background:var(--bg)}
+.square{height:1080px;display:flex;flex-direction:column;justify-content:center}
+.kicker{font-size:36px;font-weight:600;color:var(--accent);margin-bottom:28px}
+h1{font-size:84px;font-weight:800;line-height:1.2;letter-spacing:-1px}
+h2{font-size:56px;font-weight:800;line-height:1.25;margin-bottom:48px}
+.sub{font-size:40px;color:var(--sub);margin-top:28px}
+code,.mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Noto Sans Mono CJK KR",monospace;
+           font-size:34px;background:var(--accent-soft);padding:2px 12px;border-radius:10px}
+.num{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;
+     border-radius:50%;background:var(--accent);color:#fff;font-size:34px;font-weight:700;flex:none}
+.flow{display:flex;flex-direction:column;gap:0}
+.node{display:flex;align-items:center;gap:28px;background:var(--card);border:2px solid var(--line);
+ border-radius:24px;padding:24px 32px}
+.node .col{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.node b{font-size:44px}.node small{font-size:36px;color:var(--sub)}
+.node b.mono{font-size:34px;padding:4px 14px}
+.arrow{height:52px;display:flex;align-items:center;padding-left:46px;color:var(--accent)}
+.foot{font-size:36px;color:var(--sub);margin-top:30px}.node{padding:16px 30px}.arrow{height:36px}.foot{margin-top:22px}.node .col{gap:4px}h2{margin-bottom:40px}</style></head>
+<body><div class="canvas"><h2>훅이 실행되는 순간들</h2>
+<div class="flow"><div class="node"><span class="num">1</span><span class="col"><b class="mono">SessionStart</b><small>세션을 시작할 때</small></span></div><div class="arrow"><svg width="40" height="44" viewBox="0 0 40 44"><path d="M20 4v32M8 24l12 12 12-12" fill="none" stroke="#7B6CF0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="node"><span class="num">2</span><span class="col"><b class="mono">UserPromptSubmit</b><small>질문을 보낸 직후</small></span></div><div class="arrow"><svg width="40" height="44" viewBox="0 0 40 44"><path d="M20 4v32M8 24l12 12 12-12" fill="none" stroke="#7B6CF0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="node"><span class="num">3</span><span class="col"><b class="mono">PreToolUse</b><small>도구를 쓰기 직전, 막기 가능</small></span></div><div class="arrow"><svg width="40" height="44" viewBox="0 0 40 44"><path d="M20 4v32M8 24l12 12 12-12" fill="none" stroke="#7B6CF0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="node"><span class="num">4</span><span class="col"><b class="mono">PostToolUse</b><small>도구를 쓴 직후</small></span></div><div class="arrow"><svg width="40" height="44" viewBox="0 0 40 44"><path d="M20 4v32M8 24l12 12 12-12" fill="none" stroke="#7B6CF0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="node"><span class="num">5</span><span class="col"><b class="mono">Stop</b><small>답을 마쳤을 때</small></span></div></div>
+<div class="foot">3과 4는 도구를 쓸 때마다 반복</div></div></body></html>

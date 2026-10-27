@@ -147,6 +147,8 @@ def render(blocks, images_dir: Path, mode: str):
                 mime = "image/jpeg" if name.endswith(".jpg") else "image/png"
                 src = f"data:{mime};base64," + base64.b64encode(raw).decode()
                 out.append(f'<p style="text-align:center"><img src="{src}" alt="{html.escape(alt)}"></p>')
+                # 미리보기에서도 사진 번호를 보여 준다(paste.html의 【사진 NN】, upload-guide.md 순서와 같다)
+                out.append(f'<p style="text-align:center"><span class="imgno">사진 {n_img:02d} · {html.escape(name)}</span></p>')
             else:
                 out.append(f'<p style="text-align:center"><mark class="slot">【사진 {n_img:02d}】 {html.escape(name)}</mark></p>')
     return "\n".join(out), title, tags
@@ -166,9 +168,11 @@ body{margin:0;background:#fff;color:#333;font-family:"Noto Sans KR","Malgun Goth
 #body blockquote{margin:0;padding:10px 16px;border-left:4px solid #03c75a;background:#f4f7f5}
 #body img{max-width:100%;height:auto}
 #body code{font-family:Consolas,Menlo,monospace;font-size:.92em;background:#f3f3f3}
+#body td code{word-break:break-all}
 #body a{color:#0a7d3c;word-break:break-all}
 mark.todo{background:#fff176}
 mark.slot{background:#ffe082;font-weight:700}
+.imgno{font-size:12px;color:#888}
 .tags{margin-top:32px;font-size:13px;color:#555}
 .tags span{display:inline-block;background:#f0f2f1;padding:3px 10px;border-radius:14px;margin:0 6px 6px 0}
 @media(max-width:480px){.title{font-size:22px}}
@@ -206,6 +210,8 @@ def guide(blocks, title, tags):
             prev = data[-1].strip()
         elif kind in ("h2", "h3"):
             prev = data
+        elif kind == "quote":
+            prev = data[-1].strip().lstrip("> ").strip()
         elif kind == "img":
             n += 1
             alt, path = data

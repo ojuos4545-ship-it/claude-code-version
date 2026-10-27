@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>비교표</title>
+<style>:root{--bg:#FAF7F2;--card:#FFFFFF;--ink:#1F2937;--sub:#6B7280;--line:#E8E1D6;
+      --accent:#C8553D;--accent-soft:#F6E3DC;--ok:#2F6F5E;--ok-soft:#DDEDE7}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg)}
+body{font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",
+     "Apple SD Gothic Neo","NanumGothic","WenQuanYi Zen Hei",sans-serif;color:var(--ink);
+     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.35}
+.canvas{width:1080px;padding:80px;background:var(--bg)}
+.square{height:1080px;display:flex;flex-direction:column;justify-content:center}
+.kicker{font-size:36px;font-weight:600;color:var(--accent);margin-bottom:28px}
+h1{font-size:84px;font-weight:800;line-height:1.2;letter-spacing:-1px}
+h2{font-size:56px;font-weight:800;line-height:1.25;margin-bottom:48px}
+.sub{font-size:40px;color:var(--sub);margin-top:28px}
+code,.mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Noto Sans Mono CJK KR",monospace;
+           font-size:34px;background:var(--accent-soft);padding:2px 12px;border-radius:10px}
+.num{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;
+     border-radius:50%;background:var(--accent);color:#fff;font-size:34px;font-weight:700;flex:none}
+table{width:100%;border-collapse:collapse;background:var(--card);
+ border:2px solid var(--line);border-radius:24px;overflow:hidden;font-size:38px;table-layout:fixed}
+th,td{padding:26px 24px;text-align:left;border-bottom:2px solid var(--line);vertical-align:middle}
+th{font-size:36px;background:var(--bg)}th.ok{color:var(--ok)}th.no{color:var(--accent)}
+tr:last-child td{border-bottom:none}td.g{font-weight:700}
+.foot{font-size:36px;color:var(--sub);margin-top:30px}
+col.c1{width:21%}</style></head>
+<body><div class="canvas"><h2>CLAUDE.md는 부탁, 훅은 규칙</h2>
+<table><colgroup><col class="c1"><col><col></colgroup>
+<tr><th>구분</th><th class="no">CLAUDE.md</th><th class="ok">훅</th></tr>
+<tr><td class="g">실행</td><td>Claude가 읽고 판단</td><td class="g">매번 자동 실행</td></tr>
+<tr><td class="g">맞는 일</td><td>말투, 설명 방식</td><td class="g">꼭 지킬 규칙</td></tr>
+<tr><td class="g">적는 곳</td><td><code>CLAUDE.md</code></td><td><code>settings.json</code></td></tr>
+</table></div></body></html>

@@ -11,6 +11,7 @@ WIDTH = 1080
 SCALE = 2  # 2배 해상도로 캡처한다(레이아웃 폭은 그대로 1080px, 파일은 2160px)
 CSS = Path(__file__).with_name("blog-image.css")
 THEME_3D = Path(__file__).with_name("blog-image-3d.css")  # 기본 테마(라인+3D). --theme=flat 이면 적용하지 않는다
+THEME_DARK = Path(__file__).with_name("blog-image-dark.css")  # --theme=dark: 어두운 바탕 + 보라 빛 3D
 MAX_BYTES = 1_000_000  # 넘으면 JPEG로 저장
 BLOCK_EXTERNAL = re.compile(r"^https?://")
 
@@ -57,6 +58,8 @@ def main(src: Path, out: Path, theme: str = "3d") -> int:
             page.add_style_tag(content=CSS.read_text(encoding="utf-8").replace("url(\"fonts/", f'url("{CSS.parent.as_uri()}/fonts/'))
             if theme == "3d":
                 page.add_style_tag(content=THEME_3D.read_text(encoding="utf-8"))
+            elif theme == "dark":
+                page.add_style_tag(content=THEME_DARK.read_text(encoding="utf-8"))
             page.evaluate("document.fonts.ready")
             if not page.evaluate("document.fonts.check('700 40px PretendardBlog', '한글')"):
                 problems_font = ["Pretendard 폰트가 로드되지 않았습니다"]
@@ -84,6 +87,6 @@ def main(src: Path, out: Path, theme: str = "3d") -> int:
 if __name__ == "__main__":
     args = [a for a in sys.argv[1:] if not a.startswith("--theme=")]
     theme = next((a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--theme=")), "3d")
-    if len(args) != 2 or theme not in ("flat", "3d"):
-        sys.exit("사용법: make_blog_images.py <src 폴더> <출력 폴더> [--theme=3d|flat]")
+    if len(args) != 2 or theme not in ("flat", "3d", "dark"):
+        sys.exit("사용법: make_blog_images.py <src 폴더> <출력 폴더> [--theme=3d|flat|dark]")
     sys.exit(main(Path(args[0]), Path(args[1]), theme))
