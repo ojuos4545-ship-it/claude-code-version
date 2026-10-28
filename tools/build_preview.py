@@ -212,6 +212,9 @@ def guide(blocks, title, tags):
             prev = data
         elif kind == "quote":
             prev = data[-1].strip().lstrip("> ").strip()
+        elif kind == "table":
+            # 표 바로 아래에 오는 사진은 표의 머리 줄로 위치를 알린다
+            prev = "(표 바로 아래) " + " ".join(c.strip() for c in data[0].strip().strip("|").split("|"))
         elif kind == "img":
             n += 1
             alt, path = data
