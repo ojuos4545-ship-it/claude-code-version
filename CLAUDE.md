@@ -53,6 +53,15 @@ APP_ENV=development .venv/bin/uvicorn app.main:create_app --factory --reload
 - `docs/guides/`: 블로그 가이드. `style-guide.md`(말투·서식), `seo-guide.md`(검색 노출), `image-guide.md`(이미지 규격과 HTML→Playwright 캡처). 이미지 캡처는 `python3 tools/make_blog_images.py <src 폴더> <출력 폴더> [--theme=flat|dark]`(기본은 라인+3D 테마, `dark`는 다크+3D 표본 테마)이고, `pip install playwright`가 필요하다.
 - 에이전트들은 PRD(`docs/prd/`)를 공통 기준으로 삼는다: product-manager가 쓰고, backend-developer가 구현하고, qa-engineer가 수용 기준으로 검증한다.
 
+## 블로그 글 작업 순서
+
+- 사용자에게 하는 보고와 결과 설명은 반드시 한국어로 쓴다.
+- 글 한 편은 researcher → writer → image-maker → assembler 순서로 맡기고, 단계마다 결과 파일을 확인한 뒤 다음으로 넘어간다.
+- 글의 '직접 해 본 결과'(경험) 부분은 실제로 실험해 보고 쓴다. 실험 방법과 수치는 `docs/research/<주제>-experiments.md`에 남기고, 글에는 기록에 있는 사실만 쓴다.
+- 조립이 끝나면 최종 팩트 검증(공식 문서·실험 기록과 대조)과 오기·오류 수정을 하고, 초안과 붙여넣기용 페이지를 사용자에게 보여 준다.
+- 글쓰기 규칙은 `docs/guides/`의 세 가이드를 반드시 따른다. 같은 규칙은 한 가이드에만 적고 다른 곳에서는 그 절을 가리킨다(문단·마무리·붙여넣기 서식은 `style-guide.md`, 이미지 서식은 `image-guide.md`).
+- 문단 정리는 `python3 -I tools/reflow_paragraphs.py <글.md>`로 할 수 있다(글자는 그대로 두고 줄바꿈만 바꾼다).
+
 ## 에이전트 파일 작성 규칙
 
 - 프론트매터 필드는 `name`, `description`, `model`, `color`를 쓴다. `tools`를 생략하면 메인 대화의 모든 도구를 물려받는다.
