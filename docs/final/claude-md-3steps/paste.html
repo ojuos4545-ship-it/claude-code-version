@@ -27,24 +27,30 @@ mark.slot{background:#ffe082;font-weight:700}
 <div class="title">CLAUDE.md 작성법, 입문자용 3단계로 직접 만들기</div>
 <div class="meta">카테고리 · 작성일 (제목은 에디터 제목 칸에 따로 입력)</div>
 <div id="body">
-<blockquote><p>💡 <strong>한 줄 요약:</strong> CLAUDE.md는 새 세션마다 Claude가 읽는 지침 파일이에요. 위치 정하기, 적고 지우기, 확인하고 갱신하기 3단계면 처음 만들어 볼 수 있습니다.</p></blockquote>
+<blockquote><p>💡 <strong>한 줄 요약:</strong> CLAUDE.md는 새 세션마다 읽히는 지침 파일이에요.</p><p>위치 정하기, 적고 지우기, 확인하고 갱신하기 3단계면 만들 수 있습니다.</p></blockquote>
 <p class="sp"><br></p>
 <p style="text-align:center"><mark class="slot">【사진 01】 01_thumbnail_claude-md-guide.png</mark></p>
 <p class="sp"><br></p>
-<p>"Claude한테 같은 설명을 새 세션마다 다시 하고 있어요." 하시는 분들을 위해 CLAUDE.md 작성법을 준비했습니다.</p>
-<p>결론부터 말씀드리면, 매번 반복하는 설명을 파일 하나에 적어 두면 되고 공식 권장 길이는 200줄 미만입니다.</p>
+<p>"Claude한테 같은 설명을 새 세션마다 다시 하고 있어요."</p>
+<p>하시는 분들을 위해 CLAUDE.md 작성법을 준비했습니다.</p>
+<p>결론부터 말씀드리면, 매번 반복하는 설명은 파일 하나에 적어 두면 됩니다.</p>
+<p>공식 권장 길이는 200줄 미만입니다.</p>
+<p class="sp"><br></p>
 <p>오늘 이 글 하나만 끝까지 읽으시면 위치 정하기부터 점검까지 직접 해 보실 수 있습니다.</p>
 <p class="sp"><br></p>
 <hr>
 <p class="sp"><br></p>
 <p><span style="font-size:24px"><b>🛠️ 시작하기 전에 - CLAUDE.md는 왜 필요할까요?</b></span></p>
 <p class="sp"><br></p>
-<p>Claude Code는 대화를 새로 열 때마다 새 컨텍스트(Claude가 한 번에 보는 대화와 파일의 분량)로 시작합니다.</p>
+<p>Claude Code는 대화를 새로 열 때마다 새 컨텍스트로 시작합니다.</p>
+<p>컨텍스트는 Claude가 한 번에 보는 대화와 파일의 분량이에요.</p>
 <p>이 한 번의 대화를 <strong>세션</strong>이라고 불러요.</p>
+<p class="sp"><br></p>
 <p>어제 나눈 대화를 오늘 기억하지 못하니, 매번 알려 줘야 하는 내용이 생기죠.</p>
 <p>그 내용을 미리 적어 두는 파일이 바로 CLAUDE.md입니다.</p>
 <p class="sp"><br></p>
-<p>비슷한 장치로 Claude가 스스로 메모하는 <strong>자동 메모리</strong>도 있습니다. 둘의 차이는 이렇습니다.</p>
+<p>비슷한 장치로 Claude가 스스로 메모하는 <strong>자동 메모리</strong>도 있습니다.</p>
+<p>둘의 차이는 이렇습니다.</p>
 <p class="sp"><br></p>
 <table width="100%" style="border-collapse:collapse;width:100%;table-layout:fixed">
 <thead>
@@ -76,9 +82,11 @@ mark.slot{background:#ffe082;font-weight:700}
 <p>• <strong>준비물:</strong> 터미널에서 <code>claude</code>를 실행할 수 있는 프로젝트 폴더</p>
 <p>• <strong>소요 시간:</strong> 초안은 금방 나오고, 다듬는 일은 쓰면서 조금씩 이어집니다</p>
 <p>• <strong>난이도:</strong> 입문</p>
-<p>• <strong>기준:</strong> 이 글은 2026년 10월 27일에 확인한 공식 문서를 따릅니다. 기능마다 필요한 버전이 달라서, <code>claude --version</code>으로 본인 버전을 한번 확인해 보세요</p>
+<p>• <strong>기준:</strong> 이 글은 2026년 10월 27일에 확인한 공식 문서를 따릅니다</p>
+<p>• <strong>버전:</strong> 기능마다 필요한 버전이 달라요</p>
+<p>• <strong>버전 확인:</strong> 터미널에서 <code>claude --version</code>을 입력하세요</p>
 <p class="sp"><br></p>
-<blockquote><p>📌 <strong>전문가 Tip:</strong> 같은 실수를 두 번째 바로잡고 있다면 그게 CLAUDE.md에 넣을 타이밍입니다. 처음부터 완벽하게 채우려 하지 말고, 반복되는 말부터 옮겨 적어 보세요.</p></blockquote>
+<blockquote><p>📌 <strong>전문가 Tip:</strong> 같은 실수를 두 번째 바로잡고 있다면,</p><p>그게 CLAUDE.md에 넣을 타이밍입니다.</p><p>처음부터 완벽하게 채우려 하지 말고, 반복되는 말부터 옮겨 적어 보세요.</p></blockquote>
 <p class="sp"><br></p>
 <hr>
 <p class="sp"><br></p>
@@ -117,19 +125,26 @@ mark.slot{background:#ffe082;font-weight:700}
 <p style="text-align:center"><mark class="slot">【사진 02】 02_table_locations.png</mark></p>
 <p class="sp"><br></p>
 <p>입문자라면 프로젝트 루트(폴더 맨 위)의 CLAUDE.md 하나로 시작하시면 됩니다.</p>
-<p>다른 사람과 공유하고 싶지 않은 개인 취향은 <code>CLAUDE.local.md</code>에 적고 <code>.gitignore</code>(git이 추적하지 않을 파일을 적는 목록)에 추가해 두세요.</p>
+<p>다른 사람과 공유하고 싶지 않은 개인 취향은 <code>CLAUDE.local.md</code>에 적으세요.</p>
+<p>그리고 <code>.gitignore</code>(git이 추적하지 않을 파일 목록)에 추가해 두세요.</p>
 <p class="sp"><br></p>
 <p>아래 순서대로 차근차근 따라와 주세요.</p>
 <p class="sp"><br></p>
 <p>1. 프로젝트 폴더에서 <code>claude</code>를 실행합니다.</p>
-<p>2. <code>/init</code>을 입력합니다. (코드를 분석해 빌드 명령, 테스트 방법, 발견한 규칙이 담긴 초안을 만들어 줘요. 이미 CLAUDE.md가 있으면 덮어쓰지 않고 개선안을 제안합니다)</p>
-<p>3. 만들어진 파일을 열어 봅니다. (<code>/memory</code>를 입력하면 메모리 파일 목록이 나오고, 거기서 편집기로 열 수 있어요)</p>
+<p>2. <code>/init</code>을 입력합니다.</p>
+<p>3. 만들어진 파일을 열어 봅니다.</p>
 <p>4. 초안을 그대로 두지 말고 다음 단계에서 줄을 덜어 냅니다.</p>
+<p class="sp"><br></p>
+<p><code>/init</code>은 코드를 분석해 초안을 만들어 줘요.</p>
+<p>초안에는 빌드 명령, 테스트 방법, 발견한 규칙이 담깁니다.</p>
+<p>이미 CLAUDE.md가 있으면 덮어쓰지 않고 개선안을 제안해요.</p>
+<p><code>/memory</code>를 입력하면 메모리 파일 목록이 나오고, 고르면 편집기로 열려요.</p>
 <p class="sp"><br></p>
 <p style="text-align:center"><mark class="slot">【사진 03】 03_diagram_init.png</mark></p>
 <p class="sp"><br></p>
 <p><code>/init</code>이 어렵게 느껴지시면 빈 파일에서 시작하셔도 괜찮습니다.</p>
-<p>아래 틀에 빈칸만 채워 보세요. 공식 문서의 "명령 / 규칙 / 함정" 구성을 입문자용으로 풀어 본 예시입니다.</p>
+<p>아래 틀에 빈칸만 채워 보세요.</p>
+<p>공식 문서의 "명령 / 규칙 / 함정" 구성을 풀어 본 예시예요.</p>
 <p class="sp"><br></p>
 <p class="code"># 프로젝트 한 줄 소개</p>
 <p class="code">- (무엇을 하는 프로젝트인지 한두 줄)</p>
@@ -161,7 +176,8 @@ mark.slot{background:#ffe082;font-weight:700}
 <p>• <strong>두 번 교정한 것:</strong> 같은 말을 두 번 했다면 적어 둘 후보</p>
 <p class="sp"><br></p>
 <p>반대로 줄이는 쪽도 정해져 있습니다.</p>
-<p>아키텍처나 파일 구조 설명은 Claude가 저장소를 직접 읽으니 거기 없는 것만 남기라는 안내가 있어요.</p>
+<p>아키텍처나 파일 구조 설명은 Claude가 저장소를 직접 읽으니,</p>
+<p>거기 없는 것만 남기라는 안내가 있어요.</p>
 <p>문장은 검증할 수 있게 쓰는 편이 좋습니다.</p>
 <p class="sp"><br></p>
 <table width="100%" style="border-collapse:collapse;width:100%;table-layout:fixed">
@@ -184,7 +200,8 @@ mark.slot{background:#ffe082;font-weight:700}
 </table>
 <p class="sp"><br></p>
 <p>참고로 <code>IMPORTANT</code> 같은 강조어를 덧붙여도 해결되지 않는다고 합니다.</p>
-<p>평이한 문장이면 충분하고, 강조가 쌓이면 오히려 규칙을 과하게 적용할 수 있다는 설명이에요.</p>
+<p>평이한 문장이면 충분합니다.</p>
+<p>강조가 쌓이면 오히려 규칙을 과하게 적용할 수 있다는 설명이에요.</p>
 <p class="sp"><br></p>
 <p><span style="font-size:19px"><b>제가 쓰는 파일은 이렇게 생겼어요</b></span></p>
 <p class="sp"><br></p>
@@ -201,16 +218,22 @@ mark.slot{background:#ffe082;font-weight:700}
 <p>• 에이전트 파일을 쓸 때의 규칙</p>
 <p class="sp"><br></p>
 <p>가장 공들인 건 "하지 말 것 + 이유" 줄입니다.</p>
-<p><code>innerHTML</code>은 쓰지 않는다고 적고, 토큰(로그인 열쇠)이 <code>localStorage</code>에 있어서 XSS(웹페이지에 악성 코드를 심는 공격)가 곧 토큰 탈취라는 이유를 붙였어요.</p>
-<p>확인 창도 <code>confirm()</code> 대신 화면 안 <code>askConfirm</code>을 쓰라고 하고, iframe에서는 <code>confirm()</code>이 항상 false라는 이유를 함께 적었습니다.</p>
+<p><code>innerHTML</code>은 쓰지 않는다고 적고, 이유를 붙였어요.</p>
+<p>토큰(로그인 열쇠)이 <code>localStorage</code>에 있어서,</p>
+<p>XSS(웹페이지에 악성 코드를 심는 공격)가 곧 토큰 탈취이기 때문입니다.</p>
 <p class="sp"><br></p>
-<p>이유까지 적어 두면 코드만 봐서는 알 수 없는 사정이 전해지고, 규칙을 어길 때 되돌리는 수고도 줄어들 거라고 생각했어요.</p>
+<p>확인 창은 <code>confirm()</code> 대신 화면 안 <code>askConfirm</code>을 쓰라고 하고,</p>
+<p>iframe에서는 <code>confirm()</code>이 항상 false라는 이유를 함께 적었습니다.</p>
+<p class="sp"><br></p>
+<p>이유까지 적어 두면 코드만 봐서는 알 수 없는 사정이 전해지고,</p>
+<p>규칙을 어길 때 되돌리는 수고도 줄어들 거라고 생각했어요.</p>
 <p class="sp"><br></p>
 <p>솔직히 다시 읽어 보니 고칠 곳도 보입니다.</p>
-<p>구조를 설명한 줄에는 저장소를 읽으면 알 수 있는 내용이 섞여 있어서, 공식 기준으로는 줄일 후보예요.</p>
+<p>구조를 설명한 줄에는 저장소를 읽으면 알 수 있는 내용이 섞여 있어요.</p>
+<p>공식 기준으로는 줄일 후보입니다.</p>
 <p>한 줄이 지나치게 긴 곳도 있습니다.</p>
 <p class="sp"><br></p>
-<blockquote><p>📌 <strong>전문가 Tip:</strong> 여러분의 파일이 길어졌다면 <code>/doctor</code>가 코드에서 알 수 있는 내용을 덜어 내자고 제안해 줍니다. 함정이나 이유가 적힌 줄은 남기는 쪽이고요. 다만 <code>/doctor prompt-audit</code>은 v2.1.283 이상이 필요하니 버전을 먼저 확인하세요.</p></blockquote>
+<blockquote><p>📌 <strong>전문가 Tip:</strong> 여러분의 파일이 길어졌다면 <code>/doctor</code>가</p><p>코드에서 알 수 있는 내용을 덜어 내자고 제안해 줍니다.</p><p>함정이나 이유가 적힌 줄은 남기는 쪽이고요.</p><p>다만 <code>/doctor prompt-audit</code>은 v2.1.283 이상이 필요해요.</p><p>버전을 먼저 확인하세요.</p></blockquote>
 <p class="sp"><br></p>
 <hr>
 <p class="sp"><br></p>
@@ -220,17 +243,23 @@ mark.slot{background:#ffe082;font-weight:700}
 <p>Claude가 실제로 읽고 있는지부터 봐야죠.</p>
 <p class="sp"><br></p>
 <p>1. 세션에서 <code>/context</code>를 실행합니다.</p>
-<p>2. Memory files 목록에 내 파일이 있는지 확인합니다. (목록에 없으면 Claude가 볼 수 없어요)</p>
-<p>3. 하위 폴더의 CLAUDE.md는 시작할 때 로드되지 않아 목록에 안 보입니다. (그 폴더의 파일을 읽게 하면 터미널에 <code>Loaded</code> 줄이 나와요)</p>
+<p>2. Memory files 목록에서 내 파일을 찾습니다.</p>
+<p>3. 하위 폴더의 CLAUDE.md는 목록에 안 보입니다.</p>
+<p class="sp"><br></p>
+<p>목록에 내 파일이 없으면 Claude가 볼 수 없어요.</p>
+<p>하위 폴더 파일은 시작할 때 로드되지 않아 안 보이는 게 정상입니다.</p>
+<p>그 폴더의 파일을 읽게 하면 터미널에 <code>Loaded</code> 줄이 나와요.</p>
 <p class="sp"><br></p>
 <p><span style="font-size:19px"><b>시간이 지나면 낡는다는 것</b></span></p>
 <p class="sp"><br></p>
 <p>제가 겪은 일도 하나 말씀드릴게요.</p>
-<p>서브에이전트(맡은 일을 따로 처리하는 보조 AI) <code>image-maker</code>를 새로 만들었는데, CLAUDE.md의 에이전트 목록에 추가하는 걸 빠뜨렸습니다.</p>
+<p>서브에이전트(보조 AI) <code>image-maker</code>를 새로 만들었는데,</p>
+<p>CLAUDE.md의 에이전트 목록에 추가하는 걸 빠뜨렸습니다.</p>
 <p>나중에야 알아채서 고쳤어요.</p>
 <p class="sp"><br></p>
 <p>코드나 파일이 바뀌면 CLAUDE.md도 같이 고쳐야 낡지 않습니다.</p>
-<p>없는 파일을 가리키는 줄이나 서로 모순되는 줄이 남으면, Claude도 헷갈릴 수 있으니까요.</p>
+<p>없는 파일을 가리키는 줄이나 서로 모순되는 줄이 남으면,</p>
+<p>Claude도 헷갈릴 수 있으니까요.</p>
 <p class="sp"><br></p>
 <p><span style="font-size:19px"><b>CLAUDE.md의 한계 - 꼭 지켜야 하는 규칙은 어디에 둘까요?</b></span></p>
 <p class="sp"><br></p>
@@ -267,26 +296,35 @@ mark.slot{background:#ffe082;font-weight:700}
 <p class="sp"><br></p>
 <p style="text-align:center"><mark class="slot">【사진 06】 06_table_tools.png</mark></p>
 <p class="sp"><br></p>
-<blockquote><p>📌 <strong>전문가 Tip:</strong> "named export를 선호한다" 같은 취향은 CLAUDE.md에, ".env를 읽지 않는다"처럼 예외가 없어야 하는 규칙은 훅이나 거부 규칙에 두세요. 강제 장치를 너무 늘리는 것도 권하지 않는다고 합니다.</p></blockquote>
+<blockquote><p>📌 <strong>전문가 Tip:</strong> 취향과 강제 규칙은 나눠서 두세요.</p><p>"named export를 선호한다" 같은 취향은 CLAUDE.md에 둡니다.</p><p>".env를 읽지 않는다"처럼 예외가 없어야 하는 규칙은</p><p>훅이나 거부 규칙에 둡니다.</p><p>강제 장치를 너무 늘리는 것도 권하지 않는다고 합니다.</p></blockquote>
 <p class="sp"><br></p>
 <p><span style="font-size:19px"><b>막힐 때 자주 묻는 질문</b></span></p>
 <p class="sp"><br></p>
 <p><strong>Q. 적었는데 안 지켜져요.</strong></p>
-<p>A. 순서대로 점검해 보세요. 로드 여부, 파일 위치, 지침의 구체성, 파일 간 상충, 그리고 Claude Code가 자체로 넣는 커밋·PR 지침과의 충돌입니다.</p>
+<p>A. 순서대로 점검해 보세요.</p>
+<p>로드 여부, 파일 위치, 지침의 구체성, 파일 간 상충,</p>
+<p>그리고 Claude Code가 자체로 넣는 커밋·PR 지침과의 충돌입니다.</p>
 <p class="sp"><br></p>
 <p style="text-align:center"><mark class="slot">【사진 07】 07_card_not-followed.png</mark></p>
 <p class="sp"><br></p>
 <p><strong>Q. 얼마나 길게 써야 하나요?</strong></p>
-<p>A. 공식 권장은 파일당 200줄 미만입니다. 길수록 컨텍스트를 더 쓰고 준수율이 떨어질 수 있다고 해요.</p>
+<p>A. 공식 권장은 파일당 200줄 미만입니다.</p>
+<p>길수록 컨텍스트를 더 쓰고 준수율이 떨어질 수 있다고 해요.</p>
 <p class="sp"><br></p>
 <p><strong>Q. 다른 파일을 가져와 쓸 수 있나요?</strong></p>
-<p>A. <code>@경로</code> 문법으로 가능합니다. 다만 정리에는 도움이 되어도, 가져온 파일이 함께 로드되니 컨텍스트 비용은 줄지 않아요.</p>
+<p>A. <code>@경로</code> 문법으로 가능합니다.</p>
+<p>다만 정리에는 도움이 되어도, 가져온 파일이 함께 로드돼요.</p>
+<p>그래서 컨텍스트 비용은 줄지 않습니다.</p>
 <p class="sp"><br></p>
 <p><strong>Q. 대화 중에 말한 건 유지되나요?</strong></p>
-<p>A. 대화로만 준 지침은 <code>/compact</code>(대화를 줄여 정리하는 명령) 뒤에 사라질 수 있습니다. 오래 가져가야 한다면 CLAUDE.md에 적어 두세요.</p>
+<p>A. 대화로만 준 지침은 <code>/compact</code> 뒤에 사라질 수 있습니다.</p>
+<p><code>/compact</code>는 대화를 줄여 정리하는 명령이에요.</p>
+<p>오래 가져가야 한다면 CLAUDE.md에 적어 두세요.</p>
 <p class="sp"><br></p>
 <p><strong>Q. 저장소에 AGENTS.md만 있는데요?</strong></p>
-<p>A. CLAUDE.md가 없고 AGENTS.md만 있으면 AGENTS.md를 읽습니다. 이 동작은 v2.1.277 이상에서 확인되는 내용이라 버전을 확인하세요.</p>
+<p>A. CLAUDE.md가 없고 AGENTS.md만 있으면 AGENTS.md를 읽습니다.</p>
+<p>이 동작은 v2.1.277 이상에서 확인되는 내용이에요.</p>
+<p>버전을 먼저 확인하세요.</p>
 <p class="sp"><br></p>
 <p><span style="font-size:19px"><b>참고한 공식 문서</b></span></p>
 <p class="sp"><br></p>
@@ -300,7 +338,9 @@ mark.slot{background:#ffe082;font-weight:700}
 <p><span style="font-size:24px"><b>마무리하며</b></span></p>
 <p class="sp"><br></p>
 <p>오늘은 CLAUDE.md 작성법을 위치, 내용, 점검의 3단계로 나눠 알아보았습니다.</p>
-<p>프로젝트 루트에 파일을 만들고, Claude가 코드로 알 수 없는 것만 짧고 구체적으로 적고, <code>/context</code>로 읽히는지 확인하고, 코드가 바뀌면 같이 고치면 됩니다.</p>
+<p>프로젝트 루트에 파일을 만들고,</p>
+<p>Claude가 코드로 알 수 없는 것만 짧고 구체적으로 적고,</p>
+<p><code>/context</code>로 읽히는지 확인하고, 코드가 바뀌면 같이 고치면 됩니다.</p>
 <p class="sp"><br></p>
 <p style="text-align:center"><mark class="slot">【사진 08】 08_card_three-lines.png</mark></p>
 <p class="sp"><br></p>

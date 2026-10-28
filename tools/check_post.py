@@ -50,7 +50,7 @@ def main(path: Path) -> int:
                 paragraphs.append(cur)
                 cur = []
             continue
-        if SKIP_LINE.match(ln) or re.match(r"^#\S", ln.strip()):
+        if SKIP_LINE.match(ln) or "http" in ln or re.match(r"^#\S", ln.strip()):
             if cur:
                 paragraphs.append(cur)
                 cur = []
