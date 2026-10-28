@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>본문 서식 샘플</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&amp;family=Inter:wght@400;600&amp;family=JetBrains+Mono:wght@400&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#B9B0FF}a:hover{color:#ffffff}
+</style>
+</helmet>
+<div style="width: 966px; height: 1080px; box-sizing: border-box; padding: 72px 80px; background: {{bg}}; font-family: 'IBM Plex Sans KR', 'Inter', system-ui, sans-serif; color: #EDEEF2; display: flex; flex-direction: column; gap: 44px">
+
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: baseline; gap: 16px">
+<span style="font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: 0.16em; color: {{accent2}}">01</span>
+<h3 style="margin: 0; font-size: 30px; font-weight: 700; letter-spacing: -0.01em; color: #F4F5F8">[소제목]</h3>
+</div>
+<div style="height: 1px; background: rgba(255,255,255,0.12)"></div>
+<p style="margin: 0; font-size: 18px; line-height: 1.85; color: #C3C7D2">[본문 내용이 들어가는 자리입니다. 어두운 배경에서는 순백색보다 살짝 회색 톤의 글자가 눈이 덜 피로합니다.]</p>
+</div>
+
+<div style="border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; background: {{surface}}; padding: 28px 32px; display: flex; flex-direction: column; gap: 14px">
+<span style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; color: {{accent}}">KEY POINT</span>
+<p style="margin: 0; font-size: 20px; line-height: 1.6; font-weight: 600; color: #F4F5F8">[이 글의 핵심 한 문장]</p>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<span style="font-size: 15px; font-weight: 600; color: #A9AEBC">사용한 프롬프트</span>
+<div style="border-radius: 14px; background: #06070A; border: 1px solid rgba(255,255,255,0.10); padding: 24px 28px; font-family: 'JetBrains Mono', monospace; font-size: 16px; line-height: 1.75; color: #D7DBE4">
+<span style="color: {{accent2}}">&gt;</span> [여기에 프롬프트 원문을 붙여넣기]
+</div>
+</div>
+
+<div style="display: flex; gap: 20px">
+<div style="flex: 1; border-radius: 14px; background: {{surface}}; border: 1px solid rgba(255,255,255,0.10); padding: 24px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 15px; font-weight: 700; color: {{accent2}}">장점</span>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #C3C7D2">[장점 내용]</p>
+</div>
+<div style="flex: 1; border-radius: 14px; background: {{surface}}; border: 1px solid rgba(255,255,255,0.10); padding: 24px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 15px; font-weight: 700; color: #F2A65E">단점</span>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #C3C7D2">[단점 내용]</p>
+</div>
+</div>
+
+<div style="display: flex; align-items: center; gap: 16px; margin-top: auto">
+<div style="flex: 1; height: 1px; background: rgba(255,255,255,0.12)"></div>
+<span style="font-family: 'Inter', sans-serif; font-size: 13px; letter-spacing: 0.2em; color: #8D93A3">NEXT</span>
+<div style="flex: 1; height: 1px; background: rgba(255,255,255,0.12)"></div>
+</div>
+<p style="margin: 0; text-align: center; font-size: 18px; color: #C3C7D2">다음 글: [다음 포스팅 제목]</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"bg":{"editor":"color","default":"#0B0C10"},"surface":{"editor":"color","default":"#14161C"},"accent":{"editor":"color","default":"#9A8EF7"},"accent2":{"editor":"color","default":"#5EC8E5"},"$preview":{"width":966,"height":1080}}'>
+class Component extends DCLogic {
+renderVals() {
+return {
+bg: this.props.bg ?? '#0B0C10',
+surface: this.props.surface ?? '#14161C',
+accent: this.props.accent ?? '#9A8EF7',
+accent2: this.props.accent2 ?? '#5EC8E5'
+};
+}
+}
+</script>
+</body>
+</html>
