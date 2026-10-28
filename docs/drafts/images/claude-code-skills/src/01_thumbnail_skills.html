@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>썸네일</title>
+<style>:root{--bg:#FAF7F2;--card:#FFFFFF;--ink:#1F2937;--sub:#6B7280;--line:#E8E1D6;
+      --accent:#C8553D;--accent-soft:#F6E3DC;--ok:#2F6F5E;--ok-soft:#DDEDE7}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg)}
+body{font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",
+     "Apple SD Gothic Neo","NanumGothic","WenQuanYi Zen Hei",sans-serif;color:var(--ink);
+     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.35}
+.canvas{width:1080px;padding:80px;background:var(--bg)}
+.square{height:1080px;display:flex;flex-direction:column;justify-content:center}
+.kicker{font-size:36px;font-weight:600;color:var(--accent);margin-bottom:28px}
+h1{font-size:84px;font-weight:800;line-height:1.2;letter-spacing:-1px}
+h2{font-size:56px;font-weight:800;line-height:1.25;margin-bottom:48px}
+.sub{font-size:40px;color:var(--sub);margin-top:28px}
+code,.mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Noto Sans Mono CJK KR",monospace;
+           font-size:34px;background:var(--accent-soft);padding:2px 12px;border-radius:10px}
+.num{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;
+     border-radius:50%;background:var(--accent);color:#fff;font-size:34px;font-weight:700;flex:none}
+.canvas.square{position:relative;overflow:hidden;padding:84px;display:block}
+.head{position:absolute;left:84px;top:96px;width:600px;display:flex;flex-direction:column}
+.kicker{font-size:36px;margin-bottom:22px}
+h1{font-size:96px;line-height:1.14;letter-spacing:-2.5px}
+.sub{font-size:38px;margin-top:26px}
+.art{position:absolute;right:56px;top:64px;width:400px;height:420px}
+.list{position:absolute;left:84px;right:84px;bottom:84px;display:flex;flex-direction:column;gap:22px}
+.li{display:flex;align-items:center;gap:28px;font-size:44px;font-weight:600;padding:28px 36px;
+ background:var(--card);border:2px solid var(--line);border-radius:24px}</style></head>
+<body><div class="canvas square">
+<svg class="art" viewBox="0 0 400 420" aria-hidden="true">
+<defs>
+<linearGradient id="bxf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E9E5FF"/><stop offset=".5" stop-color="#9F93FA"/><stop offset="1" stop-color="#6A5BE0"/></linearGradient>
+<linearGradient id="bxs" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7B6CF0"/><stop offset="1" stop-color="#1A1740"/></linearGradient>
+<linearGradient id="inb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4A3DB0"/><stop offset="1" stop-color="#1A1740"/></linearGradient>
+<linearGradient id="inl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3A2F8C"/><stop offset="1" stop-color="#14112E"/></linearGradient>
+<linearGradient id="cd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F1EEFF"/><stop offset="1" stop-color="#B3A8FF"/></linearGradient>
+<linearGradient id="cdl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".6" stop-color="#E4DFFF"/><stop offset="1" stop-color="#B9AFFF"/></linearGradient>
+<linearGradient id="cds" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7B6CF0"/><stop offset="1" stop-color="#2A2366"/></linearGradient>
+</defs>
+<ellipse cx="214" cy="396" rx="150" ry="20" fill="#000" opacity=".6"/>
+<!-- 상자 안쪽: 바닥, 뒷벽, 왼쪽 벽, 뒤쪽 테두리 -->
+<polygon points="190.0,245.0 326.8,324.0 235.0,377.0 98.2,298.0" fill="#14112E"/>
+<polygon points="190.0,245.0 326.8,324.0 326.8,250.0 190.0,171.0" fill="url(#inb)"/>
+<polygon points="190.0,245.0 98.2,298.0 98.2,224.0 190.0,171.0" fill="url(#inl)"/>
+<polygon points="190.0,162.0 342.4,250.0 334.6,254.5 182.2,166.5" fill="#B9AFFF"/>
+<polygon points="190.0,162.0 197.8,166.5 90.4,228.5 82.6,224.0" fill="#B9AFFF"/>
+<!-- 설명서 카드들(뒤에서 앞으로). 가운데 한 장을 꺼내 듦 -->
+<polygon points="182.2,148.5 306.9,220.5 302.6,223.0 177.9,151.0" fill="#FFFFFF" opacity=".9"/>
+<polygon points="306.9,322.5 302.6,325.0 302.6,223.0 306.9,220.5" fill="url(#cds)"/>
+<polygon points="177.9,253.0 302.6,325.0 302.6,223.0 177.9,151.0" fill="url(#cd)"/>
+<polygon points="163.2,153.5 287.9,225.5 283.5,228.0 158.8,156.0" fill="#FFFFFF" opacity=".9"/>
+<polygon points="287.9,333.5 283.5,336.0 283.5,228.0 287.9,225.5" fill="url(#cds)"/>
+<polygon points="158.8,264.0 283.5,336.0 283.5,228.0 158.8,156.0" fill="url(#cd)"/>
+<polygon points="144.1,76.5 268.8,148.5 264.5,151.0 139.8,79.0" fill="#FFFFFF"/>
+<polygon points="268.8,344.5 264.5,347.0 264.5,151.0 268.8,148.5" fill="url(#cds)"/>
+<polygon points="139.8,275.0 264.5,347.0 264.5,151.0 139.8,79.0" fill="url(#cdl)"/>
+<path d="M155.4 112.0 L207.3 142.0" stroke="#5EC8E5" stroke-width="9" stroke-linecap="round"/>
+<path d="M155.4 138.0 L245.4 190.0" stroke="#7B6CF0" stroke-width="7" stroke-linecap="round"/>
+<path d="M155.4 160.0 L229.8 203.0" stroke="#7B6CF0" stroke-width="7" stroke-linecap="round"/>
+<path d="M155.4 182.0 L238.5 230.0" stroke="#9B8FF5" stroke-width="7" stroke-linecap="round"/>
+<polygon points="125.0,185.5 249.8,257.5 245.4,260.0 120.7,188.0" fill="#FFFFFF" opacity=".9"/>
+<polygon points="249.8,355.5 245.4,358.0 245.4,260.0 249.8,257.5" fill="url(#cds)"/>
+<polygon points="120.7,286.0 245.4,358.0 245.4,260.0 120.7,188.0" fill="url(#cd)"/>
+<!-- 상자 앞벽, 오른쪽 벽, 앞쪽 테두리, 손잡이 홈 -->
+<polygon points="82.6,298.0 235.0,386.0 235.0,312.0 82.6,224.0" fill="url(#bxf)"/>
+<polygon points="342.4,324.0 235.0,386.0 235.0,312.0 342.4,250.0" fill="url(#bxs)"/>
+<polygon points="90.4,219.5 242.8,307.5 235.0,312.0 82.6,224.0" fill="#E4DFFF"/>
+<polygon points="334.6,245.5 342.4,250.0 235.0,312.0 227.2,307.5" fill="#CFC8FF"/>
+<path d="M136.3 285.0 L181.3 311.0" stroke="#4B3FB0" stroke-width="10" stroke-linecap="round"/>
+<path d="M92 236 V288" stroke="#FFFFFF" stroke-opacity=".5" stroke-width="5" stroke-linecap="round"/>
+<circle cx="352" cy="48" r="9" fill="#5EC8E5"/>
+</svg>
+<div class="head"><div class="kicker">클로드 코드</div>
+<h1>스킬(Skills)<br>사용법</h1>
+<div class="sub">입문자용 3단계</div></div>
+<div class="list">
+<div class="li"><span class="num">1</span><span>위치와 구조</span></div>
+<div class="li"><span class="num">2</span><span>첫 스킬 만들기</span></div>
+<div class="li"><span class="num">3</span><span>잘 불리게 다듬기</span></div>
+</div></div></body></html>

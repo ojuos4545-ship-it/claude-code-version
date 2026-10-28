@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>포인트카드</title>
+<style>:root{--bg:#FAF7F2;--card:#FFFFFF;--ink:#1F2937;--sub:#6B7280;--line:#E8E1D6;
+      --accent:#C8553D;--accent-soft:#F6E3DC;--ok:#2F6F5E;--ok-soft:#DDEDE7}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg)}
+body{font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",
+     "Apple SD Gothic Neo","NanumGothic","WenQuanYi Zen Hei",sans-serif;color:var(--ink);
+     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.35}
+.canvas{width:1080px;padding:80px;background:var(--bg)}
+.square{height:1080px;display:flex;flex-direction:column;justify-content:center}
+.kicker{font-size:36px;font-weight:600;color:var(--accent);margin-bottom:28px}
+h1{font-size:84px;font-weight:800;line-height:1.2;letter-spacing:-1px}
+h2{font-size:56px;font-weight:800;line-height:1.25;margin-bottom:48px}
+.sub{font-size:40px;color:var(--sub);margin-top:28px}
+code,.mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Noto Sans Mono CJK KR",monospace;
+           font-size:34px;background:var(--accent-soft);padding:2px 12px;border-radius:10px}
+.num{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;
+     border-radius:50%;background:var(--accent);color:#fff;font-size:34px;font-weight:700;flex:none}
+.row{display:flex;align-items:center;gap:24px;font-size:42px;background:var(--card);
+ border:2px solid var(--line);border-radius:24px;padding:26px 32px;margin-bottom:22px}
+.lab{width:210px;flex:none;font-size:38px;font-weight:700;color:var(--sub)}
+.val{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.val small{font-size:36px;color:var(--sub)}
+.foot{font-size:36px;color:var(--sub);margin-top:30px}
+.t{flex:1;font-weight:600}</style></head>
+<body><div class="canvas"><h2>SKILL.md를 두는 곳</h2>
+<div class="row"><span class="lab">모든 곳</span><span class="val"><code>~/.claude/skills/이름/SKILL.md</code><small>내 컴퓨터의 모든 프로젝트</small></span></div>
+<div class="row"><span class="lab">팀과 함께</span><span class="val"><code>.claude/skills/이름/SKILL.md</code><small>커밋하면 팀원과 함께 사용</small></span></div>
+<div class="row"><span class="lab">기본 단위</span><span class="val"><span class="t">폴더 하나에 <code>SKILL.md</code> 하나</span><small>폴더 이름이 곧 명령 이름</small></span></div>
+<div class="foot">~는 내 홈 폴더</div></div></body></html>

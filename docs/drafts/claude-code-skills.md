@@ -100,7 +100,7 @@
 * **`~/.claude/skills/<스킬이름>/SKILL.md`:** 내 컴퓨터의 모든 프로젝트에서 사용 (`~`는 내 홈 폴더)
 * **`.claude/skills/<스킬이름>/SKILL.md`:** 이 프로젝트에서만 사용. 커밋하면 팀원과 함께 씀
 
-[IMAGE: 포인트카드 | 설명: SKILL.md 위치 카드. 모든 프로젝트용 ~/.claude/skills/이름/SKILL.md, 팀과 함께 쓰는 .claude/skills/이름/SKILL.md, 스킬 하나에 폴더 하나와 SKILL.md 하나]
+[IMAGE: 포인트카드 | 설명: 클로드 코드 스킬의 SKILL.md 위치 카드. 모든 프로젝트용 ~/.claude/skills/이름/SKILL.md, 팀과 함께 쓰는 .claude/skills/이름/SKILL.md, 스킬 하나에 폴더 하나와 SKILL.md 하나]
 
 이 밖에 플러그인이나 회사 관리 설정으로 배포되는 스킬도 있지만, 처음에는 위 두 곳만 알아도 넉넉해요.
 따로 이름을 정하지 않으면 폴더 이름이 그대로 명령 이름이 된다는 점만 기억해 두세요.
@@ -249,7 +249,7 @@ Claude는 내 요청을 각 스킬의 설명과 맞춰 보고 쓸 스킬을 골�
 
 3/3은 세 번 중 세 번 불렸다는 뜻입니다. C에서는 Claude가 스킬 없이 직접 맞춤법을 고쳤어요.
 
-[IMAGE: 비교표 | 설명: 스킬 이름과 설명(description)에 따른 자동 호출 실험 비교표. proofread-ko와 구체적 설명 3/3, proofread-ko와 모호한 설명 3/3, helper와 모호한 설명 0/3, helper와 구체적 설명 3/3]
+[IMAGE: 비교표 | 설명: 클로드 코드 스킬 이름과 설명(description)에 따른 자동 호출 실험 비교표. proofread-ko와 구체적 설명 3/3, proofread-ko와 모호한 설명 3/3, helper와 모호한 설명 0/3, helper와 구체적 설명 3/3]
 
 결과를 하나씩 풀어 볼게요.
 
