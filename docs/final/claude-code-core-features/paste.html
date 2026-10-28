@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>클로드 코드 핵심 기능 5가지, 처음 쓰는 분이 먼저 익힐 것</title><style>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>클로드 코드 핵심 기능 5가지 총정리</title><style>
 body{margin:0;background:#fff;color:#333;font-family:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif}
 .preview-only{background:#03c75a;color:#fff;font-size:13px;padding:10px 14px;line-height:1.5}
 .preview-only button{margin-left:10px;padding:4px 12px;border:0;border-radius:4px;background:#fff;color:#03c75a;font-weight:700;cursor:pointer}
@@ -24,7 +24,7 @@ mark.slot{background:#ffe082;font-weight:700}
 </style></head><body>
 <div class="preview-only">복붙용입니다. 아래 [본문 복사]를 누른 뒤 에디터에 붙여넣고, 【사진】 자리에 사진을 올리세요.<button id="copy" type="button">본문 복사</button></div>
 <div class="wrap">
-<div class="title">클로드 코드 핵심 기능 5가지, 처음 쓰는 분이 먼저 익힐 것</div>
+<div class="title">클로드 코드 핵심 기능 5가지 총정리</div>
 <div class="meta">카테고리 · 작성일 (제목은 에디터 제목 칸에 따로 입력)</div>
 <div id="body">
 <blockquote><p>💡 <strong>한 줄 요약:</strong> 처음에는 CLAUDE.md, 권한 모드, 스킬, 서브에이전트, MCP 다섯 가지만 알면 충분하고, 공식 문서도 그중 CLAUDE.md부터 시작하라고 안내합니다.</p></blockquote>
@@ -168,7 +168,7 @@ mark.slot{background:#ffe082;font-weight:700}
 <p class="sp"><br></p>
 <p class="code">claude mcp add --transport http &lt;이름&gt; &lt;URL&gt;</p>
 <p class="sp"><br></p>
-<p>세션 안에서 <code>/mcp</code>를 입력하면 연결 상태를 확인하고 로그인할 수 있고, 터미널에서는 <code>claude mcp list</code>로 목록을 봅니다. 예전 예제에 나오는 <code>sse</code> 방식은 지원 중단 예정으로 표시되니, 원격 서버는 <code>http</code>를 쓰시는 편이 좋습니다.</p>
+<p>세션 안에서 <code>/mcp</code>를 입력하면 연결 상태를 확인하고 로그인할 수 있고, 터미널에서는 <code>claude mcp list</code>로 목록을 봅니다. 예전 예제에 나오는 <code>sse</code> 방식은 지원 중단 예정으로 표시되니, 원격 서버는 <code>http</code>를 쓰시는 편이 좋습니다. 서버를 추가할 때 적용 범위는 local(기본), project(팀 공유), user 세 가지 중에서 고를 수 있습니다.</p>
 <p class="sp"><br></p>
 <blockquote><p>📌 <strong>전문가 Tip:</strong> 신뢰하지 않는 MCP 서버는 프롬프트 인젝션, 즉 숨은 악성 지시에 노출될 위험이 있다고 공식 문서가 경고합니다. 출처를 확인한 서버만 연결하세요.</p></blockquote>
 <p class="sp"><br></p>
@@ -260,7 +260,7 @@ mark.slot{background:#ffe082;font-weight:700}
 <p class="sp"><br></p>
 <hr>
 <p class="sp"><br></p>
-<p><span style="font-size:24px"><b>5. 마무리하며</b></span></p>
+<p><span style="font-size:24px"><b>5. 마무리</b></span></p>
 <p class="sp"><br></p>
 <p>오늘은 클로드 코드 핵심 기능 다섯 가지, 곧 CLAUDE.md와 권한·플랜 모드, 스킬, 서브에이전트, MCP를 차례로 살펴보았습니다. 정리하면 "다 알 필요 없이 CLAUDE.md 하나와 권한 모드부터"라는 한 줄로 요약할 수 있어요.</p>
 <p class="sp"><br></p>

@@ -1,31 +1,51 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><title>포인트카드</title>
-<style>:root{--bg:#FAF7F2;--card:#FFFFFF;--ink:#1F2937;--sub:#6B7280;--line:#E8E1D6;
-      --accent:#C8553D;--accent-soft:#F6E3DC;--ok:#2F6F5E;--ok-soft:#DDEDE7}
+<style>:root{--bg:#0B0C10;--card:#14161C;--ink:#EDEEF2;--sub:#A9AEBC;--line:#2A2D37;
+      --accent:#9A8EF7;--accent-soft:#25213F;--ok:#5EC8E5;--ok-soft:#12303A}
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--bg)}
+html,body{background:#0B0C10}
 body{font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",
-     "Apple SD Gothic Neo","NanumGothic","WenQuanYi Zen Hei",sans-serif;color:var(--ink);
-     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.35}
-.canvas{width:1080px;padding:80px;background:var(--bg)}
-.square{height:1080px;display:flex;flex-direction:column;justify-content:center}
-.kicker{font-size:36px;font-weight:600;color:var(--accent);margin-bottom:28px}
-h1{font-size:84px;font-weight:800;line-height:1.2;letter-spacing:-1px}
-h2{font-size:56px;font-weight:800;line-height:1.25;margin-bottom:48px}
-.sub{font-size:40px;color:var(--sub);margin-top:28px}
-code,.mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Noto Sans Mono CJK KR",monospace;
-           font-size:34px;background:var(--accent-soft);padding:2px 12px;border-radius:10px}
-.num{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;
-     border-radius:50%;background:var(--accent);color:#fff;font-size:34px;font-weight:700;flex:none}
-.row{display:flex;align-items:center;gap:24px;font-size:42px;background:var(--card);
- border:2px solid var(--line);border-radius:24px;padding:24px 32px;margin-bottom:20px}
-.lab{width:190px;flex:none;font-size:38px;font-weight:700;color:var(--sub)}
-.val{display:flex;align-items:center;flex-wrap:wrap;gap:6px 14px}
-.foot{font-size:36px;color:var(--sub);margin-top:28px}.t{flex:1}.box{width:44px;height:44px;border:3px solid var(--line);border-radius:10px;flex:none}</style></head>
-<body><div class="canvas"><h2>첫 주에 익힐 순서</h2>
-<div class="row"><span class="num">1</span><span class="t">CLAUDE.md로 규칙 적기</span><span class="box"></span></div>
-<div class="row"><span class="num">2</span><span class="t">권한 모드와 플랜 모드</span><span class="box"></span></div>
-<div class="row"><span class="num">3</span><span class="t">반복되면 스킬 만들기</span><span class="box"></span></div>
-<div class="row"><span class="num">4</span><span class="t">읽을 양 많으면 서브에이전트</span><span class="box"></span></div>
-<div class="row"><span class="num">5</span><span class="t">외부 서비스는 MCP로</span><span class="box"></span></div>
-<div class="foot">CLAUDE.md와 권한 모드부터</div></div></body></html>
+     "Apple SD Gothic Neo","NanumGothic",sans-serif;color:#EDEEF2;
+     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.4}
+.canvas{width:1080px;padding:80px;background:#0B0C10}
+/* 표본 바탕: #0B0C10 + 오른쪽 위 아주 은은한 보라 빛 */
+.canvas.dk{padding:84px 80px 92px;display:flex;flex-direction:column;gap:56px;
+  background:radial-gradient(circle at 92% 0%,rgba(154,142,247,.15),rgba(154,142,247,0) 38%),#0B0C10}
+/* 머리: 하늘색 번호 + 굵은 흰 제목 + 얇은 구분선 (h2를 쓰지 않아 테마의 3D 블록이 붙지 않음) */
+.head{display:flex;flex-direction:column;gap:30px}
+.hrow{display:flex;align-items:baseline;gap:26px}
+.no{flex:none;font-size:36px;font-weight:600;letter-spacing:.16em;color:#5EC8E5}
+.ht{font-size:60px;font-weight:800;line-height:1.25;letter-spacing:-.01em;color:#F4F5F8}
+.rule{height:2px;background:rgba(255,255,255,.12)}
+.cd{font-family:"JetBrains Mono","PretendardBlog","Pretendard",monospace;font-weight:700;color:#CFC8FF;letter-spacing:-.02em;word-spacing:-.18em}
+.foot{font-size:36px;line-height:1.5;color:#A9AEBC}
+.kp{background:#14161C;border:2px solid rgba(255,255,255,.14);border-radius:28px;padding:52px 56px;
+  display:flex;flex-direction:column;gap:26px}
+.kl{font-size:36px;font-weight:600;letter-spacing:.16em;color:#9A8EF7}
+.kt{font-size:56px;font-weight:800;line-height:1.4;letter-spacing:-.01em;color:#F4F5F8}
+.ks{font-size:38px;line-height:1.6;color:#C3C7D2;padding-top:30px;border-top:2px solid rgba(255,255,255,.10)}
+.ks b{font-weight:700;color:#F4F5F8}
+.tb{background:#14161C;border:2px solid rgba(255,255,255,.14);border-radius:28px;overflow:hidden}
+.tr{display:grid;align-items:center;border-top:2px solid rgba(255,255,255,.08)}
+.tr:first-child{border-top:none}
+.th{background:#1A1D25}
+.th>div{font-size:36px;font-weight:600;color:#A9AEBC;padding:26px 36px}
+.td{padding:32px 36px}
+.rl{font-size:40px;font-weight:700;color:#F4F5F8}
+.wrap{display:flex;flex-direction:column;gap:32px}
+.ls{display:flex;flex-direction:column;gap:20px}
+.it{display:flex;align-items:center;gap:30px;background:#14161C;border:2px solid rgba(255,255,255,.14);
+  border-radius:24px;padding:32px 44px}
+.it .k{flex:none;width:44px;font-size:44px;font-weight:800;color:#9A8EF7}
+.it p{flex:1;font-size:42px;font-weight:700;color:#F4F5F8;letter-spacing:-.01em}
+.it .bx{flex:none;width:44px;height:44px;border-radius:10px;border:3px solid rgba(94,200,229,.7)}
+.nxw{display:flex;flex-direction:column;gap:22px}
+.nt{text-align:center;font-size:40px;color:#C3C7D2}
+.nx{display:flex;align-items:center;gap:28px;margin-top:8px}
+.nx i{flex:1;height:2px;background:rgba(255,255,255,.12)}
+.nx span{font-size:36px;font-weight:600;letter-spacing:.2em;color:#8D93A3}</style></head>
+<body><div class="canvas dk">
+<div class="head"><div class="hrow"><span class="no">05</span><div class="ht">첫 주에 익힐 순서</div></div><div class="rule"></div></div>
+<div class="ls"><div class="it"><span class="k">1</span><p>CLAUDE.md로 규칙 적기</p><span class="bx"></span></div><div class="it"><span class="k">2</span><p>권한 모드와 플랜 모드</p><span class="bx"></span></div><div class="it"><span class="k">3</span><p>반복되면 스킬 만들기</p><span class="bx"></span></div><div class="it"><span class="k">4</span><p>읽을 양 많으면 서브에이전트</p><span class="bx"></span></div><div class="it"><span class="k">5</span><p>외부 서비스는 MCP로</p><span class="bx"></span></div></div>
+<div class="nxw"><div class="nx"><i></i><span>NEXT</span><i></i></div><p class="nt">다음 글: CLAUDE.md 작성법</p></div>
+</div></body></html>

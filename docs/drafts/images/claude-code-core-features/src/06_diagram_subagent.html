@@ -1,32 +1,60 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><title>다이어그램</title>
-<style>:root{--bg:#FAF7F2;--card:#FFFFFF;--ink:#1F2937;--sub:#6B7280;--line:#E8E1D6;
-      --accent:#C8553D;--accent-soft:#F6E3DC;--ok:#2F6F5E;--ok-soft:#DDEDE7}
+<style>:root{--bg:#0B0C10;--card:#14161C;--ink:#EDEEF2;--sub:#A9AEBC;--line:#2A2D37;
+      --accent:#9A8EF7;--accent-soft:#25213F;--ok:#5EC8E5;--ok-soft:#12303A}
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--bg)}
+html,body{background:#0B0C10}
 body{font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",
-     "Apple SD Gothic Neo","NanumGothic","WenQuanYi Zen Hei",sans-serif;color:var(--ink);
-     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.35}
-.canvas{width:1080px;padding:80px;background:var(--bg)}
-.square{height:1080px;display:flex;flex-direction:column;justify-content:center}
-.kicker{font-size:36px;font-weight:600;color:var(--accent);margin-bottom:28px}
-h1{font-size:84px;font-weight:800;line-height:1.2;letter-spacing:-1px}
-h2{font-size:56px;font-weight:800;line-height:1.25;margin-bottom:48px}
-.sub{font-size:40px;color:var(--sub);margin-top:28px}
-code,.mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Noto Sans Mono CJK KR",monospace;
-           font-size:34px;background:var(--accent-soft);padding:2px 12px;border-radius:10px}
-.num{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;
-     border-radius:50%;background:var(--accent);color:#fff;font-size:34px;font-weight:700;flex:none}
-.col{display:flex;flex-direction:column;gap:10px}
-.node{display:flex;align-items:center;gap:24px;background:var(--card);border:2px solid var(--line);border-radius:24px;padding:28px 32px}
-.node b{font-size:44px;min-width:290px}.node small{font-size:36px;color:var(--sub)}
-.arrow{font-size:40px;color:var(--accent);font-weight:700;padding-left:60px}</style></head>
-<body><div class="canvas">
-<h2>서브에이전트는 요약만 반환</h2>
-<div class="col">
-<div class="node"><span class="num">1</span><b>메인 대화</b><small>작업을 맡김</small></div>
-<div class="arrow" style="display:flex;align-items:center;gap:14px"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C8553D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v15M6 13l6 6 6-6"/></svg> 작업 전달</div>
-<div class="node"><span class="num">2</span><b>서브에이전트</b><small>독립된 창에서 따로 일함</small></div>
-<div class="arrow" style="display:flex;align-items:center;gap:14px"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C8553D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v15M6 13l6 6 6-6"/></svg> 요약 결과만</div>
-<div class="node"><span class="num">3</span><b>메인 대화</b><small>깔끔하게 유지</small></div>
-</div></div></body></html>
+     "Apple SD Gothic Neo","NanumGothic",sans-serif;color:#EDEEF2;
+     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.4}
+.canvas{width:1080px;padding:80px;background:#0B0C10}
+/* 표본 바탕: #0B0C10 + 오른쪽 위 아주 은은한 보라 빛 */
+.canvas.dk{padding:84px 80px 92px;display:flex;flex-direction:column;gap:56px;
+  background:radial-gradient(circle at 92% 0%,rgba(154,142,247,.15),rgba(154,142,247,0) 38%),#0B0C10}
+/* 머리: 하늘색 번호 + 굵은 흰 제목 + 얇은 구분선 (h2를 쓰지 않아 테마의 3D 블록이 붙지 않음) */
+.head{display:flex;flex-direction:column;gap:30px}
+.hrow{display:flex;align-items:baseline;gap:26px}
+.no{flex:none;font-size:36px;font-weight:600;letter-spacing:.16em;color:#5EC8E5}
+.ht{font-size:60px;font-weight:800;line-height:1.25;letter-spacing:-.01em;color:#F4F5F8}
+.rule{height:2px;background:rgba(255,255,255,.12)}
+.cd{font-family:"JetBrains Mono","PretendardBlog","Pretendard",monospace;font-weight:700;color:#CFC8FF;letter-spacing:-.02em;word-spacing:-.18em}
+.foot{font-size:36px;line-height:1.5;color:#A9AEBC}
+.kp{background:#14161C;border:2px solid rgba(255,255,255,.14);border-radius:28px;padding:52px 56px;
+  display:flex;flex-direction:column;gap:26px}
+.kl{font-size:36px;font-weight:600;letter-spacing:.16em;color:#9A8EF7}
+.kt{font-size:56px;font-weight:800;line-height:1.4;letter-spacing:-.01em;color:#F4F5F8}
+.ks{font-size:38px;line-height:1.6;color:#C3C7D2;padding-top:30px;border-top:2px solid rgba(255,255,255,.10)}
+.ks b{font-weight:700;color:#F4F5F8}
+.tb{background:#14161C;border:2px solid rgba(255,255,255,.14);border-radius:28px;overflow:hidden}
+.tr{display:grid;align-items:center;border-top:2px solid rgba(255,255,255,.08)}
+.tr:first-child{border-top:none}
+.th{background:#1A1D25}
+.th>div{font-size:36px;font-weight:600;color:#A9AEBC;padding:26px 36px}
+.td{padding:32px 36px}
+.rl{font-size:40px;font-weight:700;color:#F4F5F8}
+.wrap{display:flex;flex-direction:column;gap:32px}
+.sa{display:grid;grid-template-columns:290px 1fr 360px;align-items:stretch;column-gap:20px}
+.bx{background:#14161C;border:2px solid rgba(255,255,255,.14);border-radius:28px;padding:40px 34px;display:flex;flex-direction:column;gap:18px;justify-content:center}
+.bx.sub{border-color:rgba(154,142,247,.5);background:#17152A}
+.bx b{font-size:44px;font-weight:800;color:#F4F5F8}
+.bx.sub b{color:#CFC8FF}
+.bx span{font-size:36px;color:#C3C7D2;line-height:1.45}
+.mid{display:flex;flex-direction:column;justify-content:center;gap:56px}
+.ar{display:flex;flex-direction:column;align-items:center;gap:6px}
+.ar span{font-size:36px;font-weight:700;color:#C3C7D2;white-space:nowrap}
+.ar.bk span{color:#5EC8E5}
+.ar svg{display:block}</style></head>
+<body><div class="canvas dk">
+<div class="head"><div class="hrow"><span class="no">02</span><div class="ht">서브에이전트는 요약만 반환</div></div><div class="rule"></div></div>
+<div class="wrap">
+<div class="sa">
+<div class="bx"><b>메인 대화</b><span>맡기고<br>요약만 받음</span></div>
+<div class="mid">
+<div class="ar"><span>작업 맡김</span><svg width="200" height="40" viewBox="0 0 200 40" fill="none" stroke="#A9AEBC" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20h180M170 6l18 14-18 14"/></svg></div>
+<div class="ar bk"><svg width="200" height="40" viewBox="0 0 200 40" fill="none" stroke="#5EC8E5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M192 20H12M30 6L12 20l18 14"/></svg><span>요약 결과만</span></div>
+</div>
+<div class="bx sub"><b>서브에이전트</b><span>독립된 컨텍스트 창<br>별도 지침<br>제한된 도구</span></div>
+</div>
+<p class="foot">읽을 게 많은 일을 맡겨도<br>메인 대화가 지저분해지지 않음</p>
+</div>
+</div></body></html>

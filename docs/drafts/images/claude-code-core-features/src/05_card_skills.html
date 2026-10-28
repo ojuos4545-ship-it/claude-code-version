@@ -1,31 +1,58 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><title>포인트카드</title>
-<style>:root{--bg:#FAF7F2;--card:#FFFFFF;--ink:#1F2937;--sub:#6B7280;--line:#E8E1D6;
-      --accent:#C8553D;--accent-soft:#F6E3DC;--ok:#2F6F5E;--ok-soft:#DDEDE7}
+<style>:root{--bg:#0B0C10;--card:#14161C;--ink:#EDEEF2;--sub:#A9AEBC;--line:#2A2D37;
+      --accent:#9A8EF7;--accent-soft:#25213F;--ok:#5EC8E5;--ok-soft:#12303A}
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--bg)}
+html,body{background:#0B0C10}
 body{font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",
-     "Apple SD Gothic Neo","NanumGothic","WenQuanYi Zen Hei",sans-serif;color:var(--ink);
-     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.35}
-.canvas{width:1080px;padding:80px;background:var(--bg)}
-.square{height:1080px;display:flex;flex-direction:column;justify-content:center}
-.kicker{font-size:36px;font-weight:600;color:var(--accent);margin-bottom:28px}
-h1{font-size:84px;font-weight:800;line-height:1.2;letter-spacing:-1px}
-h2{font-size:56px;font-weight:800;line-height:1.25;margin-bottom:48px}
-.sub{font-size:40px;color:var(--sub);margin-top:28px}
-code,.mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Noto Sans Mono CJK KR",monospace;
-           font-size:34px;background:var(--accent-soft);padding:2px 12px;border-radius:10px}
-.num{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;
-     border-radius:50%;background:var(--accent);color:#fff;font-size:34px;font-weight:700;flex:none}
-.row{display:flex;align-items:center;gap:24px;font-size:42px;background:var(--card);
- border:2px solid var(--line);border-radius:24px;padding:24px 32px;margin-bottom:20px}
-.lab{width:190px;flex:none;font-size:38px;font-weight:700;color:var(--sub)}
-.val{display:flex;align-items:center;flex-wrap:wrap;gap:6px 14px}
-.foot{font-size:36px;color:var(--sub);margin-top:28px}</style></head>
-<body><div class="canvas"><h2>SKILL.md 폴더 이름이 곧 명령</h2>
-<div class="row"><span class="lab">목록</span><span class="val"><span>메시지 맨 앞에</span><code>/</code><span>입력</span></span></div>
-<div class="row"><span class="lab">개인용</span><span class="val"><code>~/.claude/skills/</code></span></div>
-<div class="row"><span class="lab">프로젝트</span><span class="val"><code>.claude/skills/</code></span></div>
-<div class="row"><span class="lab">파일</span><span class="val"><code>&lt;이름&gt;/SKILL.md</code></span></div>
-<div class="row"><span class="lab">옛 방식</span><span class="val"><code>.claude/commands/</code><span>도 작동</span></span></div>
-<div class="foot">새로 만든다면 스킬 형식 권장</div></div></body></html>
+     "Apple SD Gothic Neo","NanumGothic",sans-serif;color:#EDEEF2;
+     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.4}
+.canvas{width:1080px;padding:80px;background:#0B0C10}
+/* 표본 바탕: #0B0C10 + 오른쪽 위 아주 은은한 보라 빛 */
+.canvas.dk{padding:84px 80px 92px;display:flex;flex-direction:column;gap:56px;
+  background:radial-gradient(circle at 92% 0%,rgba(154,142,247,.15),rgba(154,142,247,0) 38%),#0B0C10}
+/* 머리: 하늘색 번호 + 굵은 흰 제목 + 얇은 구분선 (h2를 쓰지 않아 테마의 3D 블록이 붙지 않음) */
+.head{display:flex;flex-direction:column;gap:30px}
+.hrow{display:flex;align-items:baseline;gap:26px}
+.no{flex:none;font-size:36px;font-weight:600;letter-spacing:.16em;color:#5EC8E5}
+.ht{font-size:60px;font-weight:800;line-height:1.25;letter-spacing:-.01em;color:#F4F5F8}
+.rule{height:2px;background:rgba(255,255,255,.12)}
+.cd{font-family:"JetBrains Mono","PretendardBlog","Pretendard",monospace;font-weight:700;color:#CFC8FF;letter-spacing:-.02em;word-spacing:-.18em}
+.foot{font-size:36px;line-height:1.5;color:#A9AEBC}
+.kp{background:#14161C;border:2px solid rgba(255,255,255,.14);border-radius:28px;padding:52px 56px;
+  display:flex;flex-direction:column;gap:26px}
+.kl{font-size:36px;font-weight:600;letter-spacing:.16em;color:#9A8EF7}
+.kt{font-size:56px;font-weight:800;line-height:1.4;letter-spacing:-.01em;color:#F4F5F8}
+.ks{font-size:38px;line-height:1.6;color:#C3C7D2;padding-top:30px;border-top:2px solid rgba(255,255,255,.10)}
+.ks b{font-weight:700;color:#F4F5F8}
+.tb{background:#14161C;border:2px solid rgba(255,255,255,.14);border-radius:28px;overflow:hidden}
+.tr{display:grid;align-items:center;border-top:2px solid rgba(255,255,255,.08)}
+.tr:first-child{border-top:none}
+.th{background:#1A1D25}
+.th>div{font-size:36px;font-weight:600;color:#A9AEBC;padding:26px 36px}
+.td{padding:32px 36px}
+.rl{font-size:40px;font-weight:700;color:#F4F5F8}
+.wrap{display:flex;flex-direction:column;gap:32px}
+.file{background:#14161C;border:2px solid rgba(255,255,255,.14);border-radius:28px;overflow:hidden}
+.fr{display:grid;grid-template-columns:200px 1fr;align-items:center;column-gap:20px;padding:30px 44px;border-top:2px solid rgba(255,255,255,.08)}
+.fr:first-child{border-top:none}
+.fr .rl{font-size:38px}
+.fr .cd{font-size:38px}
+.fr .ds{font-size:38px;color:#C3C7D2}
+.map{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.map .cd{font-size:40px}
+.map .cd.ok{color:#5EC8E5}</style></head>
+<body><div class="canvas dk">
+<div class="head"><div class="hrow"><span class="no">02</span><div class="ht">폴더 이름이 곧 /명령</div></div><div class="rule"></div></div>
+<div class="wrap">
+<div class="file">
+<div class="fr"><span class="rl">목록 보기</span><span class="ds">메시지 맨 앞에 <span class="cd">/</span> 입력</span></div>
+<div class="fr"><span class="rl">개인용</span><span class="cd">~/.claude/skills/</span></div>
+<div class="fr"><span class="rl">프로젝트</span><span class="cd">.claude/skills/</span></div>
+</div>
+<div class="kp">
+<span class="kl">KEY POINT</span>
+<div class="map"><span class="cd">&lt;이름&gt;/SKILL.md</span><svg class="fa" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#5EC8E5" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h17M14 6l6 6-6 6"/></svg><span class="cd ok">/이름</span></div>
+<p class="ks"><span class="cd" style="font-size:34px">.claude/commands/</span>도 작동하지만<br>새로 만든다면 스킬 형식 권장</p>
+</div></div>
+</div></body></html>

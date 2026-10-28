@@ -11,32 +11,97 @@ body{font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",
 .square{height:1080px;display:flex;flex-direction:column;justify-content:center}
 .kicker{font-size:36px;font-weight:600;color:var(--accent);margin-bottom:28px}
 h1{font-size:84px;font-weight:800;line-height:1.2;letter-spacing:-1px}
-h2{font-size:56px;font-weight:800;line-height:1.25;margin-bottom:48px}
 .sub{font-size:40px;color:var(--sub);margin-top:28px}
-code,.mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Noto Sans Mono CJK KR",monospace;
-           font-size:34px;background:var(--accent-soft);padding:2px 12px;border-radius:10px}
 .num{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;
      border-radius:50%;background:var(--accent);color:#fff;font-size:34px;font-weight:700;flex:none}
-.list{margin-top:44px}.li{display:flex;align-items:center;gap:24px;font-size:44px;font-weight:600;margin-bottom:16px}
-.canvas.square{position:relative;overflow:hidden;padding:90px 80px}
-.blob{position:absolute;right:-170px;top:-170px;width:520px;height:520px;border-radius:50%;background:var(--accent-soft)}
-.blob2{position:absolute;right:70px;top:70px;width:150px;height:150px;border-radius:50%;background:var(--accent)}
-.canvas.square>*{position:relative}
-.canvas.square>.blob,.canvas.square>.blob2{position:absolute}
-h1{font-size:104px;line-height:1.12;letter-spacing:-3px}h1 em{font-style:normal;color:var(--accent)}
-.kicker{font-size:38px;letter-spacing:0}
-.list{margin-top:56px;display:flex;flex-direction:column;gap:14px}
-.li{font-size:44px;margin:0;padding:16px 28px;background:var(--card);border:2px solid var(--line);border-radius:22px;width:620px}
-</style></head>
+.canvas.square{position:relative;overflow:hidden;padding:84px;display:block}
+.head{position:absolute;left:84px;top:96px;width:620px;display:flex;flex-direction:column}
+.kicker{font-size:36px;margin-bottom:22px}
+h1{font-size:92px;line-height:1.14;letter-spacing:-2.5px}
+.sub{font-size:38px;margin-top:26px}
+.art{position:absolute;right:60px;top:80px;width:380px;height:400px;overflow:visible}
+.list{position:absolute;left:84px;right:84px;bottom:84px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.li{display:flex;align-items:center;gap:26px;font-size:44px;font-weight:600;padding:26px 34px;
+ background:var(--card);border:2px solid var(--line);border-radius:24px}</style></head>
 <body><div class="canvas square">
-<div class="blob"></div><div class="blob2"></div>
-<div class="kicker">클로드 코드</div>
-<h1>핵심 기능<br><em>5가지</em></h1>
-<div class="sub">처음 쓴다면 이 순서로</div>
+<svg class="art" viewBox="0 0 400 420" aria-hidden="true">
+<defs>
+<linearGradient id="lf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E9E5FF"/><stop offset=".5" stop-color="#9F93FA"/><stop offset="1" stop-color="#6A5BE0"/></linearGradient>
+<linearGradient id="rf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7B6CF0"/><stop offset="1" stop-color="#1A1740"/></linearGradient>
+<linearGradient id="tp" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".6" stop-color="#E4DFFF"/><stop offset="1" stop-color="#B9AFFF"/></linearGradient>
+<linearGradient id="tps" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F1EEFF"/><stop offset="1" stop-color="#C9C1FF"/></linearGradient>
+</defs>
+<!-- 다섯 기능을 하나씩 쌓아 올라가는 3D 계단(1층~5층) -->
+<ellipse cx="128" cy="364" rx="128" ry="14" transform="rotate(-30 128 364)" fill="#000" opacity=".55"/>
+<polygon points="166.3,254.0 204.4,276.0 204.4,320.0 166.3,298.0" fill="url(#lf)"/>
+<polygon points="242.5,254.0 204.4,276.0 204.4,320.0 242.5,298.0" fill="url(#rf)"/>
+<polygon points="204.4,232.0 242.5,254.0 204.4,276.0 166.3,254.0" fill="url(#tps)"/>
+<path d="M166.3 254.0 L204.4 276.0 L242.5 254.0" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+<polygon points="166.3,210.0 204.4,232.0 204.4,276.0 166.3,254.0" fill="url(#lf)"/>
+<polygon points="242.5,210.0 204.4,232.0 204.4,276.0 242.5,254.0" fill="url(#rf)"/>
+<polygon points="204.4,188.0 242.5,210.0 204.4,232.0 166.3,210.0" fill="url(#tps)"/>
+<path d="M166.3 210.0 L204.4 232.0 L242.5 210.0" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+<polygon points="166.3,166.0 204.4,188.0 204.4,232.0 166.3,210.0" fill="url(#lf)"/>
+<polygon points="242.5,166.0 204.4,188.0 204.4,232.0 242.5,210.0" fill="url(#rf)"/>
+<polygon points="204.4,144.0 242.5,166.0 204.4,188.0 166.3,166.0" fill="url(#tps)"/>
+<path d="M166.3 166.0 L204.4 188.0 L242.5 166.0" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+<polygon points="166.3,122.0 204.4,144.0 204.4,188.0 166.3,166.0" fill="url(#lf)"/>
+<polygon points="242.5,122.0 204.4,144.0 204.4,188.0 242.5,166.0" fill="url(#rf)"/>
+<polygon points="204.4,100.0 242.5,122.0 204.4,144.0 166.3,122.0" fill="url(#tps)"/>
+<path d="M166.3 122.0 L204.4 144.0 L242.5 122.0" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+<polygon points="166.3,78.0 204.4,100.0 204.4,144.0 166.3,122.0" fill="url(#lf)"/>
+<polygon points="242.5,78.0 204.4,100.0 204.4,144.0 242.5,122.0" fill="url(#rf)"/>
+<polygon points="204.4,56.0 242.5,78.0 204.4,100.0 166.3,78.0" fill="url(#tp)"/>
+<path d="M166.3 78.0 L204.4 100.0 L242.5 78.0" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+<polygon points="128.2,276.0 166.3,298.0 166.3,342.0 128.2,320.0" fill="url(#lf)"/>
+<polygon points="204.4,276.0 166.3,298.0 166.3,342.0 204.4,320.0" fill="url(#rf)"/>
+<polygon points="166.3,254.0 204.4,276.0 166.3,298.0 128.2,276.0" fill="url(#tps)"/>
+<path d="M128.2 276.0 L166.3 298.0 L204.4 276.0" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+<polygon points="128.2,232.0 166.3,254.0 166.3,298.0 128.2,276.0" fill="url(#lf)"/>
+<polygon points="204.4,232.0 166.3,254.0 166.3,298.0 204.4,276.0" fill="url(#rf)"/>
+<polygon points="166.3,210.0 204.4,232.0 166.3,254.0 128.2,232.0" fill="url(#tps)"/>
+<path d="M128.2 232.0 L166.3 254.0 L204.4 232.0" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+<polygon points="128.2,188.0 166.3,210.0 166.3,254.0 128.2,232.0" fill="url(#lf)"/>
+<polygon points="204.4,188.0 166.3,210.0 166.3,254.0 204.4,232.0" fill="url(#rf)"/>
+<polygon points="166.3,166.0 204.4,188.0 166.3,210.0 128.2,188.0" fill="url(#tps)"/>
+<path d="M128.2 188.0 L166.3 210.0 L204.4 188.0" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+<polygon points="128.2,144.0 166.3,166.0 166.3,210.0 128.2,188.0" fill="url(#lf)"/>
+<polygon points="204.4,144.0 166.3,166.0 166.3,210.0 204.4,188.0" fill="url(#rf)"/>
+<polygon points="166.3,122.0 204.4,144.0 166.3,166.0 128.2,144.0" fill="url(#tp)"/>
+<path d="M128.2 144.0 L166.3 166.0 L204.4 144.0" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+<polygon points="90.1,298.0 128.2,320.0 128.2,364.0 90.1,342.0" fill="url(#lf)"/>
+<polygon points="166.3,298.0 128.2,320.0 128.2,364.0 166.3,342.0" fill="url(#rf)"/>
+<polygon points="128.2,276.0 166.3,298.0 128.2,320.0 90.1,298.0" fill="url(#tps)"/>
+<path d="M90.1 298.0 L128.2 320.0 L166.3 298.0" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+<polygon points="90.1,254.0 128.2,276.0 128.2,320.0 90.1,298.0" fill="url(#lf)"/>
+<polygon points="166.3,254.0 128.2,276.0 128.2,320.0 166.3,298.0" fill="url(#rf)"/>
+<polygon points="128.2,232.0 166.3,254.0 128.2,276.0 90.1,254.0" fill="url(#tps)"/>
+<path d="M90.1 254.0 L128.2 276.0 L166.3 254.0" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+<polygon points="90.1,210.0 128.2,232.0 128.2,276.0 90.1,254.0" fill="url(#lf)"/>
+<polygon points="166.3,210.0 128.2,232.0 128.2,276.0 166.3,254.0" fill="url(#rf)"/>
+<polygon points="128.2,188.0 166.3,210.0 128.2,232.0 90.1,210.0" fill="url(#tp)"/>
+<path d="M90.1 210.0 L128.2 232.0 L166.3 210.0" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+<polygon points="52.0,320.0 90.1,342.0 90.1,386.0 52.0,364.0" fill="url(#lf)"/>
+<polygon points="128.2,320.0 90.1,342.0 90.1,386.0 128.2,364.0" fill="url(#rf)"/>
+<polygon points="90.1,298.0 128.2,320.0 90.1,342.0 52.0,320.0" fill="url(#tps)"/>
+<path d="M52.0 320.0 L90.1 342.0 L128.2 320.0" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+<polygon points="52.0,276.0 90.1,298.0 90.1,342.0 52.0,320.0" fill="url(#lf)"/>
+<polygon points="128.2,276.0 90.1,298.0 90.1,342.0 128.2,320.0" fill="url(#rf)"/>
+<polygon points="90.1,254.0 128.2,276.0 90.1,298.0 52.0,276.0" fill="url(#tp)"/>
+<path d="M52.0 276.0 L90.1 298.0 L128.2 276.0" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+<polygon points="13.9,342.0 52.0,364.0 52.0,408.0 13.9,386.0" fill="url(#lf)"/>
+<polygon points="90.1,342.0 52.0,364.0 52.0,408.0 90.1,386.0" fill="url(#rf)"/>
+<polygon points="52.0,320.0 90.1,342.0 52.0,364.0 13.9,342.0" fill="url(#tp)"/>
+<path d="M13.9 342.0 L52.0 364.0 L90.1 342.0" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+<circle cx="372" cy="36" r="9" fill="#5EC8E5"/>
+</svg>
+<div class="head"><div class="kicker">클로드 코드</div>
+<h1>핵심 기능<br>5가지 총정리</h1>
+<div class="sub">처음 쓴다면 이 순서로</div></div>
 <div class="list">
-<div class="li"><span class="num">1</span>CLAUDE.md</div>
-<div class="li"><span class="num">2</span>권한·플랜 모드</div>
-<div class="li"><span class="num">3</span>스킬</div>
-<div class="li"><span class="num">4</span>서브에이전트</div>
-<div class="li"><span class="num">5</span>MCP</div>
+<div class="li"><span class="num">1</span><span>CLAUDE.md</span></div>
+<div class="li"><span class="num">2</span><span>권한 모드</span></div>
+<div class="li"><span class="num">3</span><span>스킬</span></div>
+<div class="li"><span class="num">4</span><span>서브에이전트</span></div>
+<div class="li"><span class="num">5</span><span>MCP</span></div>
 </div></div></body></html>

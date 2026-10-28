@@ -1,31 +1,56 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><title>포인트카드</title>
-<style>:root{--bg:#FAF7F2;--card:#FFFFFF;--ink:#1F2937;--sub:#6B7280;--line:#E8E1D6;
-      --accent:#C8553D;--accent-soft:#F6E3DC;--ok:#2F6F5E;--ok-soft:#DDEDE7}
+<style>:root{--bg:#0B0C10;--card:#14161C;--ink:#EDEEF2;--sub:#A9AEBC;--line:#2A2D37;
+      --accent:#9A8EF7;--accent-soft:#25213F;--ok:#5EC8E5;--ok-soft:#12303A}
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--bg)}
+html,body{background:#0B0C10}
 body{font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",
-     "Apple SD Gothic Neo","NanumGothic","WenQuanYi Zen Hei",sans-serif;color:var(--ink);
-     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.35}
-.canvas{width:1080px;padding:80px;background:var(--bg)}
-.square{height:1080px;display:flex;flex-direction:column;justify-content:center}
-.kicker{font-size:36px;font-weight:600;color:var(--accent);margin-bottom:28px}
-h1{font-size:84px;font-weight:800;line-height:1.2;letter-spacing:-1px}
-h2{font-size:56px;font-weight:800;line-height:1.25;margin-bottom:48px}
-.sub{font-size:40px;color:var(--sub);margin-top:28px}
-code,.mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Noto Sans Mono CJK KR",monospace;
-           font-size:34px;background:var(--accent-soft);padding:2px 12px;border-radius:10px}
-.num{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;
-     border-radius:50%;background:var(--accent);color:#fff;font-size:34px;font-weight:700;flex:none}
-.row{display:flex;align-items:center;gap:24px;font-size:42px;background:var(--card);
- border:2px solid var(--line);border-radius:24px;padding:24px 32px;margin-bottom:20px}
-.lab{width:190px;flex:none;font-size:38px;font-weight:700;color:var(--sub)}
-.val{display:flex;align-items:center;flex-wrap:wrap;gap:6px 14px}
-.foot{font-size:36px;color:var(--sub);margin-top:28px}</style></head>
-<body><div class="canvas"><h2>CLAUDE.md는 매번 읽는 메모</h2>
-<div class="row"><span class="lab">프로젝트</span><span class="val"><code>./CLAUDE.md</code></span></div>
-<div class="row"><span class="lab">프로젝트</span><span class="val"><code>./.claude/CLAUDE.md</code></span></div>
-<div class="row"><span class="lab">내 전체</span><span class="val"><code>~/.claude/CLAUDE.md</code></span></div>
-<div class="row"><span class="lab">시작용</span><span class="val"><code>/init</code><span>으로 초안 생성</span></span></div>
-<div class="row"><span class="lab">권장</span><span class="val"><span>파일당 200줄 이하</span></span></div>
-<div class="foot">강제 규칙이 아닌 참고 맥락</div></div></body></html>
+     "Apple SD Gothic Neo","NanumGothic",sans-serif;color:#EDEEF2;
+     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.4}
+.canvas{width:1080px;padding:80px;background:#0B0C10}
+/* 표본 바탕: #0B0C10 + 오른쪽 위 아주 은은한 보라 빛 */
+.canvas.dk{padding:84px 80px 92px;display:flex;flex-direction:column;gap:56px;
+  background:radial-gradient(circle at 92% 0%,rgba(154,142,247,.15),rgba(154,142,247,0) 38%),#0B0C10}
+/* 머리: 하늘색 번호 + 굵은 흰 제목 + 얇은 구분선 (h2를 쓰지 않아 테마의 3D 블록이 붙지 않음) */
+.head{display:flex;flex-direction:column;gap:30px}
+.hrow{display:flex;align-items:baseline;gap:26px}
+.no{flex:none;font-size:36px;font-weight:600;letter-spacing:.16em;color:#5EC8E5}
+.ht{font-size:60px;font-weight:800;line-height:1.25;letter-spacing:-.01em;color:#F4F5F8}
+.rule{height:2px;background:rgba(255,255,255,.12)}
+.cd{font-family:"JetBrains Mono","PretendardBlog","Pretendard",monospace;font-weight:700;color:#CFC8FF;letter-spacing:-.02em;word-spacing:-.18em}
+.foot{font-size:36px;line-height:1.5;color:#A9AEBC}
+.kp{background:#14161C;border:2px solid rgba(255,255,255,.14);border-radius:28px;padding:52px 56px;
+  display:flex;flex-direction:column;gap:26px}
+.kl{font-size:36px;font-weight:600;letter-spacing:.16em;color:#9A8EF7}
+.kt{font-size:56px;font-weight:800;line-height:1.4;letter-spacing:-.01em;color:#F4F5F8}
+.ks{font-size:38px;line-height:1.6;color:#C3C7D2;padding-top:30px;border-top:2px solid rgba(255,255,255,.10)}
+.ks b{font-weight:700;color:#F4F5F8}
+.tb{background:#14161C;border:2px solid rgba(255,255,255,.14);border-radius:28px;overflow:hidden}
+.tr{display:grid;align-items:center;border-top:2px solid rgba(255,255,255,.08)}
+.tr:first-child{border-top:none}
+.th{background:#1A1D25}
+.th>div{font-size:36px;font-weight:600;color:#A9AEBC;padding:26px 36px}
+.td{padding:32px 36px}
+.rl{font-size:40px;font-weight:700;color:#F4F5F8}
+.wrap{display:flex;flex-direction:column;gap:32px}
+.tr{grid-template-columns:250px 1fr}
+.td .cd{font-size:40px}
+.td{padding:24px 36px}
+.kp{padding:40px 52px;gap:20px}
+.ks{padding-top:22px}
+.kt .cd{font-size:54px}</style></head>
+<body><div class="canvas dk">
+<div class="head"><div class="hrow"><span class="no">02</span><div class="ht">CLAUDE.md는 매번 읽는 메모</div></div><div class="rule"></div></div>
+<div class="wrap">
+<div class="tb">
+<div class="tr th"><div>쓰는 곳</div><div>저장 위치</div></div>
+<div class="tr"><div class="td rl">프로젝트</div><div class="td"><span class="cd">./CLAUDE.md</span></div></div>
+<div class="tr"><div class="td rl">프로젝트</div><div class="td"><span class="cd">./.claude/CLAUDE.md</span></div></div>
+<div class="tr"><div class="td rl">내 전체</div><div class="td"><span class="cd">~/.claude/CLAUDE.md</span></div></div>
+</div>
+<div class="kp">
+<span class="kl">KEY POINT</span>
+<p class="kt"><span class="cd">/init</span>으로 초안 만들고<br>파일당 200줄 이하로</p>
+<p class="ks">강제 규칙이 아닌 참고 맥락,<br>길면 지침을 덜 따를 수 있음</p>
+</div></div>
+</div></body></html>

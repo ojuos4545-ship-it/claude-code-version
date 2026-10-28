@@ -1,38 +1,64 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><title>다이어그램</title>
-<style>:root{--bg:#FAF7F2;--card:#FFFFFF;--ink:#1F2937;--sub:#6B7280;--line:#E8E1D6;
-      --accent:#C8553D;--accent-soft:#F6E3DC;--ok:#2F6F5E;--ok-soft:#DDEDE7}
+<style>:root{--bg:#0B0C10;--card:#14161C;--ink:#EDEEF2;--sub:#A9AEBC;--line:#2A2D37;
+      --accent:#9A8EF7;--accent-soft:#25213F;--ok:#5EC8E5;--ok-soft:#12303A}
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--bg)}
+html,body{background:#0B0C10}
 body{font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",
-     "Apple SD Gothic Neo","NanumGothic","WenQuanYi Zen Hei",sans-serif;color:var(--ink);
-     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.35}
-.canvas{width:1080px;padding:80px;background:var(--bg)}
-.square{height:1080px;display:flex;flex-direction:column;justify-content:center}
-.kicker{font-size:36px;font-weight:600;color:var(--accent);margin-bottom:28px}
-h1{font-size:84px;font-weight:800;line-height:1.2;letter-spacing:-1px}
-h2{font-size:56px;font-weight:800;line-height:1.25;margin-bottom:48px}
-.sub{font-size:40px;color:var(--sub);margin-top:28px}
-code,.mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Noto Sans Mono CJK KR",monospace;
-           font-size:34px;background:var(--accent-soft);padding:2px 12px;border-radius:10px}
-.num{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;
-     border-radius:50%;background:var(--accent);color:#fff;font-size:34px;font-weight:700;flex:none}
-.col{display:flex;flex-direction:column;gap:6px}
-.node{display:flex;align-items:center;gap:24px;background:var(--card);border:2px solid var(--line);border-radius:24px;padding:18px 32px}
-.node b{font-size:40px;min-width:270px}.node b.mono{font-size:36px;background:var(--accent-soft);padding:4px 14px;min-width:0;width:290px}
-.node small{font-size:34px;color:var(--sub)}
-.arrow{font-size:40px;color:var(--accent);font-weight:700;padding-left:60px;display:flex;align-items:center;gap:14px}
-.arrow code{font-size:30px}
-.foot{font-size:36px;color:var(--sub);margin-top:28px}</style></head>
-<body><div class="canvas">
-<h2>Shift+Tab으로 모드 순환</h2>
-<div class="col">
-<div class="node"><span class="num">1</span><b class="mono">default</b><small>읽기만 자동, 나머지는 질문</small></div>
-<div class="arrow"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C8553D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v15M6 13l6 6 6-6"/></svg> <code>Shift+Tab</code></div>
-<div class="node"><span class="num">2</span><b class="mono">acceptEdits</b><small>파일 편집은 묻지 않음</small></div>
-<div class="arrow"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C8553D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v15M6 13l6 6 6-6"/></svg> <code>Shift+Tab</code></div>
-<div class="node"><span class="num">3</span><b class="mono">plan</b><small>계획만 세우고 편집 차단</small></div>
-<div class="arrow"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C8553D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v15M6 13l6 6 6-6"/></svg> 계획 승인</div>
-<div class="node"><span class="num">4</span><b style="width:290px">진행</b><small>승인한 계획대로 작업</small></div>
+     "Apple SD Gothic Neo","NanumGothic",sans-serif;color:#EDEEF2;
+     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.4}
+.canvas{width:1080px;padding:80px;background:#0B0C10}
+/* 표본 바탕: #0B0C10 + 오른쪽 위 아주 은은한 보라 빛 */
+.canvas.dk{padding:84px 80px 92px;display:flex;flex-direction:column;gap:56px;
+  background:radial-gradient(circle at 92% 0%,rgba(154,142,247,.15),rgba(154,142,247,0) 38%),#0B0C10}
+/* 머리: 하늘색 번호 + 굵은 흰 제목 + 얇은 구분선 (h2를 쓰지 않아 테마의 3D 블록이 붙지 않음) */
+.head{display:flex;flex-direction:column;gap:30px}
+.hrow{display:flex;align-items:baseline;gap:26px}
+.no{flex:none;font-size:36px;font-weight:600;letter-spacing:.16em;color:#5EC8E5}
+.ht{font-size:60px;font-weight:800;line-height:1.25;letter-spacing:-.01em;color:#F4F5F8}
+.rule{height:2px;background:rgba(255,255,255,.12)}
+.cd{font-family:"JetBrains Mono","PretendardBlog","Pretendard",monospace;font-weight:700;color:#CFC8FF;letter-spacing:-.02em;word-spacing:-.18em}
+.foot{font-size:36px;line-height:1.5;color:#A9AEBC}
+.kp{background:#14161C;border:2px solid rgba(255,255,255,.14);border-radius:28px;padding:52px 56px;
+  display:flex;flex-direction:column;gap:26px}
+.kl{font-size:36px;font-weight:600;letter-spacing:.16em;color:#9A8EF7}
+.kt{font-size:56px;font-weight:800;line-height:1.4;letter-spacing:-.01em;color:#F4F5F8}
+.ks{font-size:38px;line-height:1.6;color:#C3C7D2;padding-top:30px;border-top:2px solid rgba(255,255,255,.10)}
+.ks b{font-weight:700;color:#F4F5F8}
+.tb{background:#14161C;border:2px solid rgba(255,255,255,.14);border-radius:28px;overflow:hidden}
+.tr{display:grid;align-items:center;border-top:2px solid rgba(255,255,255,.08)}
+.tr:first-child{border-top:none}
+.th{background:#1A1D25}
+.th>div{font-size:36px;font-weight:600;color:#A9AEBC;padding:26px 36px}
+.td{padding:32px 36px}
+.rl{font-size:40px;font-weight:700;color:#F4F5F8}
+.wrap{display:flex;flex-direction:column;gap:32px}
+.cy{background:#14161C;border:2px solid rgba(255,255,255,.14);border-radius:28px;padding:20px 0}
+.md{display:grid;grid-template-columns:330px 1fr;align-items:center;column-gap:24px;padding:18px 48px}
+.md .cd{font-size:40px;color:#CFC8FF}
+.md span{font-size:38px;color:#C3C7D2}
+.md.pl .cd{color:#5EC8E5}
+.sh{display:flex;align-items:center;gap:16px;padding:0 48px;font-size:36px;color:#8D93A3}
+.sh svg{display:block;margin-left:4px}
+.sh .cd{font-size:34px;color:#8D93A3;font-weight:600}
+.ret{display:flex;align-items:center;gap:16px;padding:16px 48px 4px;font-size:36px;color:#8D93A3;border-top:2px dashed rgba(255,255,255,.12);margin-top:10px}
+.fl{display:flex;align-items:center;gap:14px}
+.fn{flex:1;text-align:center;background:#14161C;border:2px solid rgba(255,255,255,.14);border-radius:24px;padding:24px 10px;font-size:40px;font-weight:700;color:#F4F5F8}
+.fn.on{border-color:rgba(94,200,229,.6);color:#5EC8E5}
+.fa{flex:none}
+.lb{font-size:36px;font-weight:700;color:#A9AEBC}</style></head>
+<body><div class="canvas dk">
+<div class="head"><div class="hrow"><span class="no">02</span><div class="ht">Shift+Tab으로 모드 순환</div></div><div class="rule"></div></div>
+<div class="wrap">
+<div class="cy">
+<div class="md"><span class="cd">default</span><span>읽기만 자동, 나머지는 질문</span></div>
+<div class="sh"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#5EC8E5" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v17M6 14l6 6 6-6"/></svg><span class="cd">Shift+Tab</span></div>
+<div class="md"><span class="cd">acceptEdits</span><span>파일 편집은 묻지 않음</span></div>
+<div class="sh"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#5EC8E5" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v17M6 14l6 6 6-6"/></svg><span class="cd">Shift+Tab</span></div>
+<div class="md pl"><span class="cd">plan</span><span>계획만 세우고 편집은 막음</span></div>
+<div class="ret"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#5EC8E5" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.3-5.7M20 4v5h-5"/></svg><span class="cd" style="font-size:34px;color:#8D93A3;font-weight:600">Shift+Tab</span><span>다시 default로</span></div>
 </div>
-<div class="foot">plan 다음에는 다시 default</div></div></body></html>
+<span class="lb">플랜 모드에서는</span>
+<div class="fl"><div class="fn">계획 보기</div><svg class="fa" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#5EC8E5" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h17M14 6l6 6-6 6"/></svg><div class="fn">승인</div><svg class="fa" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#5EC8E5" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h17M14 6l6 6-6 6"/></svg><div class="fn on">진행</div></div>
+</div>
+</div></body></html>
