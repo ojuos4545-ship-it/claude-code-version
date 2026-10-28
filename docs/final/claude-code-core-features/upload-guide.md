@@ -8,14 +8,14 @@
 
 | 순서 | 파일 | 바로 앞 문장(위치) | ALT |
 | :--- | :--- | :--- | :--- |
-| 01 | `01_thumbnail_core-features.png` |  | 정방형 비율, 클로드 코드 핵심 기능 5가지의 이름을 번호와 함께 나열한 대표 이미지 |
-| 02 | `02_diagram_start-steps.png` | (설치 직후 claude를 찾지 못한다면 PATH 설정을 먼저 의심해 보 | 설치 명령 실행, 새 터미널에서 버전 확인, 프로젝트 폴더에서 claude 실행까지 클로드 코드 시작 순서를 보여주는 3단계 흐름도 |
+| 01 | `01_thumbnail_core-features.png` | 💡 한 줄 요약: 처음에는 CLAUDE.md, 권한 모드, 스킬, 서브에 | 정방형 비율, 클로드 코드 핵심 기능 5가지의 이름을 번호와 함께 나열한 대표 이미지 |
+| 02 | `02_diagram_start-steps.png` | 설치가 끝나면 새 터미널을 열고 claude --version으로 확인해 | 설치 명령 실행, 새 터미널에서 버전 확인, 프로젝트 폴더에서 claude 실행까지 클로드 코드 시작 순서를 보여주는 3단계 흐름도 |
 | 03 | `03_card_claude-md.png` |  클로드가 스스로 메모하는 자동 메모리도 있고, /memory로 편집하거 | CLAUDE.md의 저장 위치 세 곳과 /init 명령, 200줄 이하 권장을 한 장에 정리한 카드 |
-| 04 | `04_diagram_permission-modes.png` | Shift+Tab이나 프롬프트 앞의 /plan으로 들어가 계획을 먼저 보 | Shift+Tab으로 권한 모드(default, acceptEdits, plan)가 순환하는 모습과 플랜 모드에서 계획 승인 후 진행하는 흐름 |
+| 04 | `04_diagram_permission-modes.png` | 초보자분께는 플랜 모드를 가장 먼저 권해 드려요. Shift+Tab이나  | Shift+Tab으로 권한 모드(default, acceptEdits, plan)가 순환하는 모습과 플랜 모드에서 계획 승인 후 진행하는 흐름 |
 | 05 | `05_card_skills.png` | 예전 블로그나 영상에서 .claude/commands 중심으로 설명한 것 | 슬래시 명령 입력법과 스킬 폴더 구조(SKILL.md 위치)를 정리한 카드 |
-| 06 | `06_diagram_subagent.png` | 최신 버전의 /agents는 예전처럼 만들기 마법사를 열지 않고, 요청하 | 메인 대화에서 서브에이전트에게 작업을 맡기고 요약 결과만 돌려받는 구조도 |
-| 07 | `07_card_mcp.png` | 예전 예제에 나오는 sse 방식은 지원 중단 예정으로 표시되니, 원격 서 | MCP 서버 추가 명령, 연결 확인(/mcp), 범위 3종(local, project, user)을 정리한 카드 |
-| 08 | `08_table_pros-cons.png` | 어디까지가 장점이고 어디부터 조심해야 하는지 비교해 보세요. | 클로드 코드 핵심 기능 5가지의 장점과 주의점을 비교한 표 이미지 |
-| 09 | `09_card_first-week.png` | 정리하면 "다 알 필요 없이 CLAUDE.md 하나와 권한 모드부터"라는 | 첫 주에 익힐 순서(CLAUDE.md, 권한 모드, 스킬, 서브에이전트, MCP)를 체크리스트로 정리한 마무리 카드 |
+| 06 | `06_diagram_subagent.png` | 주의할 점이 있습니다. 최신 버전의 /agents는 예전처럼 만들기 마법 | 메인 대화에서 서브에이전트에게 작업을 맡기고 요약 결과만 돌려받는 구조도 |
+| 07 | `07_card_mcp.png` | 📌 전문가 Tip: 신뢰하지 않는 MCP 서버는 프롬프트 인젝션, 즉 숨 | MCP 서버 추가 명령, 연결 확인(/mcp), 범위 3종(local, project, user)을 정리한 카드 |
+| 08 | `08_table_pros-cons.png` | (표 바로 아래) 기능 장점 👍 단점·주의 👎 | 클로드 코드 핵심 기능 5가지의 장점과 주의점을 비교한 표 이미지 |
+| 09 | `09_card_first-week.png` | 오늘은 클로드 코드 핵심 기능 다섯 가지, 곧 CLAUDE.md와 권한· | 첫 주에 익힐 순서(CLAUDE.md, 권한 모드, 스킬, 서브에이전트, MCP)를 체크리스트로 정리한 마무리 카드 |
 
 **태그:** `#클로드코드` `#ClaudeCode` `#클로드코드사용법` `#클로드코드기능` `#CLAUDEmd` `#플랜모드` `#서브에이전트` `#MCP` `#AI코딩도구` `#초보자가이드`
