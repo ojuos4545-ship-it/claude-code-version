@@ -12,6 +12,8 @@ body{margin:0;background:#fff;color:#333;font-family:"Noto Sans KR","Malgun Goth
 #body hr{border:0;border-top:1px solid #ccc;margin:0}
 #body blockquote{margin:0;padding:10px 16px;border-left:4px solid #03c75a;background:#f4f7f5}
 #body img{max-width:100%;height:auto}
+.imgwrap{position:relative;display:inline-block;max-width:100%}
+.badge{position:absolute;top:10px;left:10px;background:#03c75a;color:#fff;font-size:13px;font-weight:700;line-height:1;padding:6px 10px;border-radius:14px;box-shadow:0 1px 4px rgba(0,0,0,.25)}
 #body code{font-family:Consolas,Menlo,monospace;font-size:.92em;background:#f3f3f3}
 #body a{color:#0a7d3c;word-break:break-all}
 mark.todo{background:#fff176}
@@ -61,7 +63,7 @@ mark.slot{background:#ffe082;font-weight:700}
 <p>많은 분들이 가장 먼저 궁금해하시는 건 비용이죠.</p>
 <p>조사일 기준 공식 요금 페이지를 보면 Free 플랜에는 클로드 코드가 포함되지 않고, 유료 플랜에 포함된다고 적혀 있습니다.</p>
 <p class="sp"><br></p>
-<table style="border-collapse:collapse;width:100%">
+<table width="100%" style="border-collapse:collapse;width:100%;table-layout:fixed">
 <thead>
 <tr>
 <th style="border:1px solid #ddd;padding:8px;background:#f3f3f3;text-align:left">플랜</th>
@@ -203,7 +205,7 @@ mark.slot{background:#ffe082;font-weight:700}
 <p>지금까지 본 기능을 표로 모아 보겠습니다.</p>
 <p>어디까지가 장점이고 어디부터 조심해야 하는지 비교해 보세요.</p>
 <p class="sp"><br></p>
-<table style="border-collapse:collapse;width:100%">
+<table width="100%" style="border-collapse:collapse;width:100%;table-layout:fixed">
 <thead>
 <tr>
 <th style="border:1px solid #ddd;padding:8px;background:#f3f3f3;text-align:left">기능</th>

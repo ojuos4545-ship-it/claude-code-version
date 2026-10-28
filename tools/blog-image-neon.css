@@ -1,0 +1,6 @@
+/* 다크 네온 3D 테마: 이미지 HTML 안에 스타일이 들어 있으므로 폰트만 덧씌운다(--theme=neon). */
+@font-face{font-family:"PretendardBlog";font-weight:400;src:url("fonts/Pretendard-Regular.subset.woff2") format("woff2")}
+@font-face{font-family:"PretendardBlog";font-weight:600;src:url("fonts/Pretendard-SemiBold.subset.woff2") format("woff2")}
+@font-face{font-family:"PretendardBlog";font-weight:700 900;src:url("fonts/Pretendard-ExtraBold.subset.woff2") format("woff2")}
+body{font-family:"PretendardBlog","Pretendard","Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;text-rendering:geometricPrecision}
+code{font-family:"JetBrains Mono","SFMono-Regular",Menlo,Consolas,"PretendardBlog",monospace;letter-spacing:-.5px}

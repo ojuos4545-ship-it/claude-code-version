@@ -41,7 +41,8 @@ def inline(text: str) -> str:
 
 def table(lines):
     t = markdown.markdown("\n".join(lines), extensions=["tables"])
-    t = t.replace("<table>", '<table style="border-collapse:collapse;width:100%">')
+    # 에디터는 CSS보다 width 속성을 더 잘 따르므로 둘 다 지정해 본문 폭까지 늘린다
+    t = t.replace("<table>", '<table width="100%" style="border-collapse:collapse;width:100%;table-layout:fixed">')
     t = re.sub(r"<th(?: [^>]*)?>", '<th style="border:1px solid #ddd;padding:8px;background:#f3f3f3;text-align:left">', t)
     t = re.sub(r"<td(?: [^>]*)?>", '<td style="border:1px solid #ddd;padding:8px">', t)
     return t
@@ -146,7 +147,8 @@ def render(blocks, images_dir: Path, mode: str):
                 raw = (images_dir / name).read_bytes()
                 mime = "image/jpeg" if name.endswith(".jpg") else "image/png"
                 src = f"data:{mime};base64," + base64.b64encode(raw).decode()
-                out.append(f'<p style="text-align:center"><img src="{src}" alt="{html.escape(alt)}"></p>')
+                out.append(f'<p style="text-align:center"><span class="imgwrap"><span class="badge">사진 {n_img:02d}</span>'
+                           f'<img src="{src}" alt="{html.escape(alt)}"></span></p>')
             else:
                 out.append(f'<p style="text-align:center"><mark class="slot">【사진 {n_img:02d}】 {html.escape(name)}</mark></p>')
     return "\n".join(out), title, tags
@@ -165,6 +167,8 @@ body{margin:0;background:#fff;color:#333;font-family:"Noto Sans KR","Malgun Goth
 #body hr{border:0;border-top:1px solid #ccc;margin:0}
 #body blockquote{margin:0;padding:10px 16px;border-left:4px solid #03c75a;background:#f4f7f5}
 #body img{max-width:100%;height:auto}
+.imgwrap{position:relative;display:inline-block;max-width:100%}
+.badge{position:absolute;top:10px;left:10px;background:#03c75a;color:#fff;font-size:13px;font-weight:700;line-height:1;padding:6px 10px;border-radius:14px;box-shadow:0 1px 4px rgba(0,0,0,.25)}
 #body code{font-family:Consolas,Menlo,monospace;font-size:.92em;background:#f3f3f3}
 #body a{color:#0a7d3c;word-break:break-all}
 mark.todo{background:#fff176}

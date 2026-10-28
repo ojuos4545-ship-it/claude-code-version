@@ -1,0 +1,32 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><style>
+:root{--bg:#0B0D14;--panel:#151821;--panel-line:#262A36;--ink:#F5F6FA;--sub:#9AA0B4;--violet:#7C6CF0;--violet-soft:#B8AEFF;--cyan:#4FC3E0;
+--cube-top:#EAE6FF;--cube-left:#8B7CF6;--cube-right:#5646C0}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg)}
+body{font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic","Apple SD Gothic Neo","NanumGothic","WenQuanYi Zen Hei",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.35}
+.canvas{width:1080px;padding:80px;background:radial-gradient(ellipse 720px 560px at 88% 0%,rgba(124,108,240,.24),rgba(124,108,240,0) 70%),var(--bg);position:relative;overflow:hidden}
+.square{height:1080px}
+.kicker{font-size:36px;font-weight:600;color:var(--cyan);margin-bottom:24px}
+h1{font-size:84px;font-weight:800;line-height:1.2;letter-spacing:-1px}
+h2{font-size:56px;font-weight:800;line-height:1.25;margin-bottom:48px;max-width:720px;min-height:130px}
+.sub{font-size:40px;color:var(--sub);margin-top:24px}
+code{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Noto Sans Mono CJK KR","WenQuanYi Zen Hei Mono",monospace;font-size:32px;color:var(--ink);background:#232838;border:1px solid #3A4056;padding:2px 12px;border-radius:10px}
+.num{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:50%;background:var(--violet);color:#fff;font-size:34px;font-weight:700;flex:none;box-shadow:0 0 18px rgba(124,108,240,.65)}
+.panel{background:var(--panel);border:2px solid var(--panel-line);border-radius:18px;box-shadow:0 10px 24px rgba(0,0,0,.35)}
+.row{display:flex;align-items:center;gap:28px;font-size:44px;font-weight:600;padding:24px 36px;margin-bottom:22px}
+.t{display:flex;flex-direction:column;gap:2px}
+.lab{font-size:36px;font-weight:600;color:var(--cyan)}
+.val{font-size:44px;font-weight:600;color:var(--ink)}
+.note{font-size:36px;color:var(--sub);margin-top:30px}
+.mini{position:absolute;top:40px;right:80px;width:150px;height:190px}
+table{width:100%;border-collapse:collapse;font-size:38px}
+th,td{padding:26px 24px;text-align:left;border-bottom:2px solid var(--panel-line);vertical-align:middle}
+th{font-size:36px;color:var(--violet-soft);font-weight:700}
+td:first-child{font-weight:700}tr:last-child td{border-bottom:none}
+.tbl{padding:10px 20px}
+.dots{width:4px;height:36px;margin:0 0 0 64px;border-left:4px dotted var(--cyan)}
+.node{display:flex;align-items:center;gap:28px;padding:24px 36px}
+.node b{font-size:44px;font-weight:700;display:block}.node small{font-size:36px;color:var(--sub);display:block}
+</style></head><body><div class="canvas"><svg class="mini" viewBox="0 0 150 190"><defs><linearGradient id="gt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#D9D2FF"/></linearGradient>
+<linearGradient id="gl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A396FF"/><stop offset="1" stop-color="#6F5FD8"/></linearGradient>
+<linearGradient id="gr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6A59D6"/><stop offset="1" stop-color="#3E3197"/></linearGradient></defs><ellipse cx="75" cy="168" rx="60" ry="10" fill="#05060A" opacity=".8"/><g transform="translate(15,20) scale(1.2)"><polygon points="50,0 100,25 50,50 0,25" fill="url(#gt)"/><polygon points="0,25 50,50 50,110 0,85" fill="url(#gl)"/><polygon points="50,50 100,25 100,85 50,110" fill="url(#gr)"/></g><circle cx="140" cy="14" r="6" fill="#4FC3E0"/></svg><h2>첫 CLAUDE.md 핵심 세 줄</h2><div class="row panel"><span class="num">1</span><span class="t"><span class="lab">시작</span><span class="val">루트에 만들고 /init으로</span></span></div><div class="row panel"><span class="num">2</span><span class="t"><span class="lab">내용</span><span class="val">코드로 모르는 것만 짧게</span></span></div><div class="row panel"><span class="num">3</span><span class="t"><span class="lab">관리</span><span class="val">확인하고 바뀌면 같이 고침</span></span></div><div class="note">작은 파일 하나로 시작</div></div></body></html>

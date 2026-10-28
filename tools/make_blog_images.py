@@ -11,6 +11,7 @@ WIDTH = 1080
 SCALE = 2  # 2배 해상도로 캡처한다(레이아웃 폭은 그대로 1080px, 파일은 2160px)
 CSS = Path(__file__).with_name("blog-image.css")
 THEME_3D = Path(__file__).with_name("blog-image-3d.css")  # 기본 테마(라인+3D). --theme=flat 이면 적용하지 않는다
+THEME_NEON = Path(__file__).with_name("blog-image-neon.css")  # --theme=neon: 다크 네온 3D(스타일은 HTML 안에 있고 폰트만 주입)
 MAX_BYTES = 1_000_000  # 넘으면 JPEG로 저장
 BLOCK_EXTERNAL = re.compile(r"^https?://")
 
@@ -54,7 +55,8 @@ def main(src: Path, out: Path, theme: str = "3d") -> int:
         page.route(BLOCK_EXTERNAL, lambda route: route.abort())  # 외부 API·폰트·이미지 차단
         for html in sorted(src.glob("*.html")):
             page.goto(html.resolve().as_uri())
-            page.add_style_tag(content=CSS.read_text(encoding="utf-8").replace("url(\"fonts/", f'url("{CSS.parent.as_uri()}/fonts/'))
+            base = THEME_NEON if theme == "neon" else CSS
+            page.add_style_tag(content=base.read_text(encoding="utf-8").replace("url(\"fonts/", f'url("{base.parent.as_uri()}/fonts/'))
             if theme == "3d":
                 page.add_style_tag(content=THEME_3D.read_text(encoding="utf-8"))
             page.evaluate("document.fonts.ready")
@@ -84,6 +86,6 @@ def main(src: Path, out: Path, theme: str = "3d") -> int:
 if __name__ == "__main__":
     args = [a for a in sys.argv[1:] if not a.startswith("--theme=")]
     theme = next((a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--theme=")), "3d")
-    if len(args) != 2 or theme not in ("flat", "3d"):
-        sys.exit("사용법: make_blog_images.py <src 폴더> <출력 폴더> [--theme=3d|flat]")
+    if len(args) != 2 or theme not in ("flat", "3d", "neon"):
+        sys.exit("사용법: make_blog_images.py <src 폴더> <출력 폴더> [--theme=3d|flat|neon]")
     sys.exit(main(Path(args[0]), Path(args[1]), theme))

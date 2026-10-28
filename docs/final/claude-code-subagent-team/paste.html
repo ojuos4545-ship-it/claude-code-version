@@ -12,6 +12,8 @@ body{margin:0;background:#fff;color:#333;font-family:"Noto Sans KR","Malgun Goth
 #body hr{border:0;border-top:1px solid #ccc;margin:0}
 #body blockquote{margin:0;padding:10px 16px;border-left:4px solid #03c75a;background:#f4f7f5}
 #body img{max-width:100%;height:auto}
+.imgwrap{position:relative;display:inline-block;max-width:100%}
+.badge{position:absolute;top:10px;left:10px;background:#03c75a;color:#fff;font-size:13px;font-weight:700;line-height:1;padding:6px 10px;border-radius:14px;box-shadow:0 1px 4px rgba(0,0,0,.25)}
 #body code{font-family:Consolas,Menlo,monospace;font-size:.92em;background:#f3f3f3}
 #body a{color:#0a7d3c;word-break:break-all}
 mark.todo{background:#fff176}
@@ -74,7 +76,7 @@ mark.slot{background:#ffe082;font-weight:700}
 <p>필수는 <code>name</code>과 <code>description</code> 두 가지뿐이고, 나머지는 선택입니다.</p>
 <p>자주 쓰는 설정만 표로 모아 볼게요.</p>
 <p class="sp"><br></p>
-<table style="border-collapse:collapse;width:100%">
+<table width="100%" style="border-collapse:collapse;width:100%;table-layout:fixed">
 <thead>
 <tr>
 <th style="border:1px solid #ddd;padding:8px;background:#f3f3f3;text-align:left">설정</th>
@@ -136,7 +138,7 @@ mark.slot{background:#ffe082;font-weight:700}
 <p class="sp"><br></p>
 <p>도구 권한은 역할마다 다르게 줬습니다.</p>
 <p class="sp"><br></p>
-<table style="border-collapse:collapse;width:100%">
+<table width="100%" style="border-collapse:collapse;width:100%;table-layout:fixed">
 <thead>
 <tr>
 <th style="border:1px solid #ddd;padding:8px;background:#f3f3f3;text-align:left">에이전트</th>
