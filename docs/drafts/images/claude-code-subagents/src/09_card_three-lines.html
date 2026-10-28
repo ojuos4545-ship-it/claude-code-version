@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>포인트카드</title>
+<style>:root{--bg:#0B0C10;--card:#14161C;--ink:#EDEEF2;--sub:#A9AEBC;--line:#2A2D37;
+      --accent:#9A8EF7;--accent-soft:#25213F;--ok:#5EC8E5;--ok-soft:#12303A}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0B0C10}
+body{font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",
+     "Apple SD Gothic Neo","NanumGothic",sans-serif;color:#EDEEF2;
+     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.4}
+.canvas{width:1080px;padding:80px;background:#0B0C10}
+/* 표본 바탕: #0B0C10 + 오른쪽 위 아주 은은한 보라 빛 */
+.canvas.dk{padding:84px 80px 92px;display:flex;flex-direction:column;gap:56px;
+  background:radial-gradient(circle at 92% 0%,rgba(154,142,247,.15),rgba(154,142,247,0) 38%),#0B0C10}
+/* 머리: 하늘색 번호 + 굵은 흰 제목 + 얇은 구분선 (h2를 쓰지 않아 테마의 3D 블록이 붙지 않음) */
+.head{display:flex;flex-direction:column;gap:30px}
+.hrow{display:flex;align-items:baseline;gap:26px}
+.no{flex:none;font-size:36px;font-weight:600;letter-spacing:.16em;color:#5EC8E5}
+.ht{font-size:60px;font-weight:800;line-height:1.25;letter-spacing:-.01em;color:#F4F5F8}
+.rule{height:2px;background:rgba(255,255,255,.12)}
+.cd{font-family:"JetBrains Mono","PretendardBlog","Pretendard",monospace;font-weight:700;color:#CFC8FF;letter-spacing:-.02em;word-spacing:-.18em}
+.foot{font-size:36px;line-height:1.5;color:#A9AEBC}
+.ls{display:flex;flex-direction:column;gap:22px}
+.it{display:flex;align-items:center;gap:30px;background:#14161C;border:2px solid rgba(255,255,255,.14);
+  border-radius:24px;padding:36px 44px}
+.it .k{flex:none;width:44px;font-size:44px;font-weight:800;color:#9A8EF7}
+.it p{font-size:44px;font-weight:700;color:#F4F5F8;letter-spacing:-.01em}
+.it .cd{font-size:42px}
+.nxw{display:flex;flex-direction:column;gap:22px}
+.nt{text-align:center;font-size:40px;color:#C3C7D2}
+.nx{display:flex;align-items:center;gap:28px;margin-top:8px}
+.nx i{flex:1;height:2px;background:rgba(255,255,255,.12)}
+.nx span{font-size:36px;font-weight:600;letter-spacing:.2em;color:#8D93A3}</style></head>
+<body><div class="canvas dk">
+<div class="head"><div class="hrow"><span class="no">07</span><div class="ht">서브에이전트 핵심 3줄</div></div><div class="rule"></div></div>
+<div class="ls">
+<div class="it"><span class="k">1</span><p>곁일은 맡기고 보고만 받기</p></div><div class="it"><span class="k">2</span><p>읽기 전용은 <span class="cd">tools</span>로 강제하기</p></div><div class="it"><span class="k">3</span><p>꼭 부를 땐 @멘션</p></div>
+</div>
+<div class="nxw"><div class="nx"><i></i><span>NEXT</span><i></i></div><p class="nt">다음 글: 클로드 코드 MCP 사용법</p></div>
+</div></body></html>

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>다이어그램</title>
+<style>:root{--bg:#0B0C10;--card:#14161C;--ink:#EDEEF2;--sub:#A9AEBC;--line:#2A2D37;
+      --accent:#9A8EF7;--accent-soft:#25213F;--ok:#5EC8E5;--ok-soft:#12303A}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0B0C10}
+body{font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",
+     "Apple SD Gothic Neo","NanumGothic",sans-serif;color:#EDEEF2;
+     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.4}
+.canvas{width:1080px;padding:80px;background:#0B0C10}
+/* 표본 바탕: #0B0C10 + 오른쪽 위 아주 은은한 보라 빛 */
+.canvas.dk{padding:84px 80px 92px;display:flex;flex-direction:column;gap:56px;
+  background:radial-gradient(circle at 92% 0%,rgba(154,142,247,.15),rgba(154,142,247,0) 38%),#0B0C10}
+/* 머리: 하늘색 번호 + 굵은 흰 제목 + 얇은 구분선 (h2를 쓰지 않아 테마의 3D 블록이 붙지 않음) */
+.head{display:flex;flex-direction:column;gap:30px}
+.hrow{display:flex;align-items:baseline;gap:26px}
+.no{flex:none;font-size:36px;font-weight:600;letter-spacing:.16em;color:#5EC8E5}
+.ht{font-size:60px;font-weight:800;line-height:1.25;letter-spacing:-.01em;color:#F4F5F8}
+.rule{height:2px;background:rgba(255,255,255,.12)}
+.cd{font-family:"JetBrains Mono","PretendardBlog","Pretendard",monospace;font-weight:700;color:#CFC8FF;letter-spacing:-.02em;word-spacing:-.18em}
+.foot{font-size:36px;line-height:1.5;color:#A9AEBC}
+.canvas.dk{gap:46px}
+.file{background:#14161C;border:2px solid rgba(255,255,255,.14);border-radius:28px;overflow:hidden}
+.fp{background:#1A1D25;padding:22px 40px;border-bottom:2px solid rgba(255,255,255,.08)}
+.fp .cd{font-size:34px;color:#5EC8E5}
+.zn{position:relative;padding:28px 40px 30px 64px;display:flex;flex-direction:column;gap:4px}
+.zn::before{content:"";position:absolute;left:36px;top:34px;bottom:34px;width:6px;border-radius:3px}
+.fm::before{background:#9A8EF7}.bd::before{background:#5EC8E5}
+.bd{border-top:2px dashed rgba(255,255,255,.14)}
+.zl{font-size:36px;font-weight:700;margin-bottom:4px}
+.fm .zl{color:#9A8EF7}.bd .zl{color:#5EC8E5}
+.ln{display:grid;grid-template-columns:1fr auto 200px;align-items:center;column-gap:20px;min-height:64px}
+.ln.sep{min-height:40px}
+.ln .cd{font-size:32px;font-weight:600;color:#D7DBE4}
+.ln .cd.dim{color:#7D8294}
+.tg{font-size:36px;font-weight:700;color:#A9AEBC;border:2px solid rgba(255,255,255,.18);border-radius:12px;padding:2px 14px}
+.tg.rq{color:#F4F5F8;background:#25213F;border-color:rgba(154,142,247,.55)}
+.ds{font-size:36px;color:#C3C7D2}
+.bt{font-size:42px;font-weight:800;color:#F4F5F8}
+.be{font-size:38px;color:#C3C7D2}</style></head>
+<body><div class="canvas dk">
+<div class="head"><div class="hrow"><span class="no">03</span><div class="ht">파일은 프론트매터와 본문</div></div><div class="rule"></div></div>
+<div class="file">
+<div class="fp"><span class="cd">.claude/agents/reviewer.md</span></div>
+<div class="zn fm">
+<span class="zl">프론트매터</span>
+<div class="ln sep"><span class="cd dim">---</span></div>
+<div class="ln"><span class="cd">name: reviewer</span><span class="tg rq">필수</span><span class="ds">이름표</span></div>
+<div class="ln"><span class="cd">description: …</span><span class="tg rq">필수</span><span class="ds">언제 맡길지</span></div>
+<div class="ln"><span class="cd">tools: Read, Grep, Glob</span><span class="tg">선택</span><span class="ds">쓸 도구</span></div>
+<div class="ln sep"><span class="cd dim">---</span></div>
+</div>
+<div class="zn bd">
+<span class="zl">본문</span>
+<p class="bt">서브에이전트가 따를 지침</p>
+<p class="be">= 시스템 프롬프트</p>
+</div>
+</div>
+</div></body></html>

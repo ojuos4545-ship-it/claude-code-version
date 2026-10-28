@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>비교표</title>
+<style>:root{--bg:#0B0C10;--card:#14161C;--ink:#EDEEF2;--sub:#A9AEBC;--line:#2A2D37;
+      --accent:#9A8EF7;--accent-soft:#25213F;--ok:#5EC8E5;--ok-soft:#12303A}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0B0C10}
+body{font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",
+     "Apple SD Gothic Neo","NanumGothic",sans-serif;color:#EDEEF2;
+     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.4}
+.canvas{width:1080px;padding:80px;background:#0B0C10}
+/* 표본 바탕: #0B0C10 + 오른쪽 위 아주 은은한 보라 빛 */
+.canvas.dk{padding:84px 80px 92px;display:flex;flex-direction:column;gap:56px;
+  background:radial-gradient(circle at 92% 0%,rgba(154,142,247,.15),rgba(154,142,247,0) 38%),#0B0C10}
+/* 머리: 하늘색 번호 + 굵은 흰 제목 + 얇은 구분선 (h2를 쓰지 않아 테마의 3D 블록이 붙지 않음) */
+.head{display:flex;flex-direction:column;gap:30px}
+.hrow{display:flex;align-items:baseline;gap:26px}
+.no{flex:none;font-size:36px;font-weight:600;letter-spacing:.16em;color:#5EC8E5}
+.ht{font-size:60px;font-weight:800;line-height:1.25;letter-spacing:-.01em;color:#F4F5F8}
+.rule{height:2px;background:rgba(255,255,255,.12)}
+.cd{font-family:"JetBrains Mono","PretendardBlog","Pretendard",monospace;font-weight:700;color:#CFC8FF;letter-spacing:-.02em;word-spacing:-.18em}
+.foot{font-size:36px;line-height:1.5;color:#A9AEBC}
+.pc{display:flex;gap:24px}
+.pcc{flex:1;background:#14161C;border:2px solid rgba(255,255,255,.10);border-radius:24px;padding:40px 38px 18px;
+  display:flex;flex-direction:column}
+.pcl{font-size:38px;font-weight:700;letter-spacing:-.02em;margin-bottom:10px}
+.pcl.ok{color:#5EC8E5}.pcl.no{color:#F2A65E}
+.pcc p{font-size:38px;line-height:1.45;color:#C3C7D2;padding:22px 0;border-top:2px solid rgba(255,255,255,.08);
+  min-height:155px;display:flex;align-items:center}
+.pcc p:first-of-type{border-top:none}
+.pcc .cd{font-size:36px;margin-right:2px}</style></head>
+<body><div class="canvas dk">
+<div class="head"><div class="hrow"><span class="no">05</span><div class="ht">맡기기 전에 볼 장단점</div></div><div class="rule"></div></div>
+<div class="pc">
+<div class="pcc"><span class="pcl ok">장점</span><p><span>긴 출력을 메인 밖에 둠</span></p><p><span>독립된 일 동시 실행</span></p><p><span>쓴 과정을 안 본<br>새 눈의 리뷰</span></p><p><span><span class="cd">tools</span>로 도구 제한</span></p></div>
+<div class="pcc"><span class="pcl no">단점</span><p><span>메인과 같은<br>사용량 한도</span></p><p><span>맥락을 다시 모아<br>느릴 수 있음</span></p><p><span>대화 기록을 모름<br>(포크 제외)</span></p><p><span>답이 더<br>똑똑해지지는 않음</span></p></div>
+</div>
+</div></body></html>

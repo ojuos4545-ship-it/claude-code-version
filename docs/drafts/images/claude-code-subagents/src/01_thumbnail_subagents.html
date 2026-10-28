@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>썸네일</title>
+<style>:root{--bg:#FAF7F2;--card:#FFFFFF;--ink:#1F2937;--sub:#6B7280;--line:#E8E1D6;
+      --accent:#C8553D;--accent-soft:#F6E3DC;--ok:#2F6F5E;--ok-soft:#DDEDE7}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg)}
+body{font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",
+     "Apple SD Gothic Neo","NanumGothic","WenQuanYi Zen Hei",sans-serif;color:var(--ink);
+     -webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.35}
+.canvas{width:1080px;padding:80px;background:var(--bg)}
+.square{height:1080px;display:flex;flex-direction:column;justify-content:center}
+.kicker{font-size:36px;font-weight:600;color:var(--accent);margin-bottom:28px}
+h1{font-size:84px;font-weight:800;line-height:1.2;letter-spacing:-1px}
+h2{font-size:56px;font-weight:800;line-height:1.25;margin-bottom:48px}
+.sub{font-size:40px;color:var(--sub);margin-top:28px}
+code,.mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Noto Sans Mono CJK KR",monospace;
+           font-size:34px;background:var(--accent-soft);padding:2px 12px;border-radius:10px}
+.num{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;
+     border-radius:50%;background:var(--accent);color:#fff;font-size:34px;font-weight:700;flex:none}
+.canvas.square{position:relative;overflow:hidden;padding:84px;display:block}
+.head{position:absolute;left:84px;top:96px;width:600px;display:flex;flex-direction:column}
+.kicker{font-size:36px;margin-bottom:22px}
+h1{font-size:96px;line-height:1.14;letter-spacing:-2.5px}
+.sub{font-size:38px;margin-top:26px}
+.art{position:absolute;right:56px;top:64px;width:400px;height:420px}
+.list{position:absolute;left:84px;right:84px;bottom:84px;display:flex;flex-direction:column;gap:22px}
+.li{display:flex;align-items:center;gap:28px;font-size:44px;font-weight:600;padding:28px 36px;
+ background:var(--card);border:2px solid var(--line);border-radius:24px}</style></head>
+<body><div class="canvas square">
+<svg class="art" viewBox="0 0 400 420" aria-hidden="true">
+<defs>
+<linearGradient id="lf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E9E5FF"/><stop offset=".5" stop-color="#9F93FA"/><stop offset="1" stop-color="#6A5BE0"/></linearGradient>
+<linearGradient id="rf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7B6CF0"/><stop offset="1" stop-color="#1A1740"/></linearGradient>
+<linearGradient id="tp" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".6" stop-color="#E4DFFF"/><stop offset="1" stop-color="#B9AFFF"/></linearGradient>
+<linearGradient id="tps" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F1EEFF"/><stop offset="1" stop-color="#C9C1FF"/></linearGradient>
+</defs>
+<!-- 큰 상자(메인)에서 바닥 길을 따라 작은 상자 셋(서브)으로 일감(하늘색 점)이 나뉘어 감 -->
+<ellipse cx="204" cy="400.4" rx="182" ry="18" fill="#000" opacity=".6"/>
+<path d="M251.6 222.5 L325.9 265.4" stroke="#2B2560" stroke-width="14" stroke-linecap="round"/>
+<path d="M251.6 222.5 L325.9 265.4" stroke="#5EC8E5" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 14" opacity=".9"/>
+<path d="M156.4 222.5 L82.1 265.4" stroke="#2B2560" stroke-width="14" stroke-linecap="round"/>
+<path d="M156.4 222.5 L82.1 265.4" stroke="#5EC8E5" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 14" opacity=".9"/>
+<path d="M204.0 250.0 L204.0 342.4" stroke="#2B2560" stroke-width="14" stroke-linecap="round"/>
+<path d="M204.0 250.0 L204.0 342.4" stroke="#5EC8E5" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 14" opacity=".9"/>
+<circle cx="290.4" cy="244.9" r="7" fill="#5EC8E5"/>
+<circle cx="117.6" cy="244.9" r="7" fill="#5EC8E5"/>
+<circle cx="204.0" cy="270.9" r="7" fill="#5EC8E5"/>
+<polygon points="108.7,195.0 204.0,250.0 204.0,140.0 108.7,85.0" fill="url(#lf)"/>
+<polygon points="299.3,195.0 204.0,250.0 204.0,140.0 299.3,85.0" fill="url(#rf)"/>
+<polygon points="204.0,30.0 299.3,85.0 204.0,140.0 108.7,85.0" fill="url(#tp)"/>
+<path d="M108.7 85.0 L204.0 140.0 L299.3 85.0" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+<polygon points="301.2,275.3 343.1,299.5 343.1,251.1 301.2,226.9" fill="url(#lf)"/>
+<polygon points="385.0,275.3 343.1,299.5 343.1,251.1 385.0,226.9" fill="url(#rf)"/>
+<polygon points="343.1,202.7 385.0,226.9 343.1,251.1 301.2,226.9" fill="url(#tps)"/>
+<path d="M301.2 226.9 L343.1 251.1 L385.0 226.9" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+<polygon points="23.0,275.3 64.9,299.5 64.9,251.1 23.0,226.9" fill="url(#lf)"/>
+<polygon points="106.8,275.3 64.9,299.5 64.9,251.1 106.8,226.9" fill="url(#rf)"/>
+<polygon points="64.9,202.7 106.8,226.9 64.9,251.1 23.0,226.9" fill="url(#tps)"/>
+<path d="M23.0 226.9 L64.9 251.1 L106.8 226.9" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+<polygon points="162.1,362.2 204.0,386.4 204.0,338.0 162.1,313.8" fill="url(#lf)"/>
+<polygon points="245.9,362.2 204.0,386.4 204.0,338.0 245.9,313.8" fill="url(#rf)"/>
+<polygon points="204.0,289.6 245.9,313.8 204.0,338.0 162.1,313.8" fill="url(#tps)"/>
+<path d="M162.1 313.8 L204.0 338.0 L245.9 313.8" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+<circle cx="368" cy="40" r="9" fill="#5EC8E5"/>
+</svg>
+<div class="head"><div class="kicker">클로드 코드</div>
+<h1>서브에이전트<br>사용법</h1>
+<div class="sub">입문자용 3단계</div></div>
+<div class="list">
+<div class="li"><span class="num">1</span><span>기본 일꾼에 맡기기</span></div>
+<div class="li"><span class="num">2</span><span>내 일꾼 만들기</span></div>
+<div class="li"><span class="num">3</span><span>잘 맡기게 다듬기</span></div>
+</div></div></body></html>
